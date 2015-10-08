@@ -15,6 +15,11 @@ doodleBreakout.Preloader.prototype = {
         //Load font files
         this.game.load.bitmapFont('larafont', 'assets/fonts/larafont.png', 'assets/fonts/larafont.xml');
 
+        //Load Setting symbols
+        this.game.load.spritesheet('sound', 'assets/soundspeaker.png', 50, 46);
+        this.game.load.spritesheet('music', 'assets/notes.png', 50, 50);
+
+
 
         //	This sets the preloadBar sprite as a loader sprite.
         //	What that does is automatically crop the sprite from 0 to full-width
