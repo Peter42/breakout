@@ -1,7 +1,7 @@
 # Breakout
 
 ### Dokumentation
-[Die Dokumentation steht in diesem geteilten Google Drive Ordner zur Verfügung.](https://drive.google.com/drive/folders/0BxrKU1UsIJcwU1dISmtqVmFHeGM)
+[Die Dokumentation steht in diesem geteilten Google Drive Ordner zur Verfügung.](https://drive.google.com/folderview?id=0BxrKU1UsIJcwU1dISmtqVmFHeGM&usp=sharing)
 
 
 ### Termine
