@@ -26,6 +26,25 @@ doodleBreakout.Game.prototype = {
 
         this.plattform = new doodleBreakout.Plattform(game, 550, 550);
         game.add.existing(this.plattform);
+
+        this.countdownText = game.add.bitmapText(this.game.world.centerX, this.game.world.centerY, 'larafont', '3',128);
+        this.countdownText.anchor.setTo(0.5);
+
+        this.countdown = game.time.create(false);
+        this.countdown.doodleBreakout = { value : 3};
+        this.countdown.loop(1000, this.countdownUpdate, this);
+        this.countdown.start();
+    },
+
+    countdownUpdate : function() {
+        this.countdown.doodleBreakout.value--;
+        if(this.countdown.doodleBreakout.value == 0){
+            this.ball.start();
+            this.countdownText.kill();
+            this.countdown.stop();
+        } else {
+            this.countdownText.setText(this.countdown.doodleBreakout.value + "");
+        }
     },
 
     update: function() {

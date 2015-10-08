@@ -12,8 +12,7 @@ doodleBreakout.Ball = function (game, x, y) {
     this.anchor.setTo(0.5, 1);
 
     game.physics.enable(this, Phaser.Physics.ARCADE);
-    //  This gets it moving
-    this.body.velocity.setTo(200, 200);
+
 
     //  This makes the game world bounce-able
     this.body.collideWorldBounds = true;
@@ -37,4 +36,9 @@ doodleBreakout.Ball.prototype.update = function() {
 
 doodleBreakout.Ball.prototype.lost = function() {
     alert("You lost");
+};
+
+doodleBreakout.Ball.prototype.start = function() {
+    //  This gets it moving
+    this.body.velocity.setTo(200, 200);
 };
