@@ -15,6 +15,11 @@ doodleBreakout.Settings.prototype = {
 
         var soundSymbol = this.game.add.sprite(this.game.width / 2 - 80, 250, 'sound');
         soundSymbol.anchor.setTo(0.5,0);
+        if( !doodleBreakout.SoundManager.isSfxEnabled()){
+            soundSymbol.frame = 1;
+        }
+
+        soundSymbol.doodleBreakout = { 'Option' : 'SFX' };
         soundSymbol.inputEnabled = true;
         soundSymbol.events.onInputDown.add(this.toggleSound, this);
         soundSymbol.events.onInputOver.add(this.over, this);
@@ -22,6 +27,11 @@ doodleBreakout.Settings.prototype = {
 
         var musicSymbol = this.game.add.sprite(this.game.width / 2 + 80, 250, 'music');
         musicSymbol.anchor.setTo(0.5,0);
+        if( !doodleBreakout.SoundManager.isMusicEnabled()){
+            musicSymbol.frame = 1;
+        }
+        
+        musicSymbol.doodleBreakout = { 'Option' : 'Music' };
         musicSymbol.inputEnabled = true;
         musicSymbol.events.onInputDown.add(this.toggleSound, this);
         musicSymbol.events.onInputOver.add(this.over, this);
@@ -39,10 +49,23 @@ doodleBreakout.Settings.prototype = {
 
     toggleSound: function(symbol){
       //Sound toggle functionality
-       if( symbol.frame == 0 ){
-             symbol.frame = 1;
-        } else if( symbol.frame == 1 ){
-            symbol.frame = 0;
+
+        if(symbol.doodleBreakout.Option == 'SFX') {
+            if (symbol.frame == 0) {
+                symbol.frame = 1;
+                doodleBreakout.SoundManager.setSfxEnabled(false);
+            } else if (symbol.frame == 1) {
+                symbol.frame = 0;
+                doodleBreakout.SoundManager.setSfxEnabled(true);
+            }
+        } else if(symbol.doodleBreakout.Option == 'Music'){
+                if( symbol.frame == 0 ){
+                    symbol.frame = 1;
+                    doodleBreakout.SoundManager.setMusicEnabled(false);
+                } else if( symbol.frame == 1 ){
+                    symbol.frame = 0;
+                    doodleBreakout.SoundManager.setMusicEnabled(true);
+            }
         }
 
 
