@@ -12,6 +12,9 @@ doodleBreakout.Preloader.prototype = {
         this.preloadBar = this.add.sprite( this.game.width/2, this.game.height/2, 'preloaderBar');
         this.preloadBar.anchor.setTo(0.5,1);
 
+        //Load font files
+        this.game.load.bitmapFont('larafont', 'assets/fonts/larafont.png', 'assets/fonts/larafont.xml');
+
 
         //	This sets the preloadBar sprite as a loader sprite.
         //	What that does is automatically crop the sprite from 0 to full-width
