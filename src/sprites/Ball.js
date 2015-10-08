@@ -31,7 +31,10 @@ doodleBreakout.Ball.prototype = Object.create(Phaser.Sprite.prototype);
 doodleBreakout.Ball.prototype.constructor = doodleBreakout.Ball;
 
 doodleBreakout.Ball.prototype.update = function() {
-
+    var w = this.width * 0.5;
+    if(this.x == w || this.y == this.width || this.x + w == this.game.width){
+        doodleBreakout.SoundManager.playSfx('hit');
+    }
 };
 
 doodleBreakout.Ball.prototype.lost = function() {
