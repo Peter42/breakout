@@ -11,6 +11,8 @@ doodleBreakout.Game.prototype = {
 
         game.physics.startSystem(Phaser.Physics.ARCADE);
 
+        game.physics.arcade.checkCollision.down = false;
+
         this.bricks = game.add.group();
 
         for (var y = 100; y < 200; y += 17) {

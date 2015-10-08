@@ -17,9 +17,13 @@ doodleBreakout.Ball = function (game, x, y) {
 
     //  This makes the game world bounce-able
     this.body.collideWorldBounds = true;
+    this.checkWorldBounds = true;
 
     // speed up the ball a little bit
     this.body.bounce.set(1.005);
+
+
+    this.events.onOutOfBounds.add(this.lost, this);
 
 
 };
@@ -29,4 +33,8 @@ doodleBreakout.Ball.prototype.constructor = doodleBreakout.Ball;
 
 doodleBreakout.Ball.prototype.update = function() {
 
+};
+
+doodleBreakout.Ball.prototype.lost = function() {
+    alert("You lost");
 };
