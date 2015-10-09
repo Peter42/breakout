@@ -4,8 +4,10 @@ doodleBreakout.MainMenu = function( game ){
 
 };
 
-doodleBreakout.MainMenu.prototype = {
-    create: function(){
+doodleBreakout.MainMenu.prototype = Object.create(doodleBreakout.AbstractMenu.prototype);
+doodleBreakout.MainMenu.prototype.constructor = doodleBreakout.MainMenu;
+
+doodleBreakout.MainMenu.prototype.create = function(){
 
         var title = this.game.add.bitmapText(this.game.width / 2, 10, 'larafont', 'Main Menu',64);
         title.anchor.setTo(0.5, 0);
@@ -46,19 +48,9 @@ doodleBreakout.MainMenu.prototype = {
         creditsText.events.onInputOver.add(this.over, this);
         creditsText.events.onInputOut.add(this.out, this);
 
-    },
+    };
 
-    click:function(text){
+doodleBreakout.MainMenu.prototype.click = function(text){
 
       this.game.state.start(text.doodleBreakout.targetState);
-    },
-
-    over: function(text){
-        text.scale.setTo(1.1,1.1);
-    },
-
-    out: function(text){
-        text.scale.setTo(1,1);
-    }
-};
-
+    };

@@ -1,11 +1,15 @@
 var doodleBreakout = doodleBreakout || {};
 
 doodleBreakout.Settings = function( game ){
-
+    debugger;
 };
 
-doodleBreakout.Settings.prototype = {
-    create: function(){
+doodleBreakout.Settings.prototype = Object.create(doodleBreakout.AbstractMenu.prototype);
+doodleBreakout.Settings.prototype.constructor = doodleBreakout.Settings;
+
+doodleBreakout.Settings.prototype.create = function(){
+
+        this.createBackHome();
 
         var title = this.game.add.bitmapText(this.game.width / 2, 10, 'larafont', 'Settings',64);
         title.anchor.setTo(0.5, 0);
@@ -45,9 +49,9 @@ doodleBreakout.Settings.prototype = {
         resetText.events.onInputOver.add(this.over, this);
         resetText.events.onInputOut.add(this.out, this);
 
-    },
+    };
 
-    toggleSound: function(symbol){
+doodleBreakout.Settings.prototype.toggleSound = function(symbol){
       //Sound toggle functionality
 
         if(symbol.doodleBreakout.Option == 'SFX') {
@@ -69,22 +73,13 @@ doodleBreakout.Settings.prototype = {
         }
 
 
-    },
+};
 
-    resetScores: function(text){
+doodleBreakout.Settings.prototype.resetScores = function(text){
         //implement functionality to reset all points and progress
         var okText = this.game.add.bitmapText(this.game.world.centerX, this.game.world.centerY - 40, 'larafont', 'Your scores have been resetted', 48);
         okText.anchor.setTo(0.5, 0);
         this.game.time.events.add(Phaser.Timer.SECOND, function(){
             okText.kill();
             }, this);
-    },
-
-    over: function(text){
-        text.scale.setTo(1.1,1.1);
-    },
-
-    out: function(text){
-        text.scale.setTo(1,1);
-    }
 };
