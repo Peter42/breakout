@@ -1,6 +1,6 @@
 var doodleBreakout = doodleBreakout || {};
 
-doodleBreakout.Block = function (game, x, y, health) {
+doodleBreakout.Block = function ( game, x, y, type, health ) {
 
     var bmd = game.make.bitmapData(64, 16);
     bmd.rect(0, 0, 64, 16, 'yellow');

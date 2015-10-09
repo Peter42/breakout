@@ -1,10 +1,10 @@
 var doodleBreakout = doodleBreakout || {};
 
 doodleBreakout.Game = function( game ){
-
 };
 
 doodleBreakout.Game.prototype = {
+    level: 1,
     create: function(){
 
         var game = this.game;
@@ -13,13 +13,26 @@ doodleBreakout.Game.prototype = {
 
         game.physics.arcade.checkCollision.down = false;
 
+        var Level = new doodleBreakout.Level( game, this.level );
+        var levelStructure = Level.getStructure();
+
         this.bricks = game.add.group();
 
+        for ( var y = 100, i= 0; (i < levelStructure.length) && (y<400); y += 17, i++ ) {
+            for (var x = 0, j = 0; (j < levelStructure[ i].length) && (x < game.width - 64); x += 65, j++ ) {
+                if( levelStructure[i][j] ) {
+                    this.bricks.add( new doodleBreakout.Block( game, x, y, levelStructure[i][j] ) );
+                }
+            }
+        }
+
+        /*
         for (var y = 100; y < 200; y += 17) {
             for (var x = 0; x < game.width - 64; x += 65) {
                 this.bricks.add(new doodleBreakout.Block(game, x, y));
             }
         }
+        */
 
         this.ball = new doodleBreakout.Ball(game, 300, 300);
         game.add.existing(this.ball);
@@ -65,9 +78,16 @@ doodleBreakout.Game.prototype = {
             doodleBreakout.SoundManager.playSfx('break');
 
             if (this.bricks.total == 0) {
-                //alert("Gewonnen");
-                this.state.start('Game');
+                console.log( game.levels +"<" +( this._level + 1 ) );
+                if( this.game.levels < ( this._level + 1 ) ){
+                    this.level = 1;
+                    this.state.start('Game' );
+                }
+                else {
+                    this.level++;
+                    this.state.start('Game' );
+                }
             }
         }, undefined, this);
-    }
+    },
 };

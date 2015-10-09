@@ -31,16 +31,19 @@ doodleBreakout.Preloader.prototype = {
 
         this.load.setPreloadSprite( this.preloadBar,0 );
 
-        //this.load.image('tetris', './paul.jpg');
-        //this.load.image('tetris1', 'http://www.darts1.de/news/2009/Paul-Nicholson.jpg');
-        //this.load.image('tetris2', 'http://hammer.ucla.edu/fileadmin/media/exhibitions/2005/PaulChan004.jpg');
+        var levels = this.game.cache.getJSON( 'levelIndex' );
+
+        this.game.levels = levels.length;
+
+        for( var i = 1; i <= levels.length; i++ ){
+            this.load.json( 'level_' + i, './levels/'+levels[(i-1)] );
+        }
 
     },
 
 
 
     create: function(){
-
         doodleBreakout.SoundManager.init(this.game);
 
         this.state.start('MainMenu');

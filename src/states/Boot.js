@@ -24,7 +24,7 @@ doodleBreakout.Boot.prototype = {
         //  Here we load the assets required for our preloader (in this case a background and a loading bar)
         this.load.image('preloaderBackground', './assets/preloadBackground.png');
         this.load.image('preloaderBar', './assets/preloadBar.png');
-
+        this.game.load.json( 'levelIndex', 'levels/index.json');
     },
 
     create: function () {
