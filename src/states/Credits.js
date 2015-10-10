@@ -4,9 +4,10 @@ doodleBreakout.Credits = function( game ){
 
 };
 
-doodleBreakout.Credits.prototype = {
+doodleBreakout.Credits.prototype = Object.create(doodleBreakout.AbstractMenu.prototype);
+doodleBreakout.Credits.prototype.constructor = doodleBreakout.Credits;
 
-    creditStrings: [
+doodleBreakout.Credits.prototype.creditStrings = [
         "",
         "Developed by Magic WG and Lara",
         "Graphics by Lara",
@@ -16,9 +17,11 @@ doodleBreakout.Credits.prototype = {
         "Libraries:",
         "Phaser.js"
 
-    ].reverse(),
+    ].reverse();
 
-    create: function(){
+doodleBreakout.Credits.prototype.create = function(){
+
+        this.createBackHome();
 
         this.elements = this.game.add.group();
 
@@ -36,9 +39,9 @@ doodleBreakout.Credits.prototype = {
         this.timer.start();
 
         this.next();
-    },
+    };
 
-    next: function() {
+doodleBreakout.Credits.prototype.next = function() {
         var credit = this.game.add.bitmapText(this.game.width / 2, this.game.height, 'larafont', this.creditStrings.pop() ,48);
         credit.anchor.setTo(0.5, 0);
         this.game.physics.enable(credit, Phaser.Physics.ARCADE);
@@ -46,13 +49,11 @@ doodleBreakout.Credits.prototype = {
 
         this.elements.add(credit);
 
-    },
+    };
 
-    update:function(){
+doodleBreakout.Credits.prototype.update = function(){
         this.game.physics.arcade.collide(this.elements, this.elements, function(a,b) {
             a.body.velocity.setTo(0);
             b.body.velocity.setTo(0);
         });
-    }
-
-};
+    };
