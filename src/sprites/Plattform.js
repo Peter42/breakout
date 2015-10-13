@@ -2,11 +2,8 @@ var doodleBreakout = doodleBreakout || {};
 
 doodleBreakout.Plattform = function (game, x, y) {
 
-    var bmd = game.make.bitmapData(128, 16);
-    bmd.rect(0, 0, 128, 16, 'red');
-
     //  We call the Phaser.Sprite passing in the game reference
-    Phaser.Sprite.call(this, game, x, y, bmd);
+    Phaser.Sprite.call(this, game, x, y, 'plattform01');
 
     this.leftKey = game.input.keyboard.addKey(Phaser.Keyboard.LEFT);
     this.rightKey = game.input.keyboard.addKey(Phaser.Keyboard.RIGHT);

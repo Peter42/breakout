@@ -2,11 +2,8 @@ var doodleBreakout = doodleBreakout || {};
 
 doodleBreakout.Ball = function (game, x, y) {
 
-    var bmd = game.make.bitmapData(32, 32);
-    bmd.circle(16, 16, 16, 'blue');
-
     //  We call the Phaser.Sprite passing in the game reference
-    Phaser.Sprite.call(this, game, x, y, bmd);
+    Phaser.Sprite.call(this, game, x, y, 'ball01');
 
 
     this.anchor.setTo(0.5, 1);

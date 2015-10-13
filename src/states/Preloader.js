@@ -12,6 +12,11 @@ doodleBreakout.Preloader.prototype = {
         this.preloadBar = this.add.sprite( this.game.width/2, this.game.height/2, 'preloaderBar');
         this.preloadBar.anchor.setTo(0.5,1);
 
+        //Load sprite images
+        this.game.load.image('ball01', 'assets/images/ball01.png');
+        this.game.load.image('plattform01', 'assets/images/plattform01.png');
+        this.game.load.image('block02', 'assets/images/block02.png');
+
         //Load font files
         this.game.load.bitmapFont('larafont', 'assets/fonts/larafont.png', 'assets/fonts/larafont.xml');
 
