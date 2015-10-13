@@ -19,20 +19,12 @@ doodleBreakout.Game.prototype = {
         this.bricks = game.add.group();
 
         for ( var y = 100, i= 0; (i < levelStructure.length) && (y<400); y += 17, i++ ) {
-            for (var x = 0, j = 0; (j < levelStructure[ i].length) && (x < game.width - 64); x += 65, j++ ) {
+            for (var x = 0, j = 0; (j < levelStructure[ i].length) && (x <= game.width - 50); x += 50, j++ ) {
                 if( levelStructure[i][j] ) {
                     this.bricks.add( new doodleBreakout.Block( game, x, y, levelStructure[i][j] ) );
                 }
             }
         }
-
-        /*
-        for (var y = 100; y < 200; y += 17) {
-            for (var x = 0; x < game.width - 64; x += 65) {
-                this.bricks.add(new doodleBreakout.Block(game, x, y));
-            }
-        }
-        */
 
         this.ball = new doodleBreakout.Ball(game, 300, 300);
         game.add.existing(this.ball);
