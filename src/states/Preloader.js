@@ -21,7 +21,7 @@ doodleBreakout.Preloader.prototype = {
         this.game.load.bitmapFont('larafont', 'assets/fonts/larafont.png', 'assets/fonts/larafont.xml');
 
         //Load Setting symbols
-        this.game.load.spritesheet('sound', 'assets/images/soundspeaker.png', 50, 50);
+        this.game.load.spritesheet('sound', 'assets/images/soundspeaker.png', 70, 70);
         this.game.load.spritesheet('music', 'assets/notes.png', 50, 50);
 
         // Sounds

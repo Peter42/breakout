@@ -41,7 +41,7 @@ doodleBreakout.Settings.prototype.create = function(){
         musicSymbol.events.onInputOver.add(this.over, this);
         musicSymbol.events.onInputOut.add(this.out, this);
 
-        var resetText = this.game.add.bitmapText(this.game.width / 2, 350, 'larafont', 'Reset Scores',48);
+        var resetText = this.game.add.bitmapText(this.game.width / 2, 450, 'larafont', 'Reset Scores',48);
         resetText.anchor.setTo(0.5, 0);
         resetText.inputEnabled = true;
 
