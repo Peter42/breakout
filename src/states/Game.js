@@ -42,12 +42,15 @@ doodleBreakout.Game.prototype = {
         this.plattform = new doodleBreakout.Plattform(game, 550, 550 );
         game.add.existing(this.plattform);
 
+        this._scoreText = game.add.bitmapText(this.game.width - 20, 0, 'larafont', this._score + "", 48);
+        this._scoreText.anchor.setTo(1,0);
+
         this.plattform.holdBall( this.ball );
     },
 
     earnPoints: function (ammount) {
-        this.score += ammount;
-        this.scoreText.setText(this.score + "");
+        this._score += ammount;
+        this._scoreText.setText(this._score + "");
     },
 
     lostBall: function(){
