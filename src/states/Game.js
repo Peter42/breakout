@@ -4,7 +4,8 @@ doodleBreakout.Game = function( game ){
 };
 
 doodleBreakout.Game.prototype = {
-    level: 1,
+    _level: 1,
+    _lives: 3,
     create: function(){
 
         var game = this.game;
@@ -14,7 +15,7 @@ doodleBreakout.Game.prototype = {
         game.physics.arcade.checkCollision.down = false;
 
 
-        var Level = new doodleBreakout.Level( game, this.level );
+        var Level = new doodleBreakout.Level( game, this._level );
         var levelStructure = Level.getStructure();
 
         this.bricks = game.add.group();
@@ -29,7 +30,7 @@ doodleBreakout.Game.prototype = {
 
         this.fallingGimmiks = game.add.group();
 
-        this.lives = new doodleBreakout.Lives( game, 10, 10, 3 );
+        this.lives = new doodleBreakout.Lives( game, 10, 10, this._lives );
         game.add.existing( this.lives );
 
         this.ball = new doodleBreakout.Ball( game, 300, 300 );
@@ -39,14 +40,7 @@ doodleBreakout.Game.prototype = {
         this.plattform = new doodleBreakout.Plattform(game, 550, 550 );
         game.add.existing(this.plattform);
 
-
-        this.countdownText = game.add.bitmapText(this.game.world.centerX, this.game.world.centerY, 'larafont', '3',128);
-        this.countdownText.anchor.setTo(0.5);
-
-        this.countdown = game.time.create(false);
-        this.countdown.doodleBreakout = { value : 3};
-        this.countdown.loop(1000, this.countdownUpdate, this);
-        this.countdown.start();
+        this.plattform.holdBall( this.ball );
     },
 
     lostBall: function(){
@@ -56,33 +50,17 @@ doodleBreakout.Game.prototype = {
             this.lostGame();
         }
         else {
-            //this.ball.position.x = 300;
-            //this.ball.position.y = 300;
             this.plattform.holdBall( this.ball );
         }
     },
 
     lostGame: function(){
-        this.level = 1;
-        this.lives = 3;
+        this._level = 1;
+        this._lives = 3;
         this.state.start( 'MainMenu' );
     },
 
-    countdownUpdate : function() {
-        this.countdown.doodleBreakout.value--;
-        if(this.countdown.doodleBreakout.value == 0){
-            this.ball.start();
-            this.countdownText.kill();
-            this.countdown.stop();
-        } else {
-            this.countdownText.setText(this.countdown.doodleBreakout.value + "");
-        }
-    },
-
     update: function() {
-
-
-
         this.game.physics.arcade.collide(this.plattform, this.ball, function (plattform, ball) {
             var angle = this.game.physics.arcade.angleBetween(plattform, ball) + Math.PI / 2;
 
@@ -95,7 +73,7 @@ doodleBreakout.Game.prototype = {
         }, undefined, this);
 
         this.game.physics.arcade.collide(this.ball, this.bricks, function (ball, brick) {
-            if(brick.hit() && (this.game.rnd.realInRange(0,1) > 0.95) ){
+            if(brick.hit() && (this.game.rnd.realInRange(0,1) > 0.99) ){
                 var live = new doodleBreakout.Live(this.game, ball.x, ball.y);
                 this.game.physics.enable(live, Phaser.Physics.ARCADE);
                 live.body.velocity.set(0,300);
@@ -106,13 +84,12 @@ doodleBreakout.Game.prototype = {
             doodleBreakout.SoundManager.playSfx('break');
 
             if (this.bricks.total == 0) {
-                console.log( game.levels +"<" +( this._level + 1 ) );
                 if( this.game.levels < ( this._level + 1 ) ){
-                    this.level = 1;
-                    this.state.start('Game' );
+                    this.lostGame();
                 }
                 else {
-                    this.level++;
+                    this._level++;
+                    this._lives = this.lives.countLiving();
                     this.state.start('Game' );
                 }
             }
