@@ -7,7 +7,7 @@ doodleBreakout.Live = function (game, x, y) {
 
     this.scale.setTo( 0.3, 0.3 );
 
-    game.physics.enable(this, Phaser.Physics.ARCADE);
+    //game.physics.enable(this, Phaser.Physics.ARCADE);
 
 };
 

@@ -18,9 +18,7 @@ doodleBreakout.Ball = function (game, x, y) {
     // speed up the ball a little bit
     this.body.bounce.set(1.005);
 
-
     this.events.onOutOfBounds.add(this.lost, this);
-
 
 };
 
@@ -40,5 +38,16 @@ doodleBreakout.Ball.prototype.lost = function() {
 
 doodleBreakout.Ball.prototype.start = function() {
     //  This gets it moving
+    this.body.moves = true;
     this.body.velocity.setTo(200, 200);
+};
+
+doodleBreakout.Ball.prototype.setPosition = function( x, y ) {
+    //  This gets it moving
+    this.x = x;
+    this.y = y;
+};
+
+doodleBreakout.Ball.prototype.stop = function() {
+    this.body.moves = false;
 };

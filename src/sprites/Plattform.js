@@ -7,6 +7,9 @@ doodleBreakout.Plattform = function (game, x, y) {
 
     this.leftKey = game.input.keyboard.addKey(Phaser.Keyboard.LEFT);
     this.rightKey = game.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
+    this.space = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+
+    this.space.onDown.add( this.releaseBall, this );
 
     //game.add.sprite(423 + 98 * 0.45, game.height - 100, bmd);
     this.anchor.setTo(0.5, 1);
@@ -28,5 +31,23 @@ doodleBreakout.Plattform.prototype.update = function() {
     } else {
         this.body.velocity.set(0, 0);
     }
+
+    if( this._ball != null ){
+        this._ball.x = this.x;
+    }
+};
+
+doodleBreakout.Plattform.prototype._ball = null;
+
+doodleBreakout.Plattform.prototype.holdBall = function( ball ){
+    this._ball = ball;
+    this._ball.setPosition( this.x, this.y - this.height );
+    this._ball.stop();
+
+};
+
+doodleBreakout.Plattform.prototype.releaseBall = function(){
+    this._ball.start();
+    this._ball = null;
 };
 

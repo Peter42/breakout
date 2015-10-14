@@ -13,6 +13,7 @@ doodleBreakout.Game.prototype = {
 
         game.physics.arcade.checkCollision.down = false;
 
+
         var Level = new doodleBreakout.Level( game, this.level );
         var levelStructure = Level.getStructure();
 
@@ -33,8 +34,9 @@ doodleBreakout.Game.prototype = {
         this.ball.events.onOutOfBounds.add( this.lostBall, this );
         game.add.existing(this.ball);
 
-        this.plattform = new doodleBreakout.Plattform(game, 550, 550);
+        this.plattform = new doodleBreakout.Plattform(game, 550, 550 );
         game.add.existing(this.plattform);
+
 
         this.countdownText = game.add.bitmapText(this.game.world.centerX, this.game.world.centerY, 'larafont', '3',128);
         this.countdownText.anchor.setTo(0.5);
@@ -52,8 +54,9 @@ doodleBreakout.Game.prototype = {
             this.lostGame();
         }
         else {
-            this.ball.position.x = 300;
-            this.ball.position.y = 300;
+            //this.ball.position.x = 300;
+            //this.ball.position.y = 300;
+            this.plattform.holdBall( this.ball );
         }
     },
 
@@ -75,6 +78,8 @@ doodleBreakout.Game.prototype = {
     },
 
     update: function() {
+
+
 
         this.game.physics.arcade.collide(this.plattform, this.ball, function (plattform, ball) {
             var angle = this.game.physics.arcade.angleBetween(plattform, ball) + Math.PI / 2;
