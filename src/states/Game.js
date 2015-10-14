@@ -66,7 +66,7 @@ doodleBreakout.Game.prototype = {
         }, undefined, this);
 
         this.game.physics.arcade.collide(this.ball, this.bricks, function (ball, brick) {
-            brick.kill();
+            brick.hit();
             doodleBreakout.SoundManager.playSfx('break');
 
             if (this.bricks.total == 0) {
