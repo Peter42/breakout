@@ -39,7 +39,7 @@ doodleBreakout.Ball.prototype.lost = function() {
 doodleBreakout.Ball.prototype.start = function() {
     //  This gets it moving
     this.body.moves = true;
-    this.body.velocity.setTo(200, 200);
+    this.body.velocity.setTo(270, 270);
 };
 
 doodleBreakout.Ball.prototype.setPosition = function( x, y ) {
