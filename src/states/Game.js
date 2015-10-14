@@ -27,6 +27,8 @@ doodleBreakout.Game.prototype = {
             }
         }
 
+        this.fallingGimmiks = game.add.group();
+
         this.lives = new doodleBreakout.Lives( game, 10, 10, 3 );
         game.add.existing( this.lives );
 
@@ -93,7 +95,14 @@ doodleBreakout.Game.prototype = {
         }, undefined, this);
 
         this.game.physics.arcade.collide(this.ball, this.bricks, function (ball, brick) {
-            brick.hit();
+            if(brick.hit() && (this.game.rnd.realInRange(0,1) > 0.95) ){
+                var live = new doodleBreakout.Live(this.game, ball.x, ball.y);
+                this.game.physics.enable(live, Phaser.Physics.ARCADE);
+                live.body.velocity.set(0,300);
+                live.checkWorldBounds = true;
+                live.events.onOutOfBounds.add(live.kill, live);
+                this.fallingGimmiks.add(live);
+            }
             doodleBreakout.SoundManager.playSfx('break');
 
             if (this.bricks.total == 0) {
@@ -107,6 +116,18 @@ doodleBreakout.Game.prototype = {
                     this.state.start('Game' );
                 }
             }
+        }, undefined, this);
+
+        this.game.physics.arcade.collide(this.plattform, this.fallingGimmiks, function (plattform, gimmik) {
+
+            gimmik.kill();
+
+            switch (gimmik.key){
+                case "live":
+                    this.lives.addNew();
+                    break;
+            }
+
         }, undefined, this);
     },
 };

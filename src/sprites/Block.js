@@ -24,7 +24,9 @@ doodleBreakout.Block.prototype.hit = function() {
     this.health--;
     if(this.health == 0) {
         this.kill();
+        return true;
     } else {
         this.frame = this.type - this.health;
+        return false;
     }
 };
