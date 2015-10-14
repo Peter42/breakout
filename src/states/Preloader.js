@@ -53,6 +53,7 @@ doodleBreakout.Preloader.prototype = {
 
     create: function(){
         doodleBreakout.SoundManager.init(this.game);
+        doodleBreakout.ScoresManager.init(this.game);
 
         var hintergrund = new Phaser.Image(this.game, 0, 0, 'hintergrund');
         this.stage.addChildAt(hintergrund, 0);
