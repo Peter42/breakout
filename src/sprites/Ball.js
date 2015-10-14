@@ -35,7 +35,7 @@ doodleBreakout.Ball.prototype.update = function() {
 };
 
 doodleBreakout.Ball.prototype.lost = function() {
-    alert("You lost");
+    console.log( "Ball::lost()" );
 };
 
 doodleBreakout.Ball.prototype.start = function() {

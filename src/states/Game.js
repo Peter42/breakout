@@ -26,7 +26,11 @@ doodleBreakout.Game.prototype = {
             }
         }
 
-        this.ball = new doodleBreakout.Ball(game, 300, 300);
+        this.lives = new doodleBreakout.Lives( game, 10, 10, 3 );
+        game.add.existing( this.lives );
+
+        this.ball = new doodleBreakout.Ball( game, 300, 300 );
+        this.ball.events.onOutOfBounds.add( this.lostBall, this );
         game.add.existing(this.ball);
 
         this.plattform = new doodleBreakout.Plattform(game, 550, 550);
@@ -39,6 +43,24 @@ doodleBreakout.Game.prototype = {
         this.countdown.doodleBreakout = { value : 3};
         this.countdown.loop(1000, this.countdownUpdate, this);
         this.countdown.start();
+    },
+
+    lostBall: function(){
+        this.lives.lose();
+
+        if( this.lives.countLiving() <= 0 ){
+            this.lostGame();
+        }
+        else {
+            this.ball.position.x = 300;
+            this.ball.position.y = 300;
+        }
+    },
+
+    lostGame: function(){
+        this.level = 1;
+        this.lives = 3;
+        this.state.start( 'MainMenu' );
     },
 
     countdownUpdate : function() {
