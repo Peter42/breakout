@@ -5,7 +5,9 @@ doodleBreakout.Game = function( game ){
 
 doodleBreakout.Game.prototype = {
     _level: 1,
+    _score: 0,
     _lives: 3,
+    
     create: function(){
 
         var game = this.game;
@@ -43,6 +45,11 @@ doodleBreakout.Game.prototype = {
         this.plattform.holdBall( this.ball );
     },
 
+    earnPoints: function (ammount) {
+        this.score += ammount;
+        this.scoreText.setText(this.score + "");
+    },
+
     lostBall: function(){
         this.lives.lose();
 
@@ -57,6 +64,7 @@ doodleBreakout.Game.prototype = {
     lostGame: function(){
         this._level = 1;
         this._lives = 3;
+        this._score = 0;
         this.state.start( 'MainMenu' );
     },
 
@@ -73,13 +81,16 @@ doodleBreakout.Game.prototype = {
         }, undefined, this);
 
         this.game.physics.arcade.collide(this.ball, this.bricks, function (ball, brick) {
-            if(brick.hit() && (this.game.rnd.realInRange(0,1) > 0.99) ){
-                var live = new doodleBreakout.Live(this.game, ball.x, ball.y);
-                this.game.physics.enable(live, Phaser.Physics.ARCADE);
-                live.body.velocity.set(0,300);
-                live.checkWorldBounds = true;
-                live.events.onOutOfBounds.add(live.kill, live);
-                this.fallingGimmiks.add(live);
+            if(brick.hit()){
+                if(this.game.rnd.realInRange(0,1) > 0.99) {
+                    var live = new doodleBreakout.Live(this.game, ball.x, ball.y);
+                    this.game.physics.enable(live, Phaser.Physics.ARCADE);
+                    live.body.velocity.set(0, 300);
+                    live.checkWorldBounds = true;
+                    live.events.onOutOfBounds.add(live.kill, live);
+                    this.fallingGimmiks.add(live);
+                }
+                this.earnPoints(20);
             }
             doodleBreakout.SoundManager.playSfx('break');
 
