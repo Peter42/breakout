@@ -1,7 +1,6 @@
 var doodleBreakout = doodleBreakout || {};
 
 doodleBreakout.Settings = function( game ){
-    debugger;
 };
 
 doodleBreakout.Settings.prototype = Object.create(doodleBreakout.AbstractMenu.prototype);
