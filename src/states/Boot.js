@@ -28,7 +28,6 @@ doodleBreakout.Boot.prototype = {
     },
 
     create: function () {
-        this.game.stage.backgroundColor = 0xEEEEEE;
         this.state.start('Preloader');
     }
 

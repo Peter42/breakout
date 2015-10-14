@@ -18,6 +18,7 @@ doodleBreakout.Preloader.prototype = {
         this.game.load.spritesheet('block01', 'assets/images/block01.png', 50, 16);
         this.game.load.spritesheet('block02', 'assets/images/block02.png', 50, 16);
         this.game.load.spritesheet('block03', 'assets/images/block03.png', 50, 16);
+        this.game.load.image('hintergrund', 'assets/images/hintergrund.png');
 
         //Load font files
         this.game.load.bitmapFont('larafont', 'assets/fonts/larafont.png', 'assets/fonts/larafont.xml');
@@ -52,6 +53,9 @@ doodleBreakout.Preloader.prototype = {
 
     create: function(){
         doodleBreakout.SoundManager.init(this.game);
+
+        var hintergrund = new Phaser.Image(this.game, 0, 0, 'hintergrund');
+        this.stage.addChildAt(hintergrund, 0);
 
         this.state.start('MainMenu');
     }
