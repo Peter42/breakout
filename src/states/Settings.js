@@ -76,7 +76,8 @@ doodleBreakout.Settings.prototype.toggleSound = function(symbol){
 
 doodleBreakout.Settings.prototype.resetScores = function(text){
         //implement functionality to reset all points and progress
-        var okText = this.game.add.bitmapText(this.game.world.centerX, this.game.world.centerY - 40, 'larafont', 'Your scores have been resetted', 48);
+        doodleBreakout.ScoresManager.reset();
+        var okText = this.game.add.bitmapText(this.game.world.centerX, this.game.world.centerY + 60, 'larafont', 'Your scores have been resetted', 48);
         okText.anchor.setTo(0.5, 0);
         this.game.time.events.add(Phaser.Timer.SECOND, function(){
             okText.kill();
