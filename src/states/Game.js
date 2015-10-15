@@ -80,6 +80,7 @@ doodleBreakout.Game.prototype = {
     },
 
     lostGame: function(){
+        doodleBreakout.ScoresManager.addHighscore(this._score, this.game.rnd.pick(["Hans","Peter","Karl","Franz"]));
         this._level = 1;
         this._lives = 3;
         this._score = 0;
