@@ -28,6 +28,16 @@ doodleBreakout.Game.prototype = {
         this.plattform = new doodleBreakout.Plattform(game, 550, 550 );
         game.add.existing(this.plattform);
 
+        this._scoreText = game.add.bitmapText(this.game.width - 20, 0, 'larafont', this._score + "", 48);
+        this._scoreText.anchor.setTo(1,0);
+
+        this.ball = this.game.add.group();
+        this.plattform.holdBall( this.addBall(300, 300) );
+
+        this.easteregg = game.input.keyboard.addKey(Phaser.Keyboard.E);
+
+        this.easteregg.onDown.add( this.toggleEasteregg, this);
+
         this.fallingGimmiks = new doodleBreakout.Gimmicks( game, null, this.lives, this.ball, this.plattform );
         game.add.existing(this.fallingGimmiks);
 
@@ -41,20 +51,7 @@ doodleBreakout.Game.prototype = {
                 }
             }
         }
-
-
-        this._scoreText = game.add.bitmapText(this.game.width - 20, 0, 'larafont', this._score + "", 48);
-        this._scoreText.anchor.setTo(1,0);
-
-        this.ball = this.game.add.group();
-        this.plattform.holdBall( this.addBall(300, 300) );
-
         game.world.bringToTop(this.fallingGimmiks);
-
-
-        this.easteregg = game.input.keyboard.addKey(Phaser.Keyboard.E);
-
-        this.easteregg.onDown.add( this.toggleEasteregg, this);
     },
 
     earnPoints: function (ammount) {
