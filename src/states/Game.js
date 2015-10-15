@@ -7,7 +7,7 @@ doodleBreakout.Game.prototype = {
     _level: 1,
     _score: 0,
     _lives: 3,
-    
+
     create: function(){
 
         var game = this.game;
@@ -20,17 +20,7 @@ doodleBreakout.Game.prototype = {
         var Level = new doodleBreakout.Level( game, this._level );
         var levelStructure = Level.getStructure();
 
-        this.bricks = game.add.group();
 
-        for ( var y = 100, i= 0; (i < levelStructure.length) && (y<400); y += 17, i++ ) {
-            for (var x = 0, j = 0; (j < levelStructure[ i].length) && (x <= game.width - 50); x += 50, j++ ) {
-                if( levelStructure[i][j] ) {
-                    this.bricks.add( new doodleBreakout.Block( game, x, y, levelStructure[i][j] ) );
-                }
-            }
-        }
-
-        this.fallingGimmiks = game.add.group();
 
         this.lives = new doodleBreakout.Lives( game, 10, 10, this._lives );
         game.add.existing( this.lives );
@@ -42,10 +32,32 @@ doodleBreakout.Game.prototype = {
         this.plattform = new doodleBreakout.Plattform(game, 550, 550 );
         game.add.existing(this.plattform);
 
+        this.fallingGimmiks = new doodleBreakout.Gimmicks( game, null, this.lives, this.ball, this.plattform );
+        game.add.existing(this.fallingGimmiks);
+
+        this.bricks = game.add.group();
+
+        for ( var y = 100, i= 0; (i < levelStructure.length) && (y<400); y += 17, i++ ) {
+            for (var x = 0, j = 0; (j < levelStructure[ i].length) && (x <= game.width - 50); x += 50, j++ ) {
+                if( levelStructure[i][j] ) {
+                    var gimmick = this.fallingGimmiks.randomGimmick( x, y );
+                    this.bricks.add( new doodleBreakout.Block( game, x, y, levelStructure[i][j], gimmick ) );
+                }
+            }
+        }
+
+
         this._scoreText = game.add.bitmapText(this.game.width - 20, 0, 'larafont', this._score + "", 48);
         this._scoreText.anchor.setTo(1,0);
 
         this.plattform.holdBall( this.ball );
+
+        game.world.bringToTop(this.fallingGimmiks);
+
+
+        this.easteregg = game.input.keyboard.addKey(Phaser.Keyboard.E);
+
+        this.easteregg.onDown.add( this.toggleEasteregg, this);
     },
 
     earnPoints: function (ammount) {
@@ -71,6 +83,14 @@ doodleBreakout.Game.prototype = {
         this.state.start( 'MainMenu' );
     },
 
+    eastereggon: false,
+    toggleEasteregg: function(){
+        this.eastereggon = !this.eastereggon;
+        this.fallingGimmiks.forEachAlive( function(gimmick){
+            gimmick.visible = this.eastereggon;
+        }, this );
+    },
+
     update: function() {
         this.game.physics.arcade.collide(this.plattform, this.ball, function (plattform, ball) {
             var angle = this.game.physics.arcade.angleBetween(plattform, ball) + Math.PI / 2;
@@ -84,15 +104,7 @@ doodleBreakout.Game.prototype = {
         }, undefined, this);
 
         this.game.physics.arcade.collide(this.ball, this.bricks, function (ball, brick) {
-            if(brick.hit()){
-                if(this.game.rnd.realInRange(0,1) > 0.99) {
-                    var live = new doodleBreakout.Live(this.game, ball.x, ball.y);
-                    this.game.physics.enable(live, Phaser.Physics.ARCADE);
-                    live.body.velocity.set(0, 300);
-                    live.checkWorldBounds = true;
-                    live.events.onOutOfBounds.add(live.kill, live);
-                    this.fallingGimmiks.add(live);
-                }
+            if( brick.hit() ){
                 this.earnPoints(20);
             }
             doodleBreakout.SoundManager.playSfx('break');
@@ -109,16 +121,8 @@ doodleBreakout.Game.prototype = {
             }
         }, undefined, this);
 
-        this.game.physics.arcade.collide(this.plattform, this.fallingGimmiks, function (plattform, gimmik) {
-
-            gimmik.kill();
-
-            switch (gimmik.key){
-                case "live":
-                    this.lives.addNew();
-                    break;
-            }
-
+        this.game.physics.arcade.collide(this.plattform, this.fallingGimmiks, function (plattform, gimmick) {
+            gimmick.collected();
         }, undefined, this);
     },
 };
