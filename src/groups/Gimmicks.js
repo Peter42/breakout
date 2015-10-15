@@ -28,7 +28,7 @@ doodleBreakout.Gimmicks.prototype.randomGimmick = function( x, y ){
     if( this.game.rnd.realInRange(0,1) >= (100 - this._defaultConfig.dropProbability)/100 ) {
         var sum = 0;
         for( var iIndex in this._defaultConfig.gimmicks ){
-            sum += this._defaultConfig.gimmicks[ iIndex ].defaultProbability;
+            sum += this._defaultConfig.gimmicks[ iIndex ].probability;
         }
 
         var random = this.game.rnd.realInRange(0,sum);
@@ -59,19 +59,29 @@ doodleBreakout.Gimmicks.prototype.randomGimmick = function( x, y ){
 };
 
 doodleBreakout.Gimmicks.prototype._defaultConfig = {
-    "dropProbability": 2,
+    "dropProbability": 4,
     "positiveProbability": 50,
     "negativeProbability": 50,
     "gimmicks": [
         {
             "name": "LiveBonus",
             "probability": 1,
-            "type": "+",
+            "positive": true,
             "create": "createLive"
+        },
+        {
+            "name": "DuplicateBonus",
+            "probability": 2,
+            "positive": true,
+            "create": "createDuplicate"
         }
     ]
 };
 
 doodleBreakout.Gimmicks.prototype.createLive = function( x, y ){
     return new doodleBreakout.Live( this.game, x, y, this._lives );
+};
+
+doodleBreakout.Gimmicks.prototype.createDuplicate = function( x, y ){
+    return new doodleBreakout.Duplicate( this.game, x, y, this._ball );
 };

@@ -25,10 +25,6 @@ doodleBreakout.Game.prototype = {
         this.lives = new doodleBreakout.Lives( game, 10, 10, this._lives );
         game.add.existing( this.lives );
 
-        this.ball = new doodleBreakout.Ball( game, 300, 300 );
-        this.ball.events.onOutOfBounds.add( this.lostBall, this );
-        game.add.existing(this.ball);
-
         this.plattform = new doodleBreakout.Plattform(game, 550, 550 );
         game.add.existing(this.plattform);
 
@@ -50,7 +46,8 @@ doodleBreakout.Game.prototype = {
         this._scoreText = game.add.bitmapText(this.game.width - 20, 0, 'larafont', this._score + "", 48);
         this._scoreText.anchor.setTo(1,0);
 
-        this.plattform.holdBall( this.ball );
+        this.ball = this.game.add.group();
+        this.plattform.holdBall( this.addBall(300, 300) );
 
         game.world.bringToTop(this.fallingGimmiks);
 
@@ -65,14 +62,19 @@ doodleBreakout.Game.prototype = {
         this._scoreText.setText(this._score + "");
     },
 
-    lostBall: function(){
-        this.lives.lose();
+    lostBall: function(ball){
+        if(this.ball.total <= 1) {
+            this.lives.lose();
 
-        if( this.lives.countLiving() <= 0 ){
-            this.lostGame();
-        }
-        else {
-            this.plattform.holdBall( this.ball );
+            if (this.lives.countLiving() <= 0) {
+                this.lostGame();
+            }
+            else {
+                this.plattform.holdBall(this.ball.getFirstAlive());
+            }
+        } else {
+            ball.kill();
+            this.ball.remove(ball);
         }
     },
 
@@ -125,4 +127,11 @@ doodleBreakout.Game.prototype = {
             gimmick.collected();
         }, undefined, this);
     },
+
+    addBall: function(x, y) {
+        var ball = new doodleBreakout.Ball( this.game, x, y );
+        this.ball.add(ball);
+        ball.events.onOutOfBounds.add( this.lostBall, this );
+        return ball;
+    }
 };

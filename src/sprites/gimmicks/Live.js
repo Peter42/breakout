@@ -11,4 +11,4 @@ doodleBreakout.Live.prototype.constructor = doodleBreakout.Live;
 doodleBreakout.Live.prototype.collected = function(){
     this.kill();
     this._lives.addNew();
-}
+};
