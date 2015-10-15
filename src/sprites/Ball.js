@@ -17,6 +17,7 @@ doodleBreakout.Ball = function (game, x, y) {
 
     // speed up the ball a little bit
     this.body.bounce.set(1.005);
+    this.body.immovable = false;
 
     this.events.onOutOfBounds.add(this.lost, this);
 

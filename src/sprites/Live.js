@@ -2,7 +2,7 @@ var doodleBreakout = doodleBreakout || {};
 
 doodleBreakout.Live = function (game, x, y) {
 
-    //  We call the Phaser.Sprite passing in the game reference
+    // We call the Phaser.Sprite passing in the game reference
     Phaser.Sprite.call(this, game, x, y, 'live');
 };
 
