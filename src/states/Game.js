@@ -35,8 +35,12 @@ doodleBreakout.Game.prototype = {
         this.plattform.holdBall( this.addBall(300, 300) );
 
         this.easteregg = game.input.keyboard.addKey(Phaser.Keyboard.E);
-
         this.easteregg.onDown.add( this.toggleEasteregg, this);
+
+        this.pause = game.input.keyboard.addKey(Phaser.Keyboard.P);
+        this.pause.onDown.add( function(){
+            game.paused = !game.paused;
+        }, this);
 
         this.fallingGimmiks = new doodleBreakout.Gimmicks( game, null, this.lives, this.ball, this.plattform );
         game.add.existing(this.fallingGimmiks);
