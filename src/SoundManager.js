@@ -73,7 +73,7 @@ doodleBreakout.SoundManager = {
     init: function (game) {
         this._game = game;
 
-        this._music = game.add.audio('music', 0.3, true);
+        this._music = game.add.audio('music', 0.7, true);
         this._music.play();
 
         this._sfx = game.add.audio('sfx');
