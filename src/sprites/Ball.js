@@ -1,5 +1,9 @@
 var doodleBreakout = doodleBreakout || {};
 
+/**
+ * @constructor
+ * @classdec Represents the Ball
+ */
 doodleBreakout.Ball = function (game, x, y) {
 
     //  We call the Phaser.Sprite passing in the game reference
@@ -37,18 +41,29 @@ doodleBreakout.Ball.prototype.lost = function() {
     console.log( "Ball::lost()" );
 };
 
+/**
+ * Gives the ball an initial velocity
+ */
 doodleBreakout.Ball.prototype.start = function() {
     //  This gets it moving
     this.body.moves = true;
     this.body.velocity.setTo(270, 270);
 };
 
+/**
+ * Sets the postition of the ball
+ * @param {number} x - The x coordinate.
+ * @param {number} y - The y coordinate.
+ */
 doodleBreakout.Ball.prototype.setPosition = function( x, y ) {
     //  This gets it moving
     this.x = x;
     this.y = y;
 };
 
+/**
+ * Stops the movement of the ball
+ */
 doodleBreakout.Ball.prototype.stop = function() {
     this.body.moves = false;
 };

@@ -1,5 +1,9 @@
 var doodleBreakout = doodleBreakout || {};
 
+/**
+ * @class
+ * @classdesc Persists scores
+ */
 doodleBreakout.ScoresManager = {
 
     _scores : [],

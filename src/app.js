@@ -1,3 +1,6 @@
+/**
+ * @namespace
+ */
 window.doodleBreakout = {};
 
 window.onload = function(){
