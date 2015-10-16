@@ -21,6 +21,7 @@ doodleBreakout.Preloader.prototype = {
         this.game.load.spritesheet('block02', 'assets/images/block02.png', 50, 16);
         this.game.load.spritesheet('block03', 'assets/images/block03.png', 50, 16);
         this.game.load.image('hintergrund', 'assets/images/hintergrund.png');
+        this.game.load.image('easteregg', 'assets/images/easteregg.png');
 
         //Load font files
         this.game.load.bitmapFont('larafont', 'assets/fonts/larafont.png', 'assets/fonts/larafont.xml');
