@@ -59,7 +59,7 @@ doodleBreakout.Gimmicks.prototype.randomGimmick = function( x, y ){
 };
 
 doodleBreakout.Gimmicks.prototype._defaultConfig = {
-    "dropProbability": 4,
+    "dropProbability": 20,
     "positiveProbability": 50,
     "negativeProbability": 50,
     "gimmicks": [
@@ -71,9 +71,15 @@ doodleBreakout.Gimmicks.prototype._defaultConfig = {
         },
         {
             "name": "DuplicateBonus",
-            "probability": 2,
+            "probability": 4,
             "positive": true,
             "create": "createDuplicate"
+        },
+        {
+            "name": "Thunderball",
+            "probability": 4,
+            "positive": true,
+            "create": "createThunderball"
         }
     ]
 };
@@ -84,4 +90,8 @@ doodleBreakout.Gimmicks.prototype.createLive = function( x, y ){
 
 doodleBreakout.Gimmicks.prototype.createDuplicate = function( x, y ){
     return new doodleBreakout.Duplicate( this.game, x, y, this._ball );
+};
+
+doodleBreakout.Gimmicks.prototype.createThunderball= function( x, y ){
+    return new doodleBreakout.Thunderball( this.game, x, y, this._ball );
 };

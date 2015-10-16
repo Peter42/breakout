@@ -20,9 +20,11 @@ doodleBreakout.Duplicate.prototype.collected = function(){
     currentBall.body.velocity.y = Math.sin(angle + Math.PI / 4) * velocity;
     currentBall.body.velocity.x = Math.cos(angle + Math.PI / 4) * velocity;
 
-    console.log(velocity, angle);
-
     var ball = this.game.state.states.Game.addBall(currentBall.x,currentBall.y);
+    ball.isThunderball = currentBall.isThunderball;
+    if( currentBall.isThunderball ){
+        ball.activateThunderpower( currentBall.powerTimer.duration );
+    }
 
     ball.body.velocity.y = Math.sin(angle - Math.PI / 4) * velocity;
     ball.body.velocity.x = Math.cos(angle - Math.PI / 4) * velocity;

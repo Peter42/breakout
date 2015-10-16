@@ -13,7 +13,8 @@ doodleBreakout.Preloader.prototype = {
         this.preloadBar.anchor.setTo(0.5,1);
 
         //Load sprite images
-        this.game.load.image('ball01', 'assets/images/ball01.png');
+        this.game.load.spritesheet('ball', 'assets/images/ball.png', 16, 16);
+        this.game.load.image('thunder', 'assets/images/feature01.png');
         this.game.load.image('live', 'assets/images/feature02.png');
         this.game.load.image('duplicate', 'assets/images/feature03.png');
         this.game.load.image('plattform01', 'assets/images/plattform01.png');

@@ -7,7 +7,7 @@ var doodleBreakout = doodleBreakout || {};
 doodleBreakout.Ball = function (game, x, y) {
 
     //  We call the Phaser.Sprite passing in the game reference
-    Phaser.Sprite.call(this, game, x, y, 'ball01');
+    Phaser.Sprite.call(this, game, x, y, 'ball');
 
 
     this.anchor.setTo(0.5, 1);
@@ -25,6 +25,8 @@ doodleBreakout.Ball = function (game, x, y) {
 
     this.events.onOutOfBounds.add(this.lost, this);
 
+    this.powerTimer = game.time.create(false);
+    this.isThunderball = false;
 };
 
 doodleBreakout.Ball.prototype = Object.create(Phaser.Sprite.prototype);
@@ -38,7 +40,7 @@ doodleBreakout.Ball.prototype.update = function() {
 };
 
 doodleBreakout.Ball.prototype.lost = function() {
-    console.log( "Ball::lost()" );
+    this.removeThunderpower();
 };
 
 /**
@@ -66,4 +68,30 @@ doodleBreakout.Ball.prototype.setPosition = function( x, y ) {
  */
 doodleBreakout.Ball.prototype.stop = function() {
     this.body.moves = false;
+};
+
+/**
+ * Sets the ball to a Thunderball
+ * @param {number} duration - The duration of the activity.
+ */
+doodleBreakout.Ball.prototype.activateThunderpower = function( duration ){
+    this.frame = 1;
+    this.isThunderball = true;
+
+    this.powerTimer.destroy();
+    this.powerTimer.stop();
+    this.powerTimer.add( duration, this.removeThunderpower, this);
+    this.powerTimer.start();
+};
+
+/**
+ * Removes Thunderballpower
+ */
+doodleBreakout.Ball.prototype.removeThunderpower = function(){
+    if( this.isThunderball ){
+        this.powerTimer.destroy();
+        this.powerTimer.stop();
+        this.frame = 0;
+        this.isThunderball = false;
+    }
 };

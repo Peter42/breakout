@@ -71,12 +71,12 @@ doodleBreakout.Game.prototype = {
                 this.lostGame();
             }
             else {
-                this.plattform.holdBall(this.ball.getFirstAlive());
+                this.plattform.holdBall( this.addBall(300, 300) );
             }
-        } else {
-            ball.kill();
-            this.ball.remove(ball);
         }
+
+        ball.kill();
+        this.ball.remove(ball);
     },
 
     lostGame: function(){
@@ -107,27 +107,39 @@ doodleBreakout.Game.prototype = {
             ball.body.velocity.set(velocity * Math.sin(angle), -velocity * Math.cos(angle));
         }, undefined, this);
 
-        this.game.physics.arcade.collide(this.ball, this.bricks, function (ball, brick) {
-            if( brick.hit() ){
-                this.earnPoints(20);
-            }
-            doodleBreakout.SoundManager.playSfx('break');
-
-            if (this.bricks.total == 0) {
-                if( this.game.levels < ( this._level + 1 ) ){
-                    this.lostGame();
-                }
-                else {
-                    this._level++;
-                    this._lives = this.lives.countLiving();
-                    this.state.start('Game' );
-                }
-            }
-        }, undefined, this);
+        this.game.physics.arcade.collide(this.ball, this.bricks, this.collideBallBrick, this.overlapBallBrick, this);
 
         this.game.physics.arcade.collide(this.plattform, this.fallingGimmiks, function (plattform, gimmick) {
             gimmick.collected();
         }, undefined, this);
+    },
+
+    overlapBallBrick: function (ball, brick) {
+        if( ball.isThunderball ){
+            brick.health = 1;
+            this.collideBallBrick( ball, brick );
+            return false;
+        }
+        // collision happens
+        return true;
+    },
+
+    collideBallBrick: function (ball, brick) {
+        if( brick.hit() ){
+            this.earnPoints(20);
+        }
+        doodleBreakout.SoundManager.playSfx('break');
+
+        if (this.bricks.total == 0) {
+            if( this.game.levels < ( this._level + 1 ) ){
+                this.lostGame();
+            }
+            else {
+                this._level++;
+                this._lives = this.lives.countLiving();
+                this.state.start('Game' );
+            }
+        }
     },
 
     addBall: function(x, y) {
