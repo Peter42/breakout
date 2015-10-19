@@ -1,1 +1,1 @@
-QUnit.module( "Ball" );
+QUnit.module( "Sprite::Ball" );
