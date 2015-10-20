@@ -13,5 +13,6 @@ window.onload = function(){
     game.state.add( 'LevelSelection', doodleBreakout.LevelSelection );
     game.state.add( 'Game'          , doodleBreakout.Game );
     game.state.add( 'Highscores'    , doodleBreakout.Highscores );
+    game.state.add( 'GameOver'    , doodleBreakout.GameOver );
     game.state.add( 'Boot'          , doodleBreakout.Boot, true );
 };

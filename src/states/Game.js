@@ -104,10 +104,16 @@ doodleBreakout.Game.prototype = {
 
     lostGame: function(){
         doodleBreakout.ScoresManager.addHighscore(this._score, this.game.rnd.pick(["Hans","Peter","Karl","Franz"]));
+
+        var oParameters = {
+            level: this._level,
+            score: this._score
+        };
+
         this._level = 1;
         this._lives = 3;
         this._score = 0;
-        this.state.start( 'MainMenu' );
+        this.state.start( 'GameOver', true, false, oParameters);
     },
 
     eastereggon: false,
