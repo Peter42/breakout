@@ -59,7 +59,7 @@ doodleBreakout.Gimmicks.prototype.randomGimmick = function( x, y ){
 };
 
 doodleBreakout.Gimmicks.prototype._defaultConfig = {
-    "dropProbability": 20,
+    "dropProbability": 5,
     "positiveProbability": 50,
     "negativeProbability": 50,
     "gimmicks": [
@@ -71,13 +71,13 @@ doodleBreakout.Gimmicks.prototype._defaultConfig = {
         },
         {
             "name": "DuplicateBonus",
-            "probability": 4,
+            "probability": 3,
             "positive": true,
             "create": "createDuplicate"
         },
         {
             "name": "Thunderball",
-            "probability": 4,
+            "probability": 1,
             "positive": true,
             "create": "createThunderball"
         }
