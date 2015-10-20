@@ -1,6 +1,6 @@
 var doodleBreakout = doodleBreakout || {};
 
-doodleBreakout.Credits = function( game ){
+doodleBreakout.Credits = function (game) {
 
 };
 
@@ -8,99 +8,108 @@ doodleBreakout.Credits.prototype = Object.create(doodleBreakout.AbstractMenu.pro
 doodleBreakout.Credits.prototype.constructor = doodleBreakout.Credits;
 
 
+doodleBreakout.Credits.prototype.create = function () {
 
-doodleBreakout.Credits.prototype.create = function(){
+    this.creditStrings = [
+        "Developed by Magic WG and Lara",
+        "Graphics by Lara",
+        "Sounds by Marcel and Lina",
+        "Infrastructure by Philipp",
+        "-",
+        "Libraries:",
+        "Phaser.js",
+        "-",
+        "Tools:",
+        "WebStorm",
+        "Linux MultiMedia Studio",
+        "Krita",
+        "-",
+        "Stats:",
+        "The development of this game",
+        "cost our team:",
+        "4 Cups of Coffee",
+        "6 Cups of Tea",
+        "12 Bread Rolls",
+        "2 Bottles of Beer",
+        "4 Glasses of Wine",
+        "5 Bottles of Coke",
+        "",
+        "",
+        ""
 
-        this.creditStrings = [
-                "Developed by Magic WG and Lara",
-                "Graphics by Lara",
-                "Sounds by Marcel and Lina",
-                 "Infrastructure by Philipp",
-                 "-",
-                 "Libraries:",
-                 "Phaser.js",
-                 "-",
-                 "Tools:",
-                 "WebStorm",
-                 "Linux MultiMedia Studio",
-                 //TODO: Laras Zeichenprogramm
-                 "-",
-                 "Stats:",
-                 "The development of this game",
-                 "cost our team:",
-                 "4 Cups of Coffee",
-                 "6 Cups of Tea",
-                 "12 Bread Rolls",
-                 "2 Bottles of Beer",
-                 "4 Glasses of Wine",
-                 "5 Bottles of Coke",
-                "",
-                "",
-                ""
+    ].reverse();
 
-        ].reverse();
+    this.createBackHome();
 
-        this.createBackHome();
+    this.elements = this.game.add.group();
 
-        this.elements = this.game.add.group();
+    this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
-        this.game.physics.startSystem(Phaser.Physics.ARCADE);
+    var title = this.game.add.bitmapText(this.game.width / 2, this.game.world.centerY, 'larafont', 'Credits', 64);
+    title.anchor.setTo(0.5, 0);
+    this.game.physics.enable(title, Phaser.Physics.ARCADE);
+    title.doodleBreakout = {velocity: 0};
+    title.body.maxVelocity.setTo(0);
 
-        var title = this.game.add.bitmapText(this.game.width / 2, this.game.world.centerY, 'larafont', 'Credits',64);
-        title.anchor.setTo(0.5, 0);
-        this.game.physics.enable(title, Phaser.Physics.ARCADE);
-      //  title.body.immovable = true;
+    this.elements.add(title);
 
-        this.elements.add(title);
+    this.game.world.bounds.setTo(0, 0, this.game.width, this.game.height + 50);
 
-        this.timer = this.game.time.create(false);
-        this.timer.loop(1500, this.next, this);
-        this.timer.start();
+    this.next();
+};
 
-        this.game.world.bounds.setTo(0,0,this.game.width, this.game.height + 50);
+doodleBreakout.Credits.prototype.next = function () {
+
+    if (this.creditStrings.length > 0) {
+        this.slideText(this.creditStrings.pop())
+        this.updateTillNext = 125;
+    } else {
+        var easteregg = this.game.add.sprite(this.game.width / 2, this.game.height, 'easteregg');
+        easteregg.anchor.setTo(0.5, 0);
+        this.game.physics.enable(easteregg, Phaser.Physics.ARCADE);
+        easteregg.body.maxVelocity.setTo(0);
+        easteregg.doodleBreakout = {velocity: 1};
+        this.elements.add(easteregg);
+
+        easteregg.inputEnabled = true;
+        easteregg.events.onInputOver.add(this.over, this);
+        easteregg.events.onInputOut.add(this.out, this);
+        easteregg.events.onInputDown.add(function () {
+            this.slideText("Try pressing 'E' in-game.");
+        }, this);
+    }
 
 
+};
+
+
+doodleBreakout.Credits.prototype.update = function () {
+    this.game.physics.arcade.overlap(this.elements, this.elements, function (a, b) {
+        a.doodleBreakout.velocity = 0.5;
+        b.doodleBreakout.velocity = 0.5;
+    }, function (a, b) {
+        return a != b;
+    });
+
+    this.elements.forEach(function (element) {
+        element.y -= element.doodleBreakout.velocity;
+    });
+
+    this.updateTillNext--;
+    if (this.updateTillNext == 0) {
         this.next();
-    };
+    }
+};
 
-doodleBreakout.Credits.prototype.next = function() {
+doodleBreakout.Credits.prototype.slideText = function (text) {
+    var credit = this.game.add.bitmapText(this.game.width / 2, this.game.height, 'larafont', text, 50);
+    credit.anchor.setTo(0.5, 0);
+    this.game.physics.enable(credit, Phaser.Physics.ARCADE);
+    credit.body.maxVelocity.setTo(0);
+    credit.doodleBreakout = {velocity: 1};
 
-        if (this.creditStrings.length > 0) {
-                this.slideText( this.creditStrings.pop());
-        } else {
-                var easteregg = this.game.add.sprite(this.game.width / 2, this.game.height, 'easteregg');
-                easteregg.anchor.setTo(0.5, 0);
-                this.game.physics.enable(easteregg, Phaser.Physics.ARCADE);
-                easteregg.body.velocity.setTo(0, -90);
-                this.elements.add(easteregg);
-                this.timer.stop();
-
-                easteregg.inputEnabled = true;
-                easteregg.events.onInputOver.add(this.over, this);
-                easteregg.events.onInputOut.add(this.out, this);
-                easteregg.events.onInputDown.add(function(){
-                        this.slideText("Try pressing 'E' in-game.");
-                }, this);
-        }
-
-
-    };
-
-
-doodleBreakout.Credits.prototype.update = function(){
-        this.game.physics.arcade.collide(this.elements, this.elements, function(a,b) {
-                a.body.maxVelocity.setTo(40);
-                b.body.maxVelocity.setTo(40);
-        });
-    };
-
-doodleBreakout.Credits.prototype.slideText = function(text){
-        var credit = this.game.add.bitmapText(this.game.width / 2, this.game.height, 'larafont', text, 50);
-        credit.anchor.setTo(0.5, 0);
-        this.game.physics.enable(credit, Phaser.Physics.ARCADE);
-        credit.body.velocity.setTo(0, -90);
-
-        this.elements.add(credit);
-        credit.checkWorldBounds = true;
-        credit.events.onOutOfBounds.add(credit.kill, credit);
-}
+    this.elements.add(credit);
+    credit.checkWorldBounds = true;
+    credit.events.onOutOfBounds.add(credit.kill, credit);
+    return credit;
+};
