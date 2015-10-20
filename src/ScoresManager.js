@@ -96,6 +96,7 @@ doodleBreakout.ScoresManager = {
         }
 
         this._scores = [];
+        this._times = {};
 
         if(window.localStorage){
             window.localStorage.removeItem(this.LOCAL_STORAGE_KEYS.HIGHSCORES);
