@@ -11,7 +11,7 @@ doodleBreakout.MainMenu.prototype.create = function(){
     var title = this.game.add.bitmapText(this.game.width / 2, 10, 'larafont', 'Main Menu', 64);
     title.anchor.setTo(0.5, 0);
 
-    this._generateMenuItem('Start Game', 'Game', 150);
+    this._generateMenuItem('Start Game', 'LevelSelection', 150);
     this._generateMenuItem('Highscores', 'Highscores', 250);
     this._generateMenuItem('Settings', 'Settings', 350);
     this._generateMenuItem('Credits', 'Credits', 450);

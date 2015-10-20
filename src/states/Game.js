@@ -147,5 +147,9 @@ doodleBreakout.Game.prototype = {
         this.ball.add(ball);
         ball.events.onOutOfBounds.add( this.lostBall, this );
         return ball;
+    },
+
+    setLevel: function(level) {
+        this._level = level;
     }
 };
