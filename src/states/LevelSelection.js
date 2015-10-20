@@ -15,7 +15,20 @@ doodleBreakout.LevelSelection.prototype.create = function(){
     title.anchor.setTo(0.5, 0);
 
     for(var i = 1; i <= this.game.levels; ++i) {
-        var item = this.game.add.bitmapText(200 * ( (i - 1) % 3) + 200 , 150 * Math.ceil(i / 3), 'larafont', "Level " + i, 48);
+        var x = 250 * ( (i - 1) % 3) + 130;
+        var y = 150 * Math.ceil(i / 3);
+
+        var text = "Level " + i;
+        var besttime = doodleBreakout.ScoresManager.getBesttimes()['level_' + i];
+        if(besttime){
+            if(besttime % 60 < 10) {
+                besttime = Math.floor(besttime / 60) + ":0" + (besttime % 60);
+            } else {
+                besttime = Math.floor(besttime / 60) + ":" + (besttime % 60);
+            }
+        }
+
+        var item = this.game.add.bitmapText(x, y, 'larafont', text, 48);
         item.anchor.setTo(0.5, 0);
         item.inputEnabled = true;
 
@@ -24,6 +37,9 @@ doodleBreakout.LevelSelection.prototype.create = function(){
         item.events.onInputDown.add(this.startLevel, this);
         item.events.onInputOver.add(this.over, this);
         item.events.onInputOut.add(this.out, this);
+
+        var besttimeitem = this.game.add.bitmapText(x, y + 50, 'larafont', besttime, 36);
+        besttimeitem.anchor.setTo(0.5, 0);
     }
 };
 

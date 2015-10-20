@@ -56,6 +56,23 @@ doodleBreakout.Game.prototype = {
             }
         }
         game.world.bringToTop(this.fallingGimmiks);
+
+        this.timer = game.time.create(false);
+        this.timer.loop(1000, function () {
+            this.updateTimerText(Math.floor(this.timer.seconds));
+        }, this);
+        this.timer.start();
+        this.timertext = game.add.bitmapText(this.world.centerX, 0, 'larafont', "0:00", 48);
+        this.timertext.anchor.setTo(0.5,0);
+    },
+
+    updateTimerText: function (time) {
+        if(time % 60 < 10) {
+            time = Math.floor(time / 60) + ":0" + (time % 60);
+        } else {
+            time = Math.floor(time / 60) + ":" + (time % 60);
+        }
+        this.timertext.setText(time);
     },
 
     earnPoints: function (ammount) {
@@ -131,6 +148,10 @@ doodleBreakout.Game.prototype = {
         doodleBreakout.SoundManager.playSfx('break');
 
         if (this.bricks.total == 0) {
+
+            doodleBreakout.ScoresManager.addBesttime("level_" + this._level, Math.floor(this.timer.seconds));
+            this.timer.stop();
+
             if( this.game.levels < ( this._level + 1 ) ){
                 this.lostGame();
             }
