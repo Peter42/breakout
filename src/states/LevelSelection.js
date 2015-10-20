@@ -44,6 +44,5 @@ doodleBreakout.LevelSelection.prototype.create = function(){
 };
 
 doodleBreakout.LevelSelection.prototype.startLevel = function(target){
-    this.state.states.Game.setLevel(target.doodleBreakout.targetLevel);
-    this.state.start('Game' );
+    this.state.start( 'Game', true, false, {level: target.doodleBreakout.targetLevel} );
 };

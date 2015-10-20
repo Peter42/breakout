@@ -8,6 +8,12 @@ doodleBreakout.Game.prototype = {
     _score: 0,
     _lives: 3,
 
+    init: function(args) {
+        if(args.level) {
+            this._level = args.level;
+        }
+    },
+
     create: function(){
 
         var game = this.game;
@@ -168,9 +174,5 @@ doodleBreakout.Game.prototype = {
         this.ball.add(ball);
         ball.events.onOutOfBounds.add( this.lostBall, this );
         return ball;
-    },
-
-    setLevel: function(level) {
-        this._level = level;
     }
 };
