@@ -9,7 +9,7 @@ doodleBreakout.Game.prototype = {
     _lives: 3,
 
     init: function(args) {
-        if(args.level) {
+        if(args && args.level) {
             this._level = args.level;
         }
     },
