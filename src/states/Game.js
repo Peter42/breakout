@@ -94,6 +94,7 @@ doodleBreakout.Game.prototype = {
                 this.lostGame();
             }
             else {
+                this.plattform.resetPlattform();
                 this.plattform.holdBall( this.addBall(300, 300) );
             }
         }

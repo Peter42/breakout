@@ -64,8 +64,8 @@ doodleBreakout.Gimmicks.prototype.randomGimmick = function( x, y ){
 
 doodleBreakout.Gimmicks.prototype._defaultConfig = {
     "dropProbability": 10,
-    "positiveProbability": 50,
-    "negativeProbability": 50,
+    "positiveProbability": 1,
+    "negativeProbability": 1,
     "gimmicks": {
         "positive": [
             {
@@ -82,10 +82,19 @@ doodleBreakout.Gimmicks.prototype._defaultConfig = {
                 "name": "Thunderball",
                 "probability": 1,
                 "create": "createThunderball"
+            },
+            {
+                "name": "Plus",
+                "probability": 3,
+                "create": "createPlus"
             }
         ],
         "negative": [
-
+            {
+                "name": "Minus",
+                "probability": 5,
+                "create": "createMinus"
+            }
         ]
     }
 };
@@ -100,6 +109,14 @@ doodleBreakout.Gimmicks.prototype.createDuplicate = function( x, y ){
 
 doodleBreakout.Gimmicks.prototype.createThunderball= function( x, y ){
     return new doodleBreakout.Thunderball( this.game, x, y, this._ball );
+};
+
+doodleBreakout.Gimmicks.prototype.createMinus= function( x, y ){
+    return new doodleBreakout.Minus( this.game, x, y, this._plattform );
+};
+
+doodleBreakout.Gimmicks.prototype.createPlus= function( x, y ){
+    return new doodleBreakout.Plus( this.game, x, y, this._plattform );
 };
 
 doodleBreakout.Gimmicks.prototype.probabilityCalculation = function( aArray, sKey ){

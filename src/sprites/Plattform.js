@@ -17,6 +17,8 @@ doodleBreakout.Plattform = function (game, x, y) {
     this.body.immovable = true;
     this.body.collideWorldBounds = true;
 
+    this.startWidth = this.width;
+
 };
 
 doodleBreakout.Plattform.prototype = Object.create(Phaser.Sprite.prototype);
@@ -49,5 +51,9 @@ doodleBreakout.Plattform.prototype.holdBall = function( ball ){
 doodleBreakout.Plattform.prototype.releaseBall = function(){
     this._ball.start();
     this._ball = null;
+};
+
+doodleBreakout.Plattform.prototype.resetPlattform = function(){
+    this.width = this.startWidth;
 };
 
