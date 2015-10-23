@@ -63,7 +63,7 @@ doodleBreakout.Gimmicks.prototype.randomGimmick = function( x, y ){
 };
 
 doodleBreakout.Gimmicks.prototype._defaultConfig = {
-    "dropProbability": 10,
+    "dropProbability": 8,
     "positiveProbability": 1,
     "negativeProbability": 1,
     "gimmicks": {
@@ -87,6 +87,11 @@ doodleBreakout.Gimmicks.prototype._defaultConfig = {
                 "name": "Plus",
                 "probability": 3,
                 "create": "createPlus"
+            },
+            {
+                "name": "Coin",
+                "probability": 3,
+                "create": "createCoin"
             }
         ],
         "negative": [
@@ -117,6 +122,10 @@ doodleBreakout.Gimmicks.prototype.createMinus= function( x, y ){
 
 doodleBreakout.Gimmicks.prototype.createPlus= function( x, y ){
     return new doodleBreakout.Plus( this.game, x, y, this._plattform );
+};
+
+doodleBreakout.Gimmicks.prototype.createCoin= function( x, y ){
+    return new doodleBreakout.Coin( this.game, x, y );
 };
 
 doodleBreakout.Gimmicks.prototype.probabilityCalculation = function( aArray, sKey ){
