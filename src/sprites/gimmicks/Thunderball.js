@@ -10,6 +10,9 @@ doodleBreakout.Thunderball.prototype = Object.create(doodleBreakout.Gimmick.prot
 doodleBreakout.Thunderball.prototype.constructor = doodleBreakout.Thunderball;
 
 doodleBreakout.Thunderball.prototype.collected = function(){
+    //earn Bonus Points for each collected Duplicate
+    this.game.state.states.Game.earnPoints(80);
+
     this.kill();
 
     this._ball.forEachAlive( function( ball ){

@@ -103,11 +103,11 @@ doodleBreakout.Game.prototype = {
     },
 
     lostGame: function(){
-        doodleBreakout.ScoresManager.addHighscore(this._score, this.game.rnd.pick(["Hans","Peter","Karl","Franz"]));
 
         var oParameters = {
             level: this._level,
-            score: this._score
+            score: this._score,
+            lives: this.lives.countLiving()
         };
 
         this._level = 1;

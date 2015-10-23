@@ -11,6 +11,7 @@ doodleBreakout.GameOver.prototype.init = function(args){
 
     this._score = args.score;
     this._level = args.level;
+    this._lives = args.lives;
 
 };
 
@@ -18,21 +19,35 @@ doodleBreakout.GameOver.prototype.create = function(){
 
     this.createBackHome();
 
+    //For each leftover life, add 50 Points to the score
+    this._scores += (this._lives * 50);
+
+    doodleBreakout.ScoresManager.addHighscore(this._score , this.game.rnd.pick(["Hans","Peter","Karl","Franz"]));
+
+
     var title = this.game.add.bitmapText(this.world.centerX, 10, 'larafont', 'Game Over', 64);
     title.anchor.setTo(0.5, 0);
 
-    var scoresA = this.game.add.bitmapText(this.world.centerX, 210, 'larafont', 'You scored', 48);
+    var scoresA = this.game.add.bitmapText(this.world.centerX, 160, 'larafont', 'You scored', 48);
     scoresA.anchor.setTo(0.5, 0);
 
-    var scoresB = this.game.add.bitmapText(this.world.centerX, 265, 'larafont', '' + this._score, 64);
+    var scoresB = this.game.add.bitmapText(this.world.centerX, 215, 'larafont', '' + this._score, 64);
     scoresB.anchor.setTo(0.5, 0);
 
-    var scoresC = this.game.add.bitmapText(this.world.centerX, 340, 'larafont', 'Points', 48);
+    var scoresC = this.game.add.bitmapText(this.world.centerX, 290, 'larafont', 'Points', 48);
     scoresC.anchor.setTo(0.5, 0);
 
-    var retry = this._generateMenuItem('Retry', 'Game', {level:this._level}, 100);
+    if(this._lives > 1){
+        var scoresD = this.game.add.bitmapText(this.world.centerX, 350, 'larafont', 'Your '+this._lives+' extra lives gave you '+(this._lives*50)+' bonus points!', 36);
+        scoresD.anchor.setTo(0.5, 0);
+    } else if(this._lives == 1){
+        var scoresE = this.game.add.bitmapText(this.world.centerX, 350, 'larafont', 'Your extra life gave you '+(this._lives*50)+' bonus points!', 36);
+        scoresE.anchor.setTo(0.5, 0);
+    }
 
-    var selectLevel = this._generateMenuItem('Select another level', 'LevelSelection', undefined, 340);
+    this._generateMenuItem('Retry', 'Game', {level:this._level}, 100);
+
+    this._generateMenuItem('Select another level', 'LevelSelection', undefined, 340);
 
 };
 
