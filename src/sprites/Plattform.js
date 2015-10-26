@@ -49,8 +49,10 @@ doodleBreakout.Plattform.prototype.holdBall = function( ball ){
 };
 
 doodleBreakout.Plattform.prototype.releaseBall = function(){
-    this._ball.start();
-    this._ball = null;
+    if(this._ball) {
+        this._ball.start();
+        this._ball = null;
+    }
 };
 
 doodleBreakout.Plattform.prototype.resetPlattform = function(){
