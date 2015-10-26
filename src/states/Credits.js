@@ -62,7 +62,7 @@ doodleBreakout.Credits.prototype.next = function () {
 
     if (this.creditStrings.length > 0) {
         this.slideText(this.creditStrings.pop())
-        this.updateTillNext = 125;
+        this.updateTillNext = 110;
     } else {
         var easteregg = this.game.add.sprite(this.game.width / 2, this.game.height, 'easteregg');
         easteregg.anchor.setTo(0.5, 0);
@@ -102,7 +102,7 @@ doodleBreakout.Credits.prototype.update = function () {
 };
 
 doodleBreakout.Credits.prototype.slideText = function (text) {
-    var credit = this.game.add.bitmapText(this.game.width / 2, this.game.height, 'larafont', text, 50);
+    var credit = this.game.add.bitmapText(this.game.width / 2, this.game.height, 'larafont', text, 46);
     credit.anchor.setTo(0.5, 0);
     this.game.physics.enable(credit, Phaser.Physics.ARCADE);
     credit.body.maxVelocity.setTo(0);

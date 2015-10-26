@@ -34,7 +34,7 @@ doodleBreakout.Game.prototype = {
         this.plattform = new doodleBreakout.Plattform(game, 550, 550 );
         game.add.existing(this.plattform);
 
-        this._scoreText = game.add.bitmapText(this.game.width - 20, 0, 'larafont', this._score + "", 48);
+        this._scoreText = game.add.bitmapText(this.game.width - 10, 10, 'larafont', this._score + "", 48);
         this._scoreText.anchor.setTo(1,0);
 
         this.ball = this.game.add.group();
@@ -68,7 +68,7 @@ doodleBreakout.Game.prototype = {
             this.updateTimerText(Math.floor(this.timer.seconds));
         }, this);
         this.timer.start();
-        this.timertext = game.add.bitmapText(this.world.centerX, 0, 'larafont', "0:00", 48);
+        this.timertext = game.add.bitmapText(this.world.centerX, 10, 'larafont', "0:00", 48);
         this.timertext.anchor.setTo(0.5,0);
     },
 

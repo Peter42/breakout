@@ -38,22 +38,22 @@ doodleBreakout.GameOver.prototype.create = function(){
     scoresC.anchor.setTo(0.5, 0);
 
     if(this._lives > 1){
-        var scoresD = this.game.add.bitmapText(this.world.centerX, 350, 'larafont', 'Your '+this._lives+' extra lives gave you '+(this._lives*50)+' bonus points!', 36);
+        var scoresD = this.game.add.bitmapText(this.world.centerX, 350, 'larafont', 'Your '+this._lives+' extra lives gave you '+(this._lives*50)+' bonus points!', 30);
         scoresD.anchor.setTo(0.5, 0);
     } else if(this._lives == 1){
-        var scoresE = this.game.add.bitmapText(this.world.centerX, 350, 'larafont', 'Your extra life gave you '+(this._lives*50)+' bonus points!', 36);
+        var scoresE = this.game.add.bitmapText(this.world.centerX, 350, 'larafont', 'Your extra life gave you '+(this._lives*50)+' bonus points!', 30);
         scoresE.anchor.setTo(0.5, 0);
     }
 
-    this._generateMenuItem('Retry', 'Game', {level:this._level}, 100);
+    this._generateMenuItem('Retry', 'Game', {level:this._level}, 120);
 
-    this._generateMenuItem('Select another level', 'LevelSelection', undefined, 340);
+    this._generateMenuItem('Select another level', 'LevelSelection', undefined, 520);
 
 };
 
 doodleBreakout.GameOver.prototype._generateMenuItem = function (text, targetState, args, x) {
     var item = this.game.add.bitmapText(x, 500, 'larafont', text, 40);
-    item.anchor.setTo(0);
+    item.anchor.setTo(0.5);
     item.inputEnabled = true;
     item.doodleBreakout = { 'targetState' : targetState, 'arguments': args };
 
