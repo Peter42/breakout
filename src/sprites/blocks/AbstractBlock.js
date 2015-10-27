@@ -38,11 +38,11 @@ doodleBreakout.AbstactBlock.prototype.hit = function(ball) {
 };
 
 doodleBreakout.AbstactBlock.prototype.playHitSound = function(){
-    doodleBreakout.SoundManager.playSfx('hit');
+    doodleBreakout.SoundManager.playSfx('klack');
 };
 
 doodleBreakout.AbstactBlock.prototype.playKillSound = function(){
-    doodleBreakout.SoundManager.playSfx('break');
+    doodleBreakout.SoundManager.playSfx('blubb');
 };
 
 

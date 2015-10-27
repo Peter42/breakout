@@ -16,3 +16,7 @@ doodleBreakout.Coin.prototype.collected = function(){
 
     this.kill();
 };
+
+doodleBreakout.Coin.prototype.playCollectSound = function(){
+    doodleBreakout.SoundManager.playSfx('collect_coin');
+};

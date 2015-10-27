@@ -144,7 +144,7 @@ doodleBreakout.Game.prototype = {
         this.game.physics.arcade.collide(this.ball, this.bricks, this.collideBallBrick, this.overlapBallBrick, this);
 
         this.game.physics.arcade.collide(this.plattform, this.fallingGimmiks, function (plattform, gimmick) {
-            gimmick.collected();
+            gimmick.gathered();
         }, undefined, this);
     },
 
