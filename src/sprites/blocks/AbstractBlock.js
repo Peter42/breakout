@@ -21,7 +21,6 @@ doodleBreakout.AbstactBlock.prototype._getMaxHealth = function() {
 };
 
 doodleBreakout.AbstactBlock.prototype.hit = function(ball) {
-
     if( ball.isThunderball ){
         this.kill();
         return true;
@@ -32,16 +31,28 @@ doodleBreakout.AbstactBlock.prototype.hit = function(ball) {
         this.kill();
         return true;
     } else {
+        this.playHitSound();
         this.frame = this._getMaxHealth() - this.health;
         return false;
     }
 };
+
+doodleBreakout.AbstactBlock.prototype.playHitSound = function(){
+    doodleBreakout.SoundManager.playSfx('hit');
+};
+
+doodleBreakout.AbstactBlock.prototype.playKillSound = function(){
+    doodleBreakout.SoundManager.playSfx('break');
+};
+
 
 /**
  *
  * @private
  */
 doodleBreakout.AbstactBlock.prototype._onKill = function(){
+    this.playKillSound();
+
     if( this.gimmik != null ){
         this.gimmik.fall();
     }

@@ -80,6 +80,7 @@ doodleBreakout.SoundManager = {
         this._sfx.allowMultiple = true;
 
         this._sfx.addMarker('hit', 0, 0.3);
+        this._sfx.addMarker('hit_glass', 2, 0.2);
         this._sfx.addMarker('break', 1, 0.6);
 
         if(window.localStorage){

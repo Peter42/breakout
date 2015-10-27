@@ -12,5 +12,7 @@ doodleBreakout.UnbreakableBlock.prototype.hit = function( ball ){
         this.kill();
         return true;
     }
+
+    this.playHitSound();
     return false;
 };

@@ -161,7 +161,6 @@ doodleBreakout.Game.prototype = {
         if( brick.hit(ball) ){
             this.earnPoints(20);
         }
-        doodleBreakout.SoundManager.playSfx('break');
 
         if (this.bricks.total == 0) {
 
