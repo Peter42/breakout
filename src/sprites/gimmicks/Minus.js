@@ -10,10 +10,7 @@ doodleBreakout.Minus.prototype.constructor = doodleBreakout.Minus;
 
 doodleBreakout.Minus.prototype.collected = function(){
     //earn Bonus Points for each collected Minus
-    if( this.plattform.width > 40 ){
-        this.game.state.states.Game.earnPoints(70);
-        this.plattform.width -= 20;
-    }
-
+    this.game.state.states.Game.earnPoints(70);
+    this.plattform.shrink();
     this.kill();
 };

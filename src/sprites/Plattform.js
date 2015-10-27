@@ -17,8 +17,10 @@ doodleBreakout.Plattform = function (game, x, y) {
     this.body.immovable = true;
     this.body.collideWorldBounds = true;
 
-    this.startWidth = this.width;
-
+    this.sizeValues = {
+        height: this.height,
+        width: this.width
+    }
 };
 
 doodleBreakout.Plattform.prototype = Object.create(Phaser.Sprite.prototype);
@@ -56,6 +58,25 @@ doodleBreakout.Plattform.prototype.releaseBall = function(){
 };
 
 doodleBreakout.Plattform.prototype.resetPlattform = function(){
-    this.width = this.startWidth;
+    this.height = this.sizeValues.height;
+    this.width = this.sizeValues.width;
+};
+
+doodleBreakout.Plattform.prototype.grow = function(){
+    if( this.width >= this.sizeValues.width * 2 ){
+        return false;
+    }
+    this.width += (this.sizeValues.width/100) * 10;
+    this.height += (this.sizeValues.height/100) * 10;
+    return true;
+};
+
+doodleBreakout.Plattform.prototype.shrink = function(){
+    if( this.width < ( this.sizeValues.width/3 ) ){
+        return false;
+    }
+    this.width -= (this.sizeValues.width/100) * 10;
+    this.height -= (this.sizeValues.height/100) * 10;
+    return true;
 };
 
