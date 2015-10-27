@@ -23,6 +23,14 @@ doodleBreakout.Gimmicks = function ( game, config, lives, ball, plattform ) {
 doodleBreakout.Gimmicks.prototype = Object.create(Phaser.Group.prototype);
 doodleBreakout.Gimmicks.prototype.constructor = doodleBreakout.Gimmicks;
 
+doodleBreakout.Gimmicks.prototype.killMoving = function(){
+    this.forEachAlive( function( gimmick ){
+        if ( gimmick.body != null && gimmick.body.velocity.y > 0 ) {
+            gimmick.kill();
+        }
+    }, this );
+};
+
 
 doodleBreakout.Gimmicks.prototype.randomGimmick = function( x, y ){
     if (this.game.rnd.realInRange(0, 1) >= ( 100 - this._defaultConfig.dropProbability ) / 100){

@@ -89,6 +89,8 @@ doodleBreakout.Game.prototype = {
     },
 
     lostBall: function(ball){
+        this.fallingGimmiks.killMoving();
+
         if(this.ball.total <= 1) {
             this.lives.lose();
 
