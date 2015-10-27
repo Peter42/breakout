@@ -1,7 +1,7 @@
 var doodleBreakout = doodleBreakout || {};
 
 doodleBreakout.Coin = function ( game, x, y ) {
-    Phaser.Sprite.call(this, game, x, y, 'easteregg');
+    Phaser.Sprite.call(this, game, x, y, 'coin');
 };
 
 doodleBreakout.Coin.prototype = Object.create(doodleBreakout.Gimmick.prototype);
