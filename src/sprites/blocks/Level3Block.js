@@ -5,4 +5,4 @@ doodleBreakout.Level3Block = function ( game, x, y ) {
 };
 
 doodleBreakout.Level3Block.prototype = Object.create(doodleBreakout.AbstactBlock.prototype);
-doodleBreakout.Level3Block.prototype.constructor = doodleBreakout.Level1Block;
+doodleBreakout.Level3Block.prototype.constructor = doodleBreakout.Level3Block;
