@@ -33,7 +33,7 @@ doodleBreakout.Preloader.prototype = {
 
         //Load Setting symbols
         this.game.load.spritesheet('sound', 'assets/images/soundspeaker.png', 70, 70);
-        this.game.load.spritesheet('music', 'assets/notes.png', 50, 50);
+        this.game.load.spritesheet('music', 'assets/images/note.png', 70, 70);
 
         // Sounds
         this.game.load.audio('music', 'assets/sounds/breakout_background.ogg');
