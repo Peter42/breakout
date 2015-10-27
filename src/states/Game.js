@@ -183,5 +183,11 @@ doodleBreakout.Game.prototype = {
         this.ball.add(ball);
         ball.events.onOutOfBounds.add( this.lostBall, this );
         return ball;
+    },
+
+    shutdown: function() {
+        this.input.keyboard.removeKey(Phaser.Keyboard.E);
+        this.input.keyboard.removeKey(Phaser.Keyboard.P);
+        this.input.keyboard.removeKey(Phaser.Keyboard.SPACEBAR);
     }
 };
