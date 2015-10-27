@@ -7,6 +7,6 @@ doodleBreakout.GlassBlock = function ( game, x, y ) {
 doodleBreakout.GlassBlock.prototype = Object.create(doodleBreakout.AbstactBlock.prototype);
 doodleBreakout.GlassBlock.prototype.constructor = doodleBreakout.GlassBlock;
 
-doodleBreakout.AbstactBlock.prototype.playHitSound = function(){
+doodleBreakout.GlassBlock.prototype.playHitSound = function(){
     doodleBreakout.SoundManager.playSfx('hit_glass');
 };
