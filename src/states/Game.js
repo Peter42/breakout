@@ -57,7 +57,9 @@ doodleBreakout.Game.prototype = {
             for (var x = 0, j = 0; (j < levelStructure[ i].length) && (x <= game.width - 50); x += 50, j++ ) {
                 if( levelStructure[i][j] ) {
                     var gimmick = this.fallingGimmiks.randomGimmick( x, y );
-                    this.bricks.add( new doodleBreakout.Block( game, x, y, levelStructure[i][j], gimmick ) );
+                    var brick = doodleBreakout.BlockFactory.get(levelStructure[i][j], game, x, y);
+                    brick.setGimmik(gimmick);
+                    this.bricks.add( brick );
                 }
             }
         }
@@ -146,7 +148,6 @@ doodleBreakout.Game.prototype = {
 
     overlapBallBrick: function (ball, brick) {
         if( ball.isThunderball ){
-            brick.health = 1;
             this.collideBallBrick( ball, brick );
             return false;
         }
@@ -155,7 +156,7 @@ doodleBreakout.Game.prototype = {
     },
 
     collideBallBrick: function (ball, brick) {
-        if( brick.hit() ){
+        if( brick.hit(ball) ){
             this.earnPoints(20);
         }
         doodleBreakout.SoundManager.playSfx('break');
