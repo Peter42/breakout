@@ -5,22 +5,33 @@ var doodleBreakout = doodleBreakout || {};
  * @param {Phaser.game} game - The current game.
  * @param {number} levelNumber - The number of the level to load.
  */
-doodleBreakout.Level = function ( game, levelNumber ) {
-    if( levelNumber > game.levels ){
-        throw "Level definition error" ;
-    }
-    var level = game.cache.getJSON( 'level_' + levelNumber );
-    this._structure = level.structure;
+doodleBreakout.Level = function ( game, structure, id, probability ) {
+    this.game = game;
+    this._structure = structure;
+    this._id = id;
+    this._probability = probability;
 };
 
 /**
  * Returns the structure of the level
  */
-doodleBreakout.Level.prototype = {
-    constructor: doodleBreakout.Level,
-    _structure: [],
-    getStructure: function(){
-        return this._structure;
-    }
+doodleBreakout.Level.prototype.constructor = doodleBreakout.Level;
 
+doodleBreakout.Level.prototype.generateBricks = function( gimmicks ){
+        gimmicks.setCustomProbability( this._probability );
+
+        var bricks = new Phaser.Group( this.game );
+
+        for ( var y = 100, i= 0; (i < this._structure.length) && (y<this.game.height); y += 17, i++ ) {
+            for (var x = 0, j = 0; (j < this._structure[ i].length) && (x <= this.game.width - 50); x += 50, j++ ) {
+                if( this._structure[i][j] ) {
+                    var gimmick = gimmicks.randomGimmick( x, y );
+                    var brick = doodleBreakout.BlockFactory.get( this._structure[i][j], this.game, x, y );
+                    brick.setGimmik(gimmick);
+                    bricks.add( brick );
+                }
+            }
+        }
+
+        return bricks;
 };

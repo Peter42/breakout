@@ -15,30 +15,22 @@ doodleBreakout.Game.prototype = {
     },
 
     create: function(){
-
         var game = this.game;
 
         game.physics.startSystem(Phaser.Physics.ARCADE);
-
         game.physics.arcade.checkCollision.down = false;
-
-
-        var Level = new doodleBreakout.Level( game, this._level );
-        var levelStructure = Level.getStructure();
-
-
-
-        this.lives = new doodleBreakout.Lives( game, 10, 10, this._lives );
-        game.add.existing( this.lives );
-
-        this.plattform = new doodleBreakout.Plattform(game, 550, 550 );
-        game.add.existing(this.plattform);
 
         this._scoreText = game.add.bitmapText(this.game.width - 10, 10, 'larafont', this._score + "", 48);
         this._scoreText.anchor.setTo(1,0);
 
-        this.ball = this.game.add.group();
-        this.plattform.holdBall( this.addBall(300, 300) );
+        this.timer = game.time.create(false);
+        this.timer.loop(1000, function () {
+            this.updateTimerText(Math.floor(this.timer.seconds));
+        }, this);
+        this.timer.start();
+        this.timertext = game.add.bitmapText(this.world.centerX, 10, 'larafont', "0:00", 48);
+        this.timertext.anchor.setTo(0.5,0);
+
 
         this.easteregg = game.input.keyboard.addKey(Phaser.Keyboard.E);
         this.easteregg.onDown.add( this.toggleEasteregg, this);
@@ -48,30 +40,24 @@ doodleBreakout.Game.prototype = {
             game.paused = !game.paused;
         }, this);
 
-        this.fallingGimmiks = new doodleBreakout.Gimmicks( game, null, this.lives, this.ball, this.plattform );
+        this.lives = new doodleBreakout.Lives( game, 10, 10, this._lives );
+        game.add.existing( this.lives );
+
+        this.plattform = new doodleBreakout.Plattform(game, 550, 550 );
+        game.add.existing(this.plattform);
+
+        this.ball = this.game.add.group();
+        this.plattform.holdBall( this.addBall(300, 300) );
+
+        this.fallingGimmiks = new doodleBreakout.Gimmicks( game, this.lives, this.ball, this.plattform );
         game.add.existing(this.fallingGimmiks);
 
-        this.bricks = game.add.group();
+        this.level = doodleBreakout.LevelFactory.getLevel( game, 1, this._level );
 
-        for ( var y = 100, i= 0; (i < levelStructure.length) && (y<400); y += 17, i++ ) {
-            for (var x = 0, j = 0; (j < levelStructure[ i].length) && (x <= game.width - 50); x += 50, j++ ) {
-                if( levelStructure[i][j] ) {
-                    var gimmick = this.fallingGimmiks.randomGimmick( x, y );
-                    var brick = doodleBreakout.BlockFactory.get(levelStructure[i][j], game, x, y);
-                    brick.setGimmik(gimmick);
-                    this.bricks.add( brick );
-                }
-            }
-        }
+        this.bricks = this.level.generateBricks( this.fallingGimmiks );
+        game.add.existing(this.bricks);
+
         game.world.bringToTop(this.fallingGimmiks);
-
-        this.timer = game.time.create(false);
-        this.timer.loop(1000, function () {
-            this.updateTimerText(Math.floor(this.timer.seconds));
-        }, this);
-        this.timer.start();
-        this.timertext = game.add.bitmapText(this.world.centerX, 10, 'larafont', "0:00", 48);
-        this.timertext.anchor.setTo(0.5,0);
     },
 
     updateTimerText: function (time) {
@@ -89,10 +75,9 @@ doodleBreakout.Game.prototype = {
     },
 
     lostBall: function(ball){
-        this.fallingGimmiks.killMoving();
-
         if(this.ball.total <= 1) {
             this.lives.lose();
+            this.fallingGimmiks.killMoving();
 
             if (this.lives.countLiving() <= 0) {
                 this.lostGame();
@@ -174,7 +159,7 @@ doodleBreakout.Game.prototype = {
             else {
                 this._level++;
                 this._lives = this.lives.countLiving();
-                this.state.start('Game' );
+                this.state.start( 'Game' );
             }
         }
     },
