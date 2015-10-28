@@ -162,7 +162,8 @@ doodleBreakout.Game.prototype = {
             this.earnPoints(20);
         }
 
-        if (this.bricks.total == 0) {
+
+        if ( !this.bricks.children.find(function(block){ return block.destructionNeeded && block.alive; })) {
 
             doodleBreakout.ScoresManager.addBesttime("level_" + this._level, Math.floor(this.timer.seconds));
             this.timer.stop();
