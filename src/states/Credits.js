@@ -61,10 +61,11 @@ doodleBreakout.Credits.prototype.create = function () {
 doodleBreakout.Credits.prototype.next = function () {
 
     if (this.creditStrings.length > 0) {
-        this.slideText(this.creditStrings.pop())
+        this.slideText(this.creditStrings.pop());
         this.updateTillNext = 110;
     } else {
         var easteregg = this.game.add.sprite(this.game.width / 2, this.game.height, 'easteregg');
+        var clicked = false;
         easteregg.anchor.setTo(0.5, 0);
         this.game.physics.enable(easteregg, Phaser.Physics.ARCADE);
         easteregg.body.maxVelocity.setTo(0);
@@ -75,7 +76,11 @@ doodleBreakout.Credits.prototype.next = function () {
         easteregg.events.onInputOver.add(this.over, this);
         easteregg.events.onInputOut.add(this.out, this);
         easteregg.events.onInputDown.add(function () {
-            this.slideText("Try pressing 'E' in-game.");
+            if (!clicked) {
+                this.slideText("Try pressing 'E' in-game.");
+                clicked = true;
+            }
+
         }, this);
     }
 
