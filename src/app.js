@@ -15,6 +15,8 @@ window.onload = function(){
     game.state.add( 'Highscores'    , doodleBreakout.Highscores );
     game.state.add( 'GameOver'    , doodleBreakout.GameOver );
     game.state.add( 'Boot'          , doodleBreakout.Boot, true );
+
+    doodleBreakout.OnscreenInput.init();
 };
 
 

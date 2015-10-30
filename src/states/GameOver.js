@@ -19,6 +19,8 @@ doodleBreakout.GameOver.prototype.create = function(){
 
     this.createBackHome();
 
+    doodleBreakout.OnscreenInput.openKeyboard();
+
     //For each leftover life, add 50 Points to the score
     this._scores += (this._lives * 50);
 
@@ -59,8 +61,6 @@ doodleBreakout.GameOver.prototype.create = function(){
 };
 
 doodleBreakout.GameOver.prototype.keyPressed = function(key) {
-
-    debugger;
     // TODO: Add ÄÖÜ äöü ß to font
     if(! key.match(/[A-z0-9\u0020\-]/) ) {
         return;
@@ -79,6 +79,7 @@ doodleBreakout.GameOver.prototype.backspacePressed = function() {
 };
 
 doodleBreakout.GameOver.prototype.shutdown = function() {
+    doodleBreakout.OnscreenInput.closeKeyboard();
     var name;
     if(this.nameIsInitial) {
         name = "Player";
@@ -88,6 +89,11 @@ doodleBreakout.GameOver.prototype.shutdown = function() {
     doodleBreakout.ScoresManager.addHighscore(this._score, name);
 };
 
+doodleBreakout.GameOver.prototype.update = function() {
+    if (this.game.input.activePointer.isDown && this.game.input.activePointer.position.y < this.world.centerY) {
+        doodleBreakout.OnscreenInput.openKeyboard();
+    }
+};
 
 doodleBreakout.GameOver.prototype._generateMenuItem = function (text, targetState, args, x) {
     var item = this.game.add.bitmapText(x, 500, 'larafont', text, 40);
