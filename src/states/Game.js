@@ -172,6 +172,8 @@ doodleBreakout.Game.prototype = {
     },
 
     shutdown: function() {
+        //reset rotation
+        doodleBreakout.Rotator.deactivateRotation();
         this.input.keyboard.removeKey(Phaser.Keyboard.E);
         this.input.keyboard.removeKey(Phaser.Keyboard.P);
         this.input.keyboard.removeKey(Phaser.Keyboard.SPACEBAR);

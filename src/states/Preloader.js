@@ -19,6 +19,9 @@ doodleBreakout.Preloader.prototype = {
         this.game.load.image('duplicate', 'assets/images/feature03.png');
         this.game.load.image('minus', 'assets/images/minus.png');
         this.game.load.image('plus', 'assets/images/plus.png');
+        this.game.load.image('coin', 'assets/images/coin.png');
+        this.game.load.image('rotator', 'assets/images/rotator.png');
+
         this.game.load.image('plattform01', 'assets/images/plattform01.png');
         this.game.load.spritesheet('block01', 'assets/images/block01.png', 50, 16);
         this.game.load.spritesheet('block02', 'assets/images/block02.png', 50, 16);
@@ -27,7 +30,6 @@ doodleBreakout.Preloader.prototype = {
         this.game.load.spritesheet('block05', 'assets/images/blockfest.png', 50, 16);
         this.game.load.image('hintergrund', 'assets/images/hintergrund.png');
         this.game.load.image('easteregg', 'assets/images/easteregg.png');
-        this.game.load.image('coin', 'assets/images/coin.png');
 
         //Load font files
         this.game.load.bitmapFont('larafont', 'assets/fonts/larafont.png', 'assets/fonts/larafont.xml');

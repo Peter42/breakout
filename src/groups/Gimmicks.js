@@ -48,6 +48,11 @@ doodleBreakout.Gimmicks._gimmickProbability = {
             "name": "Minus",
             "probability": 5,
             "create": "createMinus"
+        },
+        {
+            "name": "Rotator",
+            "probability": 4,
+            "create": "createRotator"
         }
     ]
 };
@@ -135,6 +140,10 @@ doodleBreakout.Gimmicks.prototype.createPlus= function( x, y ){
 
 doodleBreakout.Gimmicks.prototype.createCoin= function( x, y ){
     return new doodleBreakout.Coin( this.game, x, y );
+};
+
+doodleBreakout.Gimmicks.prototype.createRotator= function( x, y ){
+    return new doodleBreakout.Rotator( this.game, x, y );
 };
 
 doodleBreakout.Gimmicks.prototype.probabilityCalculation = function( aArray, sKey ){
