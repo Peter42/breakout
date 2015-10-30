@@ -37,8 +37,8 @@ doodleBreakout.Preloader.prototype = {
         this.game.load.spritesheet('music', 'assets/images/note.png', 70, 70);
 
         // Sounds
-        this.game.load.audio('music', 'assets/sounds/breakout_background.ogg');
-        this.game.load.audio('sfx', 'assets/sounds/sfx.ogg');
+        this.game.load.audio('music', ['assets/sounds/breakout_background.ogg', 'assets/sounds/breakout_background.mp3', 'assets/sounds/breakout_background.wav']);
+        this.game.load.audio('sfx', ['assets/sounds/sfx.ogg', 'assets/sounds/sfx.mp3', 'assets/sounds/sfx.wav']);
 
 
 
