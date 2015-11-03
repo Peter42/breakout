@@ -42,7 +42,8 @@ doodleBreakout.Preloader.prototype = {
         this.game.load.audio('music', ['assets/sounds/breakout_background.ogg', 'assets/sounds/breakout_background.mp3', 'assets/sounds/breakout_background.wav']);
         this.game.load.audio('sfx', ['assets/sounds/sfx.ogg', 'assets/sounds/sfx.mp3', 'assets/sounds/sfx.wav']);
 
-
+        //Overlay for Pause Menu
+        this.game.create.texture('pause', ['2'], 800, 600);
 
         //	This sets the preloadBar sprite as a loader sprite.
         //	What that does is automatically crop the sprite from 0 to full-width
