@@ -11,7 +11,7 @@ doodleBreakout.Game.prototype.constructor = doodleBreakout.Game;
 doodleBreakout.Game.prototype._level = 1;
 doodleBreakout.Game.prototype._score = 0;
 doodleBreakout.Game.prototype._lives = 3;
-doodleBreakout.Game.prototype._rotationActive = true;
+doodleBreakout.Game.prototype._rotationActive = false;
 doodleBreakout.Game.prototype.doodlebreakoutIsPaused = false;
 
 doodleBreakout.Game.prototype.eastereggon = false;
@@ -24,6 +24,8 @@ doodleBreakout.Game.prototype.init = function (args) {
 
 doodleBreakout.Game.prototype.create = function () {
     var game = this.game;
+
+    this.doodlebreakoutIsPaused = false;
 
     game.physics.startSystem(Phaser.Physics.ARCADE);
     game.physics.arcade.checkCollision.down = false;
@@ -255,7 +257,6 @@ doodleBreakout.Game.prototype.activateRotation = function() {
 
     this._rotationActive = true;
 
-    debugger;
     this.rotatorTimer.stop();
     this.rotatorTimer.add(7000, this.deactivateRotation, this);
     this.rotatorTimer.start();
