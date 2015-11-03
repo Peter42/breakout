@@ -55,7 +55,7 @@ doodleBreakout.Plattform.prototype.holdBall = function( ball ){
 };
 
 doodleBreakout.Plattform.prototype.releaseBall = function(){
-    if(this._ball) {
+    if(this._ball && !this.game.state.states.Game.doodlebreakoutIsPaused ) {
         this._ball.start();
         this._ball = null;
     }
