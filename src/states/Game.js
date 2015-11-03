@@ -121,7 +121,7 @@ doodleBreakout.Game.prototype = {
             var velocity = Math.sqrt(Math.pow(ball.body.velocity.x, 2) + Math.pow(ball.body.velocity.y, 2));
             velocity = Math.min(velocity, 800);
 
-            doodleBreakout.SoundManager.playSfx('hit');
+            doodleBreakout.SoundManager.playSfx('paddle');
 
             ball.body.velocity.set(velocity * Math.sin(angle), -velocity * Math.cos(angle));
         }, undefined, this);
