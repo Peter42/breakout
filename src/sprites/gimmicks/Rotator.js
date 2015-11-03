@@ -18,18 +18,5 @@ doodleBreakout.Rotator.prototype.collected = function(){
 
     this.kill();
 
-    doodleBreakout.Rotator.rotatorTimer.stop();
-    doodleBreakout.Rotator.rotatorTimer.add(7000, doodleBreakout.Rotator.deactivateRotation, this);
-    doodleBreakout.Rotator.rotatorTimer.start();
-    doodleBreakout.Rotator.activateRotation();
-};
-
-doodleBreakout.Rotator.activateRotation = function() {
-
-    game.style.transform = 'rotate(180deg)';
-};
-
-doodleBreakout.Rotator.deactivateRotation = function() {
-
-    game.style.transform = 'rotate(0deg)';
+    this.game.state.states.Game.activateRotation();
 };

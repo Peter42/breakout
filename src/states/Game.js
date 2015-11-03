@@ -11,6 +11,7 @@ doodleBreakout.Game.prototype.constructor = doodleBreakout.Game;
 doodleBreakout.Game.prototype._level = 1;
 doodleBreakout.Game.prototype._score = 0;
 doodleBreakout.Game.prototype._lives = 3;
+doodleBreakout.Game.prototype._rotationActive = true;
 doodleBreakout.Game.prototype.doodlebreakoutIsPaused = false;
 
 doodleBreakout.Game.prototype.eastereggon = false;
@@ -61,6 +62,8 @@ doodleBreakout.Game.prototype.create = function () {
 
     this.bricks = this.level.generateBricks(this.fallingGimmiks);
     game.add.existing(this.bricks);
+
+    this.rotatorTimer = game.time.create(false);
 
     game.world.bringToTop(this.fallingGimmiks);
 };
@@ -220,6 +223,7 @@ doodleBreakout.Game.prototype.pauseGame = function () {
         this.back.events.onInputOver.add(this.over, this);
         this.back.events.onInputOut.add(this.out, this);
 
+        this._rotate(0);
 
     } else {
         this.doodlebreakoutIsPaused = false;
@@ -232,14 +236,39 @@ doodleBreakout.Game.prototype.pauseGame = function () {
         this.resume.kill();
         this.back.kill();
         this.destroySoundSettings();
+
+        this._rotate(this._rotationActive ? 180 : 0);
     }
 
 };
 
 doodleBreakout.Game.prototype.shutdown = function () {
     //reset rotation
-    doodleBreakout.Rotator.deactivateRotation();
+    this.deactivateRotation();
     this.input.keyboard.removeKey(Phaser.Keyboard.E);
     this.input.keyboard.removeKey(Phaser.Keyboard.P);
     this.input.keyboard.removeKey(Phaser.Keyboard.SPACEBAR);
+};
+
+
+doodleBreakout.Game.prototype.activateRotation = function() {
+
+    this._rotationActive = true;
+
+    debugger;
+    this.rotatorTimer.stop();
+    this.rotatorTimer.add(7000, this.deactivateRotation, this);
+    this.rotatorTimer.start();
+
+    this._rotate(180);
+};
+
+doodleBreakout.Game.prototype.deactivateRotation = function() {
+    this._rotationActive = false;
+    this.rotatorTimer.stop();
+    this._rotate(0);
+};
+
+doodleBreakout.Game.prototype._rotate = function( deg ) {
+    game.style.transform = 'rotate('  + deg + 'deg)';
 };
