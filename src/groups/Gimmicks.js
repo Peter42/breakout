@@ -1,6 +1,6 @@
 var doodleBreakout = doodleBreakout || {};
 
-doodleBreakout.Gimmicks = function ( game, config, lives, ball, plattform ) {
+doodleBreakout.Gimmicks = function ( game, lives, ball, plattform ) {
 
     //  We call the Phaser.Sprite passing in the game reference
     Phaser.Group.call( this, game );
@@ -8,20 +8,68 @@ doodleBreakout.Gimmicks = function ( game, config, lives, ball, plattform ) {
     this._ball = ball;
     this._lives = lives;
     this._plattform = plattform;
-
-    if (config != null && config != undefined){
-        for ( var key in config ) {
-            if( config.hasOwnProperty( key )  && this._defaultConfig.hasOwnProperty( key ) ){
-                this._defaultConfig[ key ] = config[ key ];
-            }
-
-        }
+    this._probabilityConfig = {
+        "dropProbability": 8,
+        "positiveProbability": 1,
+        "negativeProbability": 1
     }
+};
 
+doodleBreakout.Gimmicks._gimmickProbability = {
+    "positive": [
+        {
+            "name": "LiveBonus",
+            "probability": 1,
+            "create": "createLive"
+        },
+        {
+            "name": "DuplicateBonus",
+            "probability": 3,
+            "create": "createDuplicate"
+        },
+        {
+            "name": "Thunderball",
+            "probability": 1,
+            "create": "createThunderball"
+        },
+        {
+            "name": "Plus",
+            "probability": 3,
+            "create": "createPlus"
+        },
+        {
+            "name": "Coin",
+            "probability": 3,
+            "create": "createCoin"
+        }
+    ],
+    "negative": [
+        {
+            "name": "Minus",
+            "probability": 5,
+            "create": "createMinus"
+        },
+        {
+            "name": "Rotator",
+            "probability": 4,
+            "create": "createRotator"
+        }
+    ]
 };
 
 doodleBreakout.Gimmicks.prototype = Object.create(Phaser.Group.prototype);
 doodleBreakout.Gimmicks.prototype.constructor = doodleBreakout.Gimmicks;
+
+doodleBreakout.Gimmicks.prototype.setCustomProbability = function( config ){
+    if ( config != null && config != undefined ){
+        for ( var key in config ) {
+            if( config.hasOwnProperty( key )  && this._probabilityConfig.hasOwnProperty( key ) && key != "gimmicks" ){
+                this._probabilityConfig[ key ] = config[ key ];
+            }
+
+        }
+    }
+};
 
 doodleBreakout.Gimmicks.prototype.killMoving = function(){
     this.forEachAlive( function( gimmick ){
@@ -33,11 +81,11 @@ doodleBreakout.Gimmicks.prototype.killMoving = function(){
 
 
 doodleBreakout.Gimmicks.prototype.randomGimmick = function( x, y ){
-    if (this.game.rnd.realInRange(0, 1) >= ( 100 - this._defaultConfig.dropProbability ) / 100){
-        var aPositiveGimmicks = this._defaultConfig.gimmicks.positive;
-        var aNegativeGimmicks = this._defaultConfig.gimmicks.negative;
+    if (this.game.rnd.realInRange(0, 1) >= ( 100 - this._probabilityConfig.dropProbability ) / 100){
+        var aPositiveGimmicks = doodleBreakout.Gimmicks._gimmickProbability.positive;
+        var aNegativeGimmicks = doodleBreakout.Gimmicks._gimmickProbability.negative;
 
-        var aValues = [ this._defaultConfig.positiveProbability, this._defaultConfig.negativeProbability ];
+        var aValues = [ this._probabilityConfig.positiveProbability, this._probabilityConfig.negativeProbability ];
 
         var oGimmickConfig = null;
 
@@ -70,48 +118,6 @@ doodleBreakout.Gimmicks.prototype.randomGimmick = function( x, y ){
     return null;
 };
 
-doodleBreakout.Gimmicks.prototype._defaultConfig = {
-    "dropProbability": 8,
-    "positiveProbability": 1,
-    "negativeProbability": 1,
-    "gimmicks": {
-        "positive": [
-            {
-                "name": "LiveBonus",
-                "probability": 1,
-                "create": "createLive"
-            },
-            {
-                "name": "DuplicateBonus",
-                "probability": 3,
-                "create": "createDuplicate"
-            },
-            {
-                "name": "Thunderball",
-                "probability": 1,
-                "create": "createThunderball"
-            },
-            {
-                "name": "Plus",
-                "probability": 3,
-                "create": "createPlus"
-            },
-            {
-                "name": "Coin",
-                "probability": 3,
-                "create": "createCoin"
-            }
-        ],
-        "negative": [
-            {
-                "name": "Minus",
-                "probability": 5,
-                "create": "createMinus"
-            }
-        ]
-    }
-};
-
 doodleBreakout.Gimmicks.prototype.createLive = function( x, y ){
     return new doodleBreakout.Live( this.game, x, y, this._lives );
 };
@@ -134,6 +140,10 @@ doodleBreakout.Gimmicks.prototype.createPlus= function( x, y ){
 
 doodleBreakout.Gimmicks.prototype.createCoin= function( x, y ){
     return new doodleBreakout.Coin( this.game, x, y );
+};
+
+doodleBreakout.Gimmicks.prototype.createRotator= function( x, y ){
+    return new doodleBreakout.Rotator( this.game, x, y );
 };
 
 doodleBreakout.Gimmicks.prototype.probabilityCalculation = function( aArray, sKey ){
@@ -184,3 +194,4 @@ doodleBreakout.Gimmicks.prototype.probabilityCalculation = function( aArray, sKe
 
     return -1;
 };
+

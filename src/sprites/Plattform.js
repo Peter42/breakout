@@ -27,10 +27,14 @@ doodleBreakout.Plattform.prototype = Object.create(Phaser.Sprite.prototype);
 doodleBreakout.Plattform.prototype.constructor = doodleBreakout.Plattform;
 
 doodleBreakout.Plattform.prototype.update = function() {
-    if (this.leftKey.isDown) {
+    if (this.game.input.activePointer.isDown) {
+        this.releaseBall();
+    }
+
+    if (this.leftKey.isDown || doodleBreakout.OnscreenInput.isLeft()) {
         this.body.velocity.set(-800, 0);
     }
-    else if (this.rightKey.isDown) {
+    else if (this.rightKey.isDown || doodleBreakout.OnscreenInput.isRight()) {
         this.body.velocity.set(800, 0);
     } else {
         this.body.velocity.set(0, 0);
@@ -51,7 +55,7 @@ doodleBreakout.Plattform.prototype.holdBall = function( ball ){
 };
 
 doodleBreakout.Plattform.prototype.releaseBall = function(){
-    if(this._ball) {
+    if(this._ball && !this.game.state.states.Game.doodlebreakoutIsPaused ) {
         this._ball.start();
         this._ball = null;
     }

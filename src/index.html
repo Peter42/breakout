@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta id="viewport" name="viewport" content="width=800, user-scalable=0"/>
+
     <title>Doodle Breakout</title>
 
     <!-- load libraries -->
@@ -11,9 +13,11 @@
     <script src="./app.js"></script>
     <script src="./SoundManager.js"></script>
     <script src="./ScoresManager.js"></script>
+    <script src="./OnscreenInput.js"></script>
 
     <!-- load States-->
     <script src="states/AbstractMenu.js"></script>
+    <script src="states/AbstractSoundSettings.js"></script>
     <script src="./states/Boot.js"></script>
     <script src="./states/Credits.js"></script>
     <script src="./states/Game.js"></script>
@@ -48,14 +52,28 @@
     <script src="./sprites/gimmicks/Minus.js"></script>
     <script src="./sprites/gimmicks/Plus.js"></script>
     <script src="./sprites/gimmicks/Coin.js"></script>
+    <script src="./sprites/gimmicks/Rotator.js"></script>
 
     <!-- load Objects -->
+    <script src="./LevelFactory.js"></script>
     <script src="./Level.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="OnscreenInput.css">
 </head>
 <body>
 
     <center>
-        <div id="game"></div>
+
+        <input id="fakeInput" type="password" >
+
+        <div id="game">
+        </div>
+
+        <div id="onscreencontroll">
+            <div id="pad"></div>
+            <div class="circle" id="dpadshadow"></div>
+            <div class="circle" id="dpad"></div>
+        </div>
     </center>
 
 </body>

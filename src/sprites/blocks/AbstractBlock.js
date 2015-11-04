@@ -16,6 +16,8 @@ doodleBreakout.AbstactBlock = function ( game, x, y, key ) {
 doodleBreakout.AbstactBlock.prototype = Object.create(Phaser.Sprite.prototype);
 doodleBreakout.AbstactBlock.prototype.constructor = doodleBreakout.AbstactBlock;
 
+doodleBreakout.AbstactBlock.prototype.destructionNeeded = true;
+
 doodleBreakout.AbstactBlock.prototype._getMaxHealth = function() {
     return this.game.cache.getFrameCount(this.key);
 };

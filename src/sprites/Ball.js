@@ -35,7 +35,7 @@ doodleBreakout.Ball.prototype.constructor = doodleBreakout.Ball;
 doodleBreakout.Ball.prototype.update = function() {
     var w = this.width * 0.5;
     if(this.x == w || this.y == this.width || this.x + w == this.game.width){
-        doodleBreakout.SoundManager.playSfx('hit');
+        doodleBreakout.SoundManager.playSfx('worldcollide');
     }
 };
 
