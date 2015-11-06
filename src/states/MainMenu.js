@@ -15,6 +15,7 @@ doodleBreakout.MainMenu.prototype.create = function(){
     this._generateMenuItem('Highscores', 'Highscores', 250);
     this._generateMenuItem('Settings', 'Settings', 350);
     this._generateMenuItem('Credits', 'Credits', 450);
+    this._generateMenuItem('Create Level', 'LevelDesigner', 550);
 };
 
 doodleBreakout.MainMenu.prototype._generateMenuItem = function (text, targetState, y) {
