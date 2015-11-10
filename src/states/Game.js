@@ -171,11 +171,12 @@ doodleBreakout.Game.prototype.collideBallBrick = function (ball, brick) {
         doodleBreakout.ScoresManager.addBesttime("level_" + this._level, Math.floor(this.timer.seconds));
         this.timer.stop();
 
-        if (this.game.levels < ( this._level + 1 )) {
+        this._level = doodleBreakout.LevelManager.getNextLevelId(this._level);
+
+        if( this._level == false ){
             this.lostGame();
         }
         else {
-            this._level = doodleBreakout.LevelManager.getNextLevelId(this._level);
             this._lives = this.lives.countLiving();
             this.state.start('Game');
         }
