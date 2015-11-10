@@ -60,7 +60,7 @@ doodleBreakout.Game.prototype.create = function () {
     this.fallingGimmiks = new doodleBreakout.Gimmicks(game, this.lives, this.ball, this.plattform);
     game.add.existing(this.fallingGimmiks);
 
-    this.level = doodleBreakout.LevelFactory.getLevel(game, 1, this._level);
+    this.level = doodleBreakout.LevelManager.getLevel(this._level);
 
     this.bricks = this.level.generateBricks(this.fallingGimmiks);
     game.add.existing(this.bricks);
@@ -166,7 +166,7 @@ doodleBreakout.Game.prototype.collideBallBrick = function (ball, brick) {
             this.lostGame();
         }
         else {
-            this._level++;
+            this._level = doodleBreakout.LevelManager.getNextLevelId(this._level);
             this._lives = this.lives.countLiving();
             this.state.start('Game');
         }
