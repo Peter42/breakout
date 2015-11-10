@@ -1,7 +1,7 @@
 var doodleBreakout = doodleBreakout || {};
 
 doodleBreakout.Preloader = function( game ){
-
+    this._levels = 0;
 };
 
 doodleBreakout.Preloader.prototype = {
@@ -53,7 +53,8 @@ doodleBreakout.Preloader.prototype = {
 
         var levels = this.game.cache.getJSON( 'levelIndex' );
 
-        this.game.levels = levels.length;
+        // TODO: remove this.game.levels
+        this._levels = this.game.levels = levels.length;
 
         for( var i = 1; i <= levels.length; i++ ){
             this.load.json( 'level_' + i, './levels/'+levels[(i-1)] );
@@ -66,6 +67,11 @@ doodleBreakout.Preloader.prototype = {
     create: function(){
         doodleBreakout.SoundManager.init(this.game);
         doodleBreakout.ScoresManager.init(this.game);
+        doodleBreakout.LevelManager.init( this.game );
+
+        for( var i = 1; i <= this._levels; i++ ){
+            doodleBreakout.LevelManager.addLevel( this.game.cache.getJSON( 'level_' + i ) );
+        }
 
         var hintergrund = new Phaser.Image(this.game, 0, 0, 'hintergrund');
         this.stage.addChildAt(hintergrund, 0);

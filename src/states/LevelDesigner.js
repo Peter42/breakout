@@ -28,6 +28,7 @@ doodleBreakout.LevelDesigner = function( game ){
     this._paletteBricks = [];
 
     // Data
+    this.levelId = null;
     this.data = null;
     this._dataBricks = null;
 };
@@ -152,22 +153,10 @@ doodleBreakout.LevelDesigner.prototype._createUI = function() {
 
 
 doodleBreakout.LevelDesigner.prototype._saveLevel = function(){
-    var guid = (function () {
-        var r = function(){
-            return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
-        };
-        return (r() + r() + "-" + r() + "-4" + r().substr(0, 3) + "-" + r() + "-" + r() + r() + r()).toLowerCase();
-    })();
-
-
-    levels[ guid ] = {
-        id: guid,
+    return doodleBreakout.LevelManager.addLevel( {
+        id: this.levelId,
         structure: this.data
-    };
-
-    // TODO: save to local storage
-
-    return guid;
+    }, true );
 };
 
 
@@ -192,6 +181,11 @@ doodleBreakout.LevelDesigner.prototype._deleteLevel = function(){
 
 doodleBreakout.LevelDesigner.prototype._openLevel = function(){
     // TODO: open from local storage
+    this._reset();
+    var levelData = doodleBreakout.LevelManager.getLastAlterableLevel();
+    this.data = levelData.structure;
+    this.levelId = levelData.id;
+    this._refresh();
 };
 
 
@@ -242,6 +236,7 @@ doodleBreakout.LevelDesigner.prototype._randomLevel = function(){
  * Reset the draw-grid content
  */
 doodleBreakout.LevelDesigner.prototype._reset = function() {
+    this.levelId = null;
     this.groupBricks.removeAll( true );
     this.data = [];
     this._dataBricks = [];
