@@ -18,6 +18,7 @@ doodleBreakout.LevelDesigner = function( game ){
     this._drawAreaHeight = this._amountRows * this.blockHeight;
 
     // Palette position
+    this.paletteOffsetY = 15;
     this.paletteOffsetX = game.width/2;
     this.paletteArrow = null;
 
@@ -31,10 +32,45 @@ doodleBreakout.LevelDesigner = function( game ){
     this.levelId = null;
     this.data = null;
     this._dataBricks = null;
+
+    this.savedLevel = true;
 };
 
 doodleBreakout.LevelDesigner.prototype = Object.create(doodleBreakout.AbstractMenu.prototype);
 doodleBreakout.LevelDesigner.prototype.constructor = doodleBreakout.LevelDesigner;
+
+doodleBreakout.LevelDesigner.prototype.goBackHome = function (){
+    if( ! this.savedLevel ){
+        var group = this._showPopup( "Save changes" );
+        var yes = this.game.add.bitmapText( 200, 200, 'larafont', 'Yes', 50 );
+        yes.x = (this.game.width/6)*2 - (yes.width/2);
+        yes.anchor.setTo(0, 0);
+        yes.inputEnabled = true;
+        yes.input.useHandCursor = true;
+        yes.events.onInputDown.add( function(){
+            this._saveLevel();
+            if( !!this.levelId ){
+                this._updateButtons();
+                this._closePopup();
+            }
+        }, this );
+        group.add( yes );
+
+        var no = this.game.add.bitmapText( 200, 200, 'larafont', 'No', 50 );
+        no.x = (this.game.width/6)*4 - (no.width/2);
+        no.anchor.setTo(0, 0);
+        no.inputEnabled = true;
+        no.input.useHandCursor = true;
+        no.events.onInputDown.add( function(){
+            this._closePopup();
+            this.state.start("MainMenu");
+        }, this );
+        group.add( no );
+    }
+    else {
+        this.state.start("MainMenu");
+    }
+};
 
 doodleBreakout.LevelDesigner.prototype.create = function() {
     this.createBackHome();
@@ -47,101 +83,65 @@ doodleBreakout.LevelDesigner.prototype.create = function() {
 
     this.groupBricks = this.game.add.group();
     this.groupPalette = this.game.add.group();
+    this.groupButtons = this.game.add.group();
+    this.groupPopup = this.game.add.group();
 
     this._createUI();
     this._setColor( 1 );
+
+    var saveLevelId = this.levelId;
+
     this._reset();
+
+    if( saveLevelId ){
+        this.levelId = saveLevelId;
+        var levelData = doodleBreakout.LevelManager.getLevelData( this.levelId );
+        this.data = levelData.structure;
+    }
+
+    this._refresh();
+};
+
+doodleBreakout.LevelDesigner.prototype.shutdown = function(){
+    this._reset();
+    this._refresh();
 };
 
 
 doodleBreakout.LevelDesigner.prototype._createUI = function() {
-    var saveTexture = this.game.create.texture('save', [
-        'DDDDDDDDDD',
-        'DED1111DED',
-        'DED1111DDD',
-        'DEDDDDDDED',
-        'DEEEEEEEED',
-        'DEFFFFFFED',
-        'DEFFFFFFED',
-        'DEFFFFFFED',
-        'DEFFFFFFED',
-        'DDDDDDDDDD'
-    ], 4);
-
-    var folderTexture = this.game.create.texture('folder', [
-        '...........',
-        '77777777777',
-        '72222227887',
-        '77777777887',
-        '78888888887',
-        '78888888887',
-        '78888888887',
-        '78888888887',
-        '78888888887',
-        '77777777777'
-    ], 4);
-
-    var sheetTexture = this.game.create.texture('sheet', [
-        '99999999.',
-        '922222299',
-        '922222229',
-        '922222229',
-        '922222229',
-        '922222229',
-        '922222229',
-        '922222229',
-        '922222229',
-        '999999999'
-    ], 4);
-
-    var trashTexture = this.game.create.texture('trash', [
-        '...000...',
-        '...0.0...',
-        '000000000',
-        '.0.0.0.0.',
-        '.0.0.0.0.',
-        '.0.0.0.0.',
-        '.0.0.0.0.',
-        '.0.0.0.0.',
-        '.0.0.0.0.',
-        '.0000000.'
-    ], 4);
-
-    var runTexture = this.game.create.texture('run', [
-        'AA....',
-        'ABA...',
-        'ABBA..',
-        'ABBBA.',
-        'ABBBBA',
-        'ABBBBA',
-        'ABBBA.',
-        'ABBA..',
-        'ABA...',
-        'AA....'
-    ], 4);
-
-    var randomTexture = this.game.create.texture('random', [
-        '33333',
-        '34443',
-        '34243',
-        '34443',
-        '33333',
-        '33333',
-        '32423',
-        '34243',
-        '32423',
-        '33333'
-    ], 4);
-
     var xPos = 75;
     var yPos = 15;
     var xSpace = 10;
-    xPos += this.game.add.button( xPos, yPos, sheetTexture, this._newLevel, this).width + xSpace;
-    xPos += this.game.add.button( xPos, yPos, randomTexture, this._randomLevel, this ).width + xSpace;
-    xPos += this.game.add.button( xPos, yPos, folderTexture, this._openLevel, this ).width + xSpace;
-    xPos += this.game.add.button( xPos, yPos, saveTexture, this._saveLevel, this ).width + xSpace;
-    xPos += this.game.add.button( xPos, yPos, runTexture, this._playLevel, this ).width + xSpace;
-    this.game.add.button( xPos, yPos, trashTexture, this._deleteLevel, this );
+
+    var buttonNew = this.game.add.button( xPos, yPos, "icon_new", this._newLevel, this);
+
+    var iconRowHeight = buttonNew.height;
+
+    xPos = buttonNew.x + buttonNew.width + xSpace;
+    var buttonRandom = this.game.add.button( xPos, yPos, "icon_random", this._randomLevel, this );
+    buttonRandom.y += (iconRowHeight - buttonRandom.height)/2;
+
+    xPos =  buttonRandom.x + buttonRandom.width + xSpace;
+    var buttonOpen = this.game.add.button( xPos, yPos, "icon_folder", this._openLevel, this );
+    buttonOpen.y += (iconRowHeight - buttonOpen.height)/2;
+
+    xPos =  buttonOpen.x + buttonOpen.width + xSpace;
+    var buttonSave = this.game.add.button( xPos, yPos, "icon_save", this._saveLevel, this );
+    buttonSave.y += (iconRowHeight - buttonSave.height)/2;
+
+    xPos =  buttonSave.x + buttonSave.width + xSpace;
+    var buttonDelete = this.game.add.button( xPos, yPos, "icon_trash", this._deleteLevel, this );
+    buttonDelete.y += (iconRowHeight - buttonDelete.height)/2;
+
+    this.buttonDelete = buttonDelete;
+
+    this.groupButtons.add( buttonNew );
+    this.groupButtons.add( buttonRandom );
+    this.groupButtons.add( buttonOpen );
+    this.groupButtons.add( buttonSave );
+    this.groupButtons.add( buttonDelete );
+
+    this._updateButtons();
 
     this._coords = this.game.add.text( 75, 70, "X: 1\tY: 1", { font: "20px Courier", fill: "#000", tabs: 80 } );
 
@@ -153,45 +153,213 @@ doodleBreakout.LevelDesigner.prototype._createUI = function() {
 
 
 doodleBreakout.LevelDesigner.prototype._saveLevel = function(){
-    return doodleBreakout.LevelManager.addLevel( {
-        id: this.levelId,
-        structure: this.data
-    }, true );
-};
+    if( !doodleBreakout.LevelManager.validateStructure( this.data ) ){
+        this._showPopup( "Can not save empty level" );
+        return false;
+    }
 
+    if( this.levelId ){
+        doodleBreakout.LevelManager.editLevel( this.levelId, {
+            structure: this.data
+        }, true );
 
-doodleBreakout.LevelDesigner.prototype._playLevel = function(){
-    var id = this._saveLevel();
-    // TODO: start game
+        this.savedLevel = true;
+        this._updateButtons();
+
+        return true;
+    }
+
+    var group = this._showPopup( "Saved" );
+
+    var levelText = this.game.add.bitmapText( 200, 200, 'larafont', 'Ok', 50 );
+    levelText.x = (this.game.width/2) - (levelText.width/2);
+    levelText.anchor.setTo(0, 0);
+    levelText.inputEnabled = true;
+    levelText.input.useHandCursor = true;
+    levelText.events.onInputDown.add( function(){
+        this.levelId = doodleBreakout.LevelManager.addLevel( {
+            structure: this.data
+        }, true );
+        this._updateButtons();
+        this._closePopup();
+    }, this );
+
+    group.add( levelText );
+
+    this.savedLevel = true;
+    this._updateButtons();
+
+    return true;
 };
 
 
 doodleBreakout.LevelDesigner.prototype._newLevel = function(){
-    this._reset();
-    this._refresh();
+    if( ! this.savedLevel ){
+        var group = this._showPopup( "Save changes" );
+        var yes = this.game.add.bitmapText( 200, 200, 'larafont', 'Yes', 50 );
+        yes.x = (this.game.width/6)*2 - (yes.width/2);
+        yes.anchor.setTo(0, 0);
+        yes.inputEnabled = true;
+        yes.input.useHandCursor = true;
+        yes.events.onInputDown.add( function(){
+            this._saveLevel();
+            if( !!this.levelId ){
+                this._updateButtons();
+                this._closePopup();
+            }
+        }, this );
+        group.add( yes );
+
+        var no = this.game.add.bitmapText( 200, 200, 'larafont', 'No', 50 );
+        no.x = (this.game.width/6)*4 - (no.width/2);
+        no.anchor.setTo(0, 0);
+        no.inputEnabled = true;
+        no.input.useHandCursor = true;
+        no.events.onInputDown.add( function(){
+            this.savedLevel = true;
+            this._reset();
+            this._refresh();
+            this._updateButtons();
+            this._closePopup();
+        }, this );
+        group.add( no );
+    }
+    else {
+        this._reset();
+        this._refresh();
+        this._updateButtons();
+    }
 };
 
 
 doodleBreakout.LevelDesigner.prototype._deleteLevel = function(){
-    // TODO: delete selected level
-    this._reset();
-    this._refresh();
+    if( ! this.levelId ){
+        return false;
+    }
+
+    var group = this._showPopup( "Delete this level" );
+
+    var levelText = this.game.add.bitmapText( 200, 200, 'larafont', 'Yes', 50 );
+    levelText.x = (this.game.width/2) - (levelText.width/2);
+    levelText.anchor.setTo(0, 0);
+    levelText.inputEnabled = true;
+    levelText.input.useHandCursor = true;
+    levelText.events.onInputDown.add( function(){
+        doodleBreakout.LevelManager.removeLevel( this.levelId );
+        this._reset();
+        this._refresh();
+        this._updateButtons();
+        this._closePopup();
+    }, this );
+
+    group.add( levelText );
 };
 
 
 doodleBreakout.LevelDesigner.prototype._openLevel = function(){
-    // TODO: open from local storage
-    this._reset();
-    var levelData = doodleBreakout.LevelManager.getLastAlterableLevel();
-    this.data = levelData.structure;
-    this.levelId = levelData.id;
-    this._refresh();
+    var group = this._showPopup( "Select level" );
+
+    var levels = doodleBreakout.LevelManager.getAlterableLevelIds();
+
+    var levelAmount = levels.length;
+
+    var xPos = 75;
+    var yPos = 75;
+
+    for( var i = 0; i < levelAmount; i++ ){
+        var levelText = this.game.add.bitmapText( xPos, yPos, 'larafont', 'L'+ i, 30 );
+        levelText.anchor.setTo(0, 0);
+        levelText.inputEnabled = true;
+        levelText.input.useHandCursor = true;
+        levelText.events.onInputDown.add( function( text, pointer, levelId ){
+            this._reset();
+
+            var levelData = doodleBreakout.LevelManager.getLevelData( levelId );
+
+            this.data = levelData.structure;
+            this.levelId = levelData.id;
+
+            this._updateButtons();
+            this._refresh();
+            this._closePopup();
+        }, this, null, levels[ i ] );
+
+        xPos += levelText.width + 25;
+
+        if( xPos > this.game.width - 100 ){
+            xPos = 75;
+            yPos += levelText.height + 20;
+        }
+
+        group.add( levelText );
+    }
+};
+
+
+doodleBreakout.LevelDesigner.prototype._updateButtons = function(){
+    this.buttonDelete.visible = !!this.levelId;
+};
+
+
+doodleBreakout.LevelDesigner.prototype._showPopup = function( titleText ){
+    this.groupPopup.removeAll( true );
+
+    this.game.input.reset( true );
+
+    this.groupButtons.forEach( function( button ){
+        button.input.enabled = false;
+    }, this );
+
+    this.groupPalette.forEach( function( palette ){
+        palette.input.enabled = false;
+    }, this );
+
+    var overlay = this.game.add.sprite( 0, 0, 'pause' );
+    overlay.alpha = 0.9;
+
+    var back = this.game.add.bitmapText( 20, 10, 'larafont', '<', 48 );
+    back.anchor.setTo(0, 0);
+    back.inputEnabled = true;
+    back.events.onInputDown.add( this._closePopup, this);
+
+    var title = this.game.add.bitmapText( 50, 10, 'larafont', titleText, 48 );
+    title.x = (this.game.width/2) - (title.width/2);
+
+    this.groupPopup.add( overlay );
+    this.groupPopup.add( back );
+    this.groupPopup.add( title );
+
+    this.game.world.bringToTop( this.groupPopup );
+    return this.groupPopup;
+};
+
+doodleBreakout.LevelDesigner.prototype._closePopup = function(){
+    this.groupPopup.removeAll( true );
+
+    this._addMouseListener();
+
+    this.groupButtons.forEach( function( button ){
+        button.input.enabled = true;
+    }, this );
+
+    this.groupPalette.forEach( function( palette ){
+        palette.input.enabled = true;
+    }, this );
+};
+
+
+doodleBreakout.LevelDesigner.prototype._addMouseListener = function(){
+    this.game.input.mouse.capture = true;
+    this.game.input.onDown.add(this._paint, this);
+    this.game.input.addMoveCallback(this._paint, this);
 };
 
 
 doodleBreakout.LevelDesigner.prototype._randomLevel = function(){
-    // TODO: optimize random level generation
+    var saveId = this.levelId;
     this._reset();
+    this.levelId = saveId;
+    this.savedLevel = false;
 
     var rnd = function( a, b ){
         return Math.floor((Math.random() * b) + a);
@@ -237,7 +405,7 @@ doodleBreakout.LevelDesigner.prototype._randomLevel = function(){
  */
 doodleBreakout.LevelDesigner.prototype._reset = function() {
     this.levelId = null;
-    this.groupBricks.removeAll( true );
+
     this.data = [];
     this._dataBricks = [];
     for ( var y = 0; y < this._amountRows; y++ ){
@@ -278,13 +446,13 @@ doodleBreakout.LevelDesigner.prototype._refresh = function() {
  */
 doodleBreakout.LevelDesigner.prototype._drawPalette = function() {
     var iPaletteCols = parseInt( ( this.game.width - this.paletteOffsetX ) / this.blockWidth );
-    var iPaletteRows = parseInt( this.offsetY / this.blockWidth );
+    var iPaletteRows = parseInt( this.paletteOffsetY - this.offsetY / this.blockWidth );
 
     var iBrickType = 1;
     try {
         for( var iRow = 0; iRow < iPaletteRows; iRow++ ){
             for( var iCol = 0; iCol < iPaletteCols; iCol++ ){
-                var brick = this._drawBrick( iBrickType, this.paletteOffsetX + iCol*this.blockWidth, iRow*this.blockHeight );
+                var brick = this._drawBrick( iBrickType, this.paletteOffsetX + iCol*this.blockWidth, this.paletteOffsetY+iRow*this.blockHeight );
                 brick.inputEnabled = true;
                 brick.input.useHandCursor = true;
                 brick.events.onInputDown.add( function( brick, pointer, type ){
@@ -376,6 +544,7 @@ doodleBreakout.LevelDesigner.prototype._paint = function( oPointer ) {
     }
 
     if( oPointer.rightButton.isDown ){
+        this.savedLevel = false;
         this.data[iCoordY][iCoordX] = 0;
         if( this._dataBricks[iCoordY][iCoordX] !==  null ){
             this._dataBricks[iCoordY][iCoordX].destroy();
@@ -389,6 +558,8 @@ doodleBreakout.LevelDesigner.prototype._paint = function( oPointer ) {
         if( this._dataBricks[iCoordY][iCoordX] !== null ){
             this._dataBricks[iCoordY][iCoordX].destroy();
         }
+
+        this.savedLevel = false;
 
         this.data[iCoordY][iCoordX] = this._color;
 
