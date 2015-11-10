@@ -43,8 +43,8 @@ doodleBreakout.SoundManager = {
 
         this._musicEnabled = enabled === true;
 
-        if(window.localStorage) {
-            window.localStorage.setItem(this.LOCAL_STORAGE_KEYS.MUSIC_ENABLED, this._musicEnabled);
+        if(this.storage) {
+            this.storage.setItem(this.LOCAL_STORAGE_KEYS.MUSIC_ENABLED, this._musicEnabled);
         }
 
         this._updateMusic();
@@ -65,13 +65,17 @@ doodleBreakout.SoundManager = {
 
         this._sfxEnabled = enabled === true;
 
-        if(window.localStorage) {
-            window.localStorage.setItem(this.LOCAL_STORAGE_KEYS.SFX_ENABLED, this._sfxEnabled);
+        if(this.storage) {
+            this.storage.setItem(this.LOCAL_STORAGE_KEYS.SFX_ENABLED, this._sfxEnabled);
         }
     },
 
     init: function (game) {
         this._game = game;
+
+        if(this.storage === undefined) {
+            this.storage = window.localStorage;
+        }
 
         this._music = game.add.audio('music', 0.7, true);
         this._music.play();
@@ -90,9 +94,9 @@ doodleBreakout.SoundManager = {
         this._sfx.addMarker('collect_coin', 3, 0.3);
         this._sfx.addMarker('break', 1, 0.6);
 
-        if(window.localStorage){
-            this._sfxEnabled = window.localStorage.getItem(this.LOCAL_STORAGE_KEYS.SFX_ENABLED) !== "false";
-            this._musicEnabled = window.localStorage.getItem(this.LOCAL_STORAGE_KEYS.MUSIC_ENABLED) !== "false";
+        if(this.storage){
+            this._sfxEnabled = this.storage.getItem(this.LOCAL_STORAGE_KEYS.SFX_ENABLED) !== "false";
+            this._musicEnabled = this.storage.getItem(this.LOCAL_STORAGE_KEYS.MUSIC_ENABLED) !== "false";
         }
 
         this._updateMusic();
