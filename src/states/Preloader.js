@@ -36,7 +36,7 @@ doodleBreakout.Preloader.prototype = {
         this.game.load.image('icon_trash', 'assets/icons/muelleimer.png');
         this.game.load.image('icon_new', 'assets/icons/neu.png');
         this.game.load.image('icon_folder', 'assets/icons/ordner.png');
-        this.game.load.image('icon_pause', 'assets/icons/pause.png');
+        this.game.load.spritesheet('icon_pause', 'assets/icons/pause.png', 29, 40);
         this.game.load.image('icon_random', 'assets/icons/random.png');
         this.game.load.image('icon_save', 'assets/icons/speichern.png');
         this.game.load.image('icon_start', 'assets/icons/start.png');
