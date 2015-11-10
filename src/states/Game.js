@@ -50,6 +50,9 @@ doodleBreakout.Game.prototype.create = function () {
     this.pauseIcon.x -= this.pauseIcon.width + 5;
     this.pauseIcon.y -= this.pauseIcon.height + 5;
 
+    this.pauseIcon.onInputOver.add(this.over, this);
+    this.pauseIcon.onInputOut.add(this.out, this);
+
 
     this.pause = game.input.keyboard.addKey(Phaser.Keyboard.P);
     this.pause.onDown.add(this.pauseGame, this);
