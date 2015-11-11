@@ -63,7 +63,7 @@ doodleBreakout.Plattform.prototype.handleOrientationEvent = function(event) {
     var gamma = event.gamma;
     gamma = Math.max(Math.min(gamma, 10), -10);
     gamma = gamma / 10;
-    if(Math.abs(gamma) < 0.3) {
+    if(Math.abs(gamma) < 0.5) {
         gamma = 0;
     }
     this.body.velocity.set(800 * gamma, 0);
