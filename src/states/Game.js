@@ -168,7 +168,7 @@ doodleBreakout.Game.prototype.collideBallBrick = function (ball, brick) {
 
         if ( !this.bricks.children.find(function(block){ return block.destructionNeeded && block.alive; })) {
 
-        doodleBreakout.ScoresManager.addBesttime("level_" + this._level, Math.floor(this.timer.seconds));
+        doodleBreakout.ScoresManager.addBesttime(this._level, Math.floor(this.timer.seconds));
         this.timer.stop();
 
         this._level = doodleBreakout.LevelManager.getNextLevelId(this._level);
