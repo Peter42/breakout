@@ -80,6 +80,14 @@ doodleBreakout.SoundManager = {
         this._sfx.allowMultiple = true;
 
         this._sfx.addMarker('hit', 0, 0.3);
+        this._sfx.addMarker('worldcollide', 8, 0.3, 0.2);
+        this._sfx.addMarker('paddle', 9, 0.2);
+        this._sfx.addMarker('hit_glass', 2, 0.2);
+        this._sfx.addMarker('drop', 6, 0.2);
+        this._sfx.addMarker('blubb', 7, 0.2);
+        this._sfx.addMarker('flop', 5, 0.2);
+        this._sfx.addMarker('klack', 4, 0.3);
+        this._sfx.addMarker('collect_coin', 3, 0.3);
         this._sfx.addMarker('break', 1, 0.6);
 
         if(window.localStorage){

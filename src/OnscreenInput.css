@@ -1,0 +1,49 @@
+.circle {
+    border-radius: 100px;
+    width: 200px;
+    height: 200px;
+    position: absolute;
+    left: 300px;
+    top: 30px;
+}
+
+#dpad {
+    background-color: red;
+}
+
+#dpadshadow {
+    background-color: #FDFDFD;
+}
+
+#pad {
+    border-radius: 100px;
+    width: 760px;
+    height: 200px;
+    position: absolute;
+    left: 20px;
+    top: 30px;
+    background-color: lightgray;
+}
+
+#onscreencontroll {
+    position: relative;
+    width: 800px;
+    height: 250px;
+    background: gray;
+}
+
+#fakeInput {
+    position: absolute;
+    opacity: 0;
+    top: -100px;
+}
+
+body {
+    margin: 0;
+}
+
+#game {
+    /* Transition for rotator gimmick */
+
+    transition: transform 0.5s;
+}

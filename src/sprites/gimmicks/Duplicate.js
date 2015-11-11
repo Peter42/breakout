@@ -9,6 +9,9 @@ doodleBreakout.Duplicate.prototype = Object.create(doodleBreakout.Gimmick.protot
 doodleBreakout.Duplicate.prototype.constructor = doodleBreakout.Duplicate;
 
 doodleBreakout.Duplicate.prototype.collected = function(){
+    //earn Bonus Points for each collected Duplicate
+    this.game.state.states.Game.earnPoints(50);
+
     var currentBall = this.ball.getFirstAlive();
 
     var x = currentBall.body.velocity.x;

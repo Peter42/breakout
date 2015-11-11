@@ -8,14 +8,14 @@ doodleBreakout.ScoresManager = {
 
     _scores : [],
     _times: {},
-    _initialized: true,
+    _initialized: false,
 
     LOCAL_STORAGE_KEYS: {
         HIGHSCORES : "ScoresManager._highscores",
         BESTTIMES  : "ScoresManager._besttimes"
     },
 
-    MAX_HIGHSCORE_SIZE: 2,
+    MAX_HIGHSCORE_SIZE: 10,
 
     addBesttime: function (levelId, secondsUsed){
         if(! this._initialized ) {
@@ -38,8 +38,8 @@ doodleBreakout.ScoresManager = {
             this._times[levelId] = secondsUsed;
         }
 
-        if(window.localStorage) {
-            window.localStorage.setItem(this.LOCAL_STORAGE_KEYS.BESTTIMES, JSON.stringify(this._times));
+        if(this.storage) {
+            this.storage.setItem(this.LOCAL_STORAGE_KEYS.BESTTIMES, JSON.stringify(this._times));
         }
     },
 
@@ -69,8 +69,8 @@ doodleBreakout.ScoresManager = {
             this._scores.pop();
         }
 
-        if(window.localStorage) {
-            window.localStorage.setItem(this.LOCAL_STORAGE_KEYS.HIGHSCORES, JSON.stringify(this._scores));
+        if(this.storage) {
+            this.storage.setItem(this.LOCAL_STORAGE_KEYS.HIGHSCORES, JSON.stringify(this._scores));
         }
     },
 
@@ -98,34 +98,37 @@ doodleBreakout.ScoresManager = {
         this._scores = [];
         this._times = {};
 
-        if(window.localStorage){
-            window.localStorage.removeItem(this.LOCAL_STORAGE_KEYS.HIGHSCORES);
-            window.localStorage.removeItem(this.LOCAL_STORAGE_KEYS.BESTTIMES);
+        if(this.storage){
+            this.storage.removeItem(this.LOCAL_STORAGE_KEYS.HIGHSCORES);
+            this.storage.removeItem(this.LOCAL_STORAGE_KEYS.BESTTIMES);
         }
     },
 
     init: function (game) {
         this._game = game;
 
+        if(!this.storage) {
+            this.storage = window.localStorage;
+        }
 
-        if(window.localStorage){
-            var scores = window.localStorage.getItem(this.LOCAL_STORAGE_KEYS.HIGHSCORES);
+        if(this.storage){
+            var scores = this.storage.getItem(this.LOCAL_STORAGE_KEYS.HIGHSCORES);
             if (scores) {
                 try {
                     this._scores = JSON.parse(scores);
                 } catch(e) {
                     console.log(e);
-                    window.localStorage.removeItem(this.LOCAL_STORAGE_KEYS.HIGHSCORES);
+                    this.storage.removeItem(this.LOCAL_STORAGE_KEYS.HIGHSCORES);
                 }
             }
 
-            var times = window.localStorage.getItem(this.LOCAL_STORAGE_KEYS.BESTTIMES);
+            var times = this.storage.getItem(this.LOCAL_STORAGE_KEYS.BESTTIMES);
             if (times) {
                 try {
                     this._times = JSON.parse(times);
                 } catch(e) {
                     console.log(e);
-                    window.localStorage.removeItem(this.LOCAL_STORAGE_KEYS.BESTTIMES);
+                    this.storage.removeItem(this.LOCAL_STORAGE_KEYS.BESTTIMES);
                 }
             }
         }

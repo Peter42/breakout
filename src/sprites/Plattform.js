@@ -17,16 +17,24 @@ doodleBreakout.Plattform = function (game, x, y) {
     this.body.immovable = true;
     this.body.collideWorldBounds = true;
 
+    this.sizeValues = {
+        height: this.height,
+        width: this.width
+    }
 };
 
 doodleBreakout.Plattform.prototype = Object.create(Phaser.Sprite.prototype);
 doodleBreakout.Plattform.prototype.constructor = doodleBreakout.Plattform;
 
 doodleBreakout.Plattform.prototype.update = function() {
-    if (this.leftKey.isDown) {
+    if (this.game.input.activePointer.isDown) {
+        this.releaseBall();
+    }
+
+    if (this.leftKey.isDown || doodleBreakout.OnscreenInput.isLeft()) {
         this.body.velocity.set(-800, 0);
     }
-    else if (this.rightKey.isDown) {
+    else if (this.rightKey.isDown || doodleBreakout.OnscreenInput.isRight()) {
         this.body.velocity.set(800, 0);
     } else {
         this.body.velocity.set(0, 0);
@@ -47,7 +55,32 @@ doodleBreakout.Plattform.prototype.holdBall = function( ball ){
 };
 
 doodleBreakout.Plattform.prototype.releaseBall = function(){
-    this._ball.start();
-    this._ball = null;
+    if(this._ball && !this.game.state.states.Game.doodlebreakoutIsPaused ) {
+        this._ball.start();
+        this._ball = null;
+    }
+};
+
+doodleBreakout.Plattform.prototype.resetPlattform = function(){
+    this.height = this.sizeValues.height;
+    this.width = this.sizeValues.width;
+};
+
+doodleBreakout.Plattform.prototype.grow = function(){
+    if( this.width >= this.sizeValues.width * 2 ){
+        return false;
+    }
+    this.width += (this.sizeValues.width/100) * 10;
+    this.height += (this.sizeValues.height/100) * 10;
+    return true;
+};
+
+doodleBreakout.Plattform.prototype.shrink = function(){
+    if( this.width < ( this.sizeValues.width/3 ) ){
+        return false;
+    }
+    this.width -= (this.sizeValues.width/100) * 10;
+    this.height -= (this.sizeValues.height/100) * 10;
+    return true;
 };
 
