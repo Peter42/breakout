@@ -13,6 +13,7 @@
     <script src="./app.js"></script>
     <script src="./SoundManager.js"></script>
     <script src="./ScoresManager.js"></script>
+    <script src="./LevelManager.js"></script>
     <script src="./OnscreenInput.js"></script>
 
     <!-- load States-->
@@ -27,6 +28,7 @@
     <script src="./states/Preloader.js"></script>
     <script src="./states/Settings.js"></script>
     <script src="./states/GameOver.js"></script>
+    <script src="./states/LevelDesigner.js"></script>
 
     <!-- load Groups -->
     <script src="./groups/Lives.js"></script>
@@ -55,7 +57,6 @@
     <script src="./sprites/gimmicks/Rotator.js"></script>
 
     <!-- load Objects -->
-    <script src="./LevelFactory.js"></script>
     <script src="./Level.js"></script>
 
     <link rel="stylesheet" type="text/css" href="OnscreenInput.css">
@@ -69,7 +70,7 @@
         <div id="game">
         </div>
 
-        <div id="onscreencontroll">
+        <div id="onscreencontroll" style="display: none">
             <div id="pad"></div>
             <div class="circle" id="dpadshadow"></div>
             <div class="circle" id="dpad"></div>

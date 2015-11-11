@@ -45,6 +45,15 @@ doodleBreakout.Game.prototype.create = function () {
     this.easteregg = game.input.keyboard.addKey(Phaser.Keyboard.E);
     this.easteregg.onDown.add(this.toggleEasteregg, this);
 
+
+    this.pauseIcon = game.add.button( this.game.width, this.game.height, 'icon_pause', this.pauseGame, this );
+    this.pauseIcon.x -= this.pauseIcon.width + 5;
+    this.pauseIcon.y -= this.pauseIcon.height + 5;
+
+    this.pauseIcon.onInputOver.add(this.over, this);
+    this.pauseIcon.onInputOut.add(this.out, this);
+
+
     this.pause = game.input.keyboard.addKey(Phaser.Keyboard.P);
     this.pause.onDown.add(this.pauseGame, this);
 
@@ -60,7 +69,7 @@ doodleBreakout.Game.prototype.create = function () {
     this.fallingGimmiks = new doodleBreakout.Gimmicks(game, this.lives, this.ball, this.plattform);
     game.add.existing(this.fallingGimmiks);
 
-    this.level = doodleBreakout.LevelFactory.getLevel(game, 1, this._level);
+    this.level = doodleBreakout.LevelManager.getLevel(this._level);
 
     this.bricks = this.level.generateBricks(this.fallingGimmiks);
     game.add.existing(this.bricks);
@@ -159,14 +168,15 @@ doodleBreakout.Game.prototype.collideBallBrick = function (ball, brick) {
 
         if ( !this.bricks.children.find(function(block){ return block.destructionNeeded && block.alive; })) {
 
-        doodleBreakout.ScoresManager.addBesttime("level_" + this._level, Math.floor(this.timer.seconds));
+        doodleBreakout.ScoresManager.addBesttime(this._level, Math.floor(this.timer.seconds));
         this.timer.stop();
 
-        if (this.game.levels < ( this._level + 1 )) {
+        this._level = doodleBreakout.LevelManager.getNextLevelId(this._level);
+
+        if( this._level == false ){
             this.lostGame();
         }
         else {
-            this._level++;
             this._lives = this.lives.countLiving();
             this.state.start('Game');
         }
@@ -189,6 +199,9 @@ doodleBreakout.Game.prototype.pauseGame = function () {
 
         this.pauseOverlay = this.game.add.sprite(0, 0, 'pause');
         this.pauseOverlay.alpha = 0.6;
+
+        this.pauseIcon.bringToTop();
+        this.pauseIcon.frame = 1;
 
         this.title = this.game.add.bitmapText(this.game.width / 2, 40, 'larafont', 'Pause', 64);
         this.title.anchor.setTo(0.5, 0);
@@ -231,6 +244,8 @@ doodleBreakout.Game.prototype.pauseGame = function () {
         this.doodlebreakoutIsPaused = false;
         this.game.physics.arcade.isPaused = false;
         this.game.time.gameResumed();
+
+        this.pauseIcon.frame = 0;
 
         this.pauseOverlay.kill();
         this.title.kill();

@@ -11,10 +11,11 @@ doodleBreakout.MainMenu.prototype.create = function(){
     var title = this.game.add.bitmapText(this.game.width / 2, 10, 'larafont', 'Main Menu', 64);
     title.anchor.setTo(0.5, 0);
 
-    this._generateMenuItem('Start Game', 'LevelSelection', 150);
-    this._generateMenuItem('Highscores', 'Highscores', 250);
-    this._generateMenuItem('Settings', 'Settings', 350);
-    this._generateMenuItem('Credits', 'Credits', 450);
+    this._generateMenuItem('Start Game', 'LevelSelection', 120);
+    this._generateMenuItem('Highscores', 'Highscores', 220);
+    this._generateMenuItem('Settings', 'Settings', 320);
+    this._generateMenuItem('Create Level', 'LevelDesigner', 420);
+    this._generateMenuItem('Credits', 'Credits', 520);
 };
 
 doodleBreakout.MainMenu.prototype._generateMenuItem = function (text, targetState, y) {

@@ -7,6 +7,10 @@ doodleBreakout.LevelSelection = function( game ){
 doodleBreakout.LevelSelection.prototype = Object.create(doodleBreakout.AbstractMenu.prototype);
 doodleBreakout.LevelSelection.prototype.constructor = doodleBreakout.LevelSelection;
 
+doodleBreakout.LevelSelection.prototype._pages = 0;
+doodleBreakout.LevelSelection.prototype._currentPage = -1;
+doodleBreakout.LevelSelection.prototype._items = [];
+
 doodleBreakout.LevelSelection.prototype.create = function(){
 
     this.createBackHome();
@@ -14,35 +18,99 @@ doodleBreakout.LevelSelection.prototype.create = function(){
     var title = this.game.add.bitmapText(this.game.width / 2, 10, 'larafont', 'Select Level', 64);
     title.anchor.setTo(0.5, 0);
 
-    for(var i = 1; i <= this.game.levels; ++i) {
-        var x = 250 * ( (i - 1) % 3) + 130;
-        var y = 150 * Math.ceil(i / 3);
+    var levelIds = doodleBreakout.LevelManager.getLevelIds();
 
-        var text = "Level " + i;
-        var besttime = doodleBreakout.ScoresManager.getBesttimes()['level_' + i];
+    this._pages = Math.ceil(levelIds.length/9);
+    this._items = [];
+
+    for(var i = 0; i < levelIds.length; ++i) {
+        var x = 230 * (i % 3) + 170;
+        var y = 170 * (Math.floor( (i % 9) / 3) + 1);
+
+        var text = (i + 1) + "";
+        var besttime = doodleBreakout.ScoresManager.getBesttimes()[levelIds[i]];
+
+        var tile = this.game.add.sprite(x,y, 'tile');
+        tile.anchor.setTo(0.5, 0.5);
+
+        var item = this.game.add.bitmapText(x, y, 'larafont', text, 60);
+        item.anchor.setTo(0.5, 0.5);
+
+        tile.inputEnabled = true;
+
+        tile.doodleBreakout = { 'targetLevel' : levelIds[i] };
+
+        tile.events.onInputDown.add(this.startLevel, this);
+        tile.events.onInputOver.add(this.over, this);
+        tile.events.onInputOut.add(this.out, this);
+
+        var besttimeitem = undefined;
         if(besttime){
             if(besttime % 60 < 10) {
                 besttime = Math.floor(besttime / 60) + ":0" + (besttime % 60);
             } else {
                 besttime = Math.floor(besttime / 60) + ":" + (besttime % 60);
             }
+
+            besttimeitem = this.game.add.bitmapText(x, y + 45, 'larafont', besttime, 36);
+            besttimeitem.anchor.setTo(0.5, 0.5);
         }
 
-        var item = this.game.add.bitmapText(x, y, 'larafont', text, 48);
-        item.anchor.setTo(0.5, 0);
-        item.inputEnabled = true;
+        this._items.push([ tile, item, besttimeitem ]);
 
-        item.doodleBreakout = { 'targetLevel' : i };
-
-        item.events.onInputDown.add(this.startLevel, this);
-        item.events.onInputOver.add(this.over, this);
-        item.events.onInputOut.add(this.out, this);
-
-        var besttimeitem = this.game.add.bitmapText(x, y + 50, 'larafont', besttime, 36);
-        besttimeitem.anchor.setTo(0.5, 0);
     }
+
+    this._goLeft = this.game.add.bitmapText(45,340, 'larafont', "<", 60);
+    this._goLeft.anchor.setTo(0.5);
+    this._goRight = this.game.add.bitmapText(this.world.width - 45,340, 'larafont', "<", 60);
+    this._goRight.anchor.setTo(0.5);
+    this._goRight.rotation = Math.PI;
+
+    this._goRight.inputEnabled = true;
+    this._goRight.events.onInputDown.add(this.nextPage, this);
+    this._goRight.events.onInputOver.add(this.over, this);
+    this._goRight.events.onInputOut.add(this.out, this);
+
+    this._goLeft.inputEnabled = true;
+    this._goLeft.events.onInputDown.add(this.previousPage, this);
+    this._goLeft.events.onInputOver.add(this.over, this);
+    this._goLeft.events.onInputOut.add(this.out, this);
+
+    this._setPage(0);
 };
 
 doodleBreakout.LevelSelection.prototype.startLevel = function(target){
     this.state.start( 'Game', true, false, {level: target.doodleBreakout.targetLevel} );
+};
+
+doodleBreakout.LevelSelection.prototype._setPage = function(page){
+    this._currentPage = page;
+
+    for(var i = 0; i < this._items.length; ++i) {
+        var items = this._items[i];
+        var enabled = (Math.floor(i/9) === page);
+
+        for(var j = 0; j < items.length; ++j) {
+            if (items[j]) {
+                items[j].visible = enabled;
+            }
+        }
+
+    }
+
+    this._goLeft.visible = (this._currentPage > 0);
+    this._goRight.visible = (this._currentPage + 1 < this._pages);
+
+};
+
+doodleBreakout.LevelSelection.prototype.previousPage = function(){
+    if(this._currentPage > 0){
+        this._setPage(this._currentPage - 1);
+    }
+};
+
+doodleBreakout.LevelSelection.prototype.nextPage = function(){
+    if(this._currentPage + 1 < this._pages){
+        this._setPage(this._currentPage + 1);
+    }
 };

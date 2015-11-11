@@ -17,13 +17,16 @@ doodleBreakout.Level = function ( game, structure, id, probability ) {
  */
 doodleBreakout.Level.prototype.constructor = doodleBreakout.Level;
 
+doodleBreakout.Level.offsetY = 100;
+doodleBreakout.Level.offsetX = 0;
+
 doodleBreakout.Level.prototype.generateBricks = function( gimmicks ){
         gimmicks.setCustomProbability( this._probability );
 
         var bricks = new Phaser.Group( this.game );
 
-        for ( var y = 100, i= 0; (i < this._structure.length) && (y<this.game.height); y += 17, i++ ) {
-            for (var x = 0, j = 0; (j < this._structure[ i].length) && (x <= this.game.width - 50); x += 50, j++ ) {
+        for ( var y = doodleBreakout.Level.offsetY, i= 0; (i < this._structure.length) && (y<this.game.height); y += 17, i++ ) {
+            for (var x = doodleBreakout.Level.offsetX, j = 0; (j < this._structure[ i].length) && (x <= this.game.width - 50); x += 50, j++ ) {
                 if( this._structure[i][j] ) {
                     var gimmick = gimmicks.randomGimmick( x, y );
                     var brick = doodleBreakout.BlockFactory.get( this._structure[i][j], this.game, x, y );

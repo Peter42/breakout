@@ -1,7 +1,7 @@
 var doodleBreakout = doodleBreakout || {};
 
 doodleBreakout.Preloader = function( game ){
-
+    this._levels = 0;
 };
 
 doodleBreakout.Preloader.prototype = {
@@ -29,7 +29,19 @@ doodleBreakout.Preloader.prototype = {
         this.game.load.spritesheet('block04', 'assets/images/block04.png', 50, 16);
         this.game.load.spritesheet('block05', 'assets/images/blockfest.png', 50, 16);
         this.game.load.image('hintergrund', 'assets/images/hintergrund.png');
+        this.game.load.image('tile', 'assets/images/kachel.png');
         this.game.load.image('easteregg', 'assets/images/easteregg.png');
+
+        // load icons
+        this.game.load.image('icon_trash', 'assets/icons/muelleimer.png');
+        this.game.load.image('icon_new', 'assets/icons/neu.png');
+        this.game.load.image('icon_folder', 'assets/icons/ordner.png');
+        this.game.load.spritesheet('icon_pause', 'assets/icons/pause.png', 29, 40);
+        this.game.load.image('icon_random', 'assets/icons/random.png');
+        this.game.load.image('icon_save', 'assets/icons/speichern.png');
+        this.game.load.image('icon_start', 'assets/icons/start.png');
+        this.game.load.image('icon_stop', 'assets/icons/stop.png');
+
 
         //Load font files
         this.game.load.bitmapFont('larafont', 'assets/fonts/larafont.png', 'assets/fonts/larafont.xml');
@@ -53,7 +65,8 @@ doodleBreakout.Preloader.prototype = {
 
         var levels = this.game.cache.getJSON( 'levelIndex' );
 
-        this.game.levels = levels.length;
+        // TODO: remove this.game.levels
+        this._levels = this.game.levels = levels.length;
 
         for( var i = 1; i <= levels.length; i++ ){
             this.load.json( 'level_' + i, './levels/'+levels[(i-1)] );
@@ -66,6 +79,11 @@ doodleBreakout.Preloader.prototype = {
     create: function(){
         doodleBreakout.SoundManager.init(this.game);
         doodleBreakout.ScoresManager.init(this.game);
+        doodleBreakout.LevelManager.init( this.game );
+
+        for( var i = 1; i <= this._levels; i++ ){
+            doodleBreakout.LevelManager.addLevel( this.game.cache.getJSON( 'level_' + i ) );
+        }
 
         var hintergrund = new Phaser.Image(this.game, 0, 0, 'hintergrund');
         this.stage.addChildAt(hintergrund, 0);
