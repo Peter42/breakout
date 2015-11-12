@@ -12,11 +12,11 @@ doodleBreakout.MainMenu.prototype.create = function () {
     title.anchor.setTo(0.5, 0);
 
     // Single Player Icon
-    this._generateMenuIcon('icon_singleplayer', this.game.world.centerX - 120, 120, 'LevelSelection', 'singlePlayer');
+    this._generateMenuIcon('icon_singleplayer', this.game.world.centerX - 120, 90, 'LevelSelection', 'singlePlayer');
     // Multi Player Icon
-    this._generateMenuIcon('icon_multiplayer', this.game.world.centerX, 120, 'LevelSelection', 'multiPlayer');
+    this._generateMenuIcon('icon_multiplayer', this.game.world.centerX, 90, 'LevelSelection', 'multiPlayer');
     // Computer Player Icon
-    this._generateMenuIcon('icon_computer', this.game.world.centerX + 120, 120, 'LevelSelection', 'computer');
+    this._generateMenuIcon('icon_computer', this.game.world.centerX + 120, 90, 'LevelSelection', 'computer');
 
     this._generateMenuItem('Highscores', 220, 'Highscores');
     this._generateMenuItem('Settings', 320, 'Settings');
