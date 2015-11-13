@@ -22,7 +22,7 @@ doodleBreakout.GameOver.prototype.create = function(){
     doodleBreakout.OnscreenInput.openKeyboard();
 
     //For each leftover life, add 50 Points to the score
-    this._scores += (this._lives * 50);
+    this._score += (this._lives * 50);
 
 
     var title = this.game.add.bitmapText(this.world.centerX, 10, 'larafont', 'Game Over', 64);
