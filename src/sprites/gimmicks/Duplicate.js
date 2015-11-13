@@ -10,7 +10,7 @@ doodleBreakout.Duplicate.prototype.constructor = doodleBreakout.Duplicate;
 
 doodleBreakout.Duplicate.prototype.collected = function(){
     //earn Bonus Points for each collected Duplicate
-    this.game.state.states.Game.earnPoints(50);
+    this.game.state.callbackContext.earnPoints(50);
 
     var currentBall = this.ball.getFirstAlive();
 
@@ -23,7 +23,7 @@ doodleBreakout.Duplicate.prototype.collected = function(){
     currentBall.body.velocity.y = Math.sin(angle + Math.PI / 4) * velocity;
     currentBall.body.velocity.x = Math.cos(angle + Math.PI / 4) * velocity;
 
-    var ball = this.game.state.states.Game.addBall(currentBall.x,currentBall.y);
+    var ball = this.game.state.callbackContext.addBall(currentBall.x,currentBall.y);
     ball.isThunderball = currentBall.isThunderball;
     if( currentBall.isThunderball ){
         ball.activateThunderpower( currentBall.powerTimer.duration );

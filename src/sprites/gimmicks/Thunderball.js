@@ -11,7 +11,7 @@ doodleBreakout.Thunderball.prototype.constructor = doodleBreakout.Thunderball;
 
 doodleBreakout.Thunderball.prototype.collected = function(){
     //earn Bonus Points for each collected Duplicate
-    this.game.state.states.Game.earnPoints(80);
+    this.game.state.callbackContext.earnPoints(80);
 
     this.kill();
 

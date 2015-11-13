@@ -32,7 +32,7 @@ doodleBreakout.LevelSelection.prototype.init = function(gameMode){
             this._tileTint = 0x80FF00;
             this._titleText = 'Computer Mode';
             //TODO: enter target state name for computer
-            this._targetState = 'Game';
+            this._targetState = 'AutoGame';
             break;
     }
 };

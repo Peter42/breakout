@@ -178,7 +178,7 @@ doodleBreakout.Game.prototype.collideBallBrick = function (ball, brick) {
         }
         else {
             this._lives = this.lives.countLiving();
-            this.state.start('Game');
+            this.state.start(this.game.state.current);
         }
     }
 };
@@ -214,7 +214,7 @@ doodleBreakout.Game.prototype.pauseGame = function () {
 
         this.retry.events.onInputDown.add(function(){
             this._score = 0;
-            this.state.start('Game');
+            this.state.start(this.game.state.current);
         }, this);
         this.retry.events.onInputOver.add(this.over, this);
         this.retry.events.onInputOut.add(this.out, this);

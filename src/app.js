@@ -15,7 +15,7 @@ window.onload = function(){
     game.state.add( 'Highscores'    , doodleBreakout.Highscores );
     game.state.add( 'GameOver'      , doodleBreakout.GameOver );
     game.state.add( 'LevelDesigner' , doodleBreakout.LevelDesigner, true );
-    game.state.add( 'Dialogue'      , doodleBreakout.Dialogue );
+    game.state.add( 'AutoGame'      , doodleBreakout.AutoGame );
     game.state.add( 'Boot'          , doodleBreakout.Boot, true );
 
     doodleBreakout.OnscreenInput.init();
