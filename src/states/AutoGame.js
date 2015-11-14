@@ -111,3 +111,14 @@ doodleBreakout.AutoGame.prototype.update = function() {
         this.plattform.moveRight = false;
     }
 };
+
+doodleBreakout.Game.prototype.lostGame = function () {
+
+    var oParameters = {
+        level: doodleBreakout.LevelManager.getLevelIds()[0]
+    };
+
+    this._lives = 3;
+    this._score = 0;
+    this.state.start(this.game.state.current, true, false, oParameters);
+};
