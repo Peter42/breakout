@@ -16,6 +16,8 @@ doodleBreakout.LevelSelection.prototype._items = [];
 
 
 doodleBreakout.LevelSelection.prototype.init = function(gameMode){
+    this._playerClass = null;
+
     switch(gameMode){
         case 'singlePlayer':
             this._tileTint = 0x0080FF;
@@ -26,20 +28,19 @@ doodleBreakout.LevelSelection.prototype.init = function(gameMode){
             this._tileTint = 0xFF4500;
             this._titleText = 'Multi-Player';
             //TODO: enter target state name for multiplayer
-            this._targetState = 'Game';
+            this._targetState = 'GameMultiplayer';
             break;
         case 'computer':
             this._tileTint = 0x80FF00;
             this._titleText = 'Computer Mode';
             //TODO: enter target state name for computer
-            this._targetState = 'AutoGame';
+            this._targetState = 'GameComputer';
             break;
     }
 };
 
 
 doodleBreakout.LevelSelection.prototype.create = function(){
-
     this.createBackHome();
 
     var title = this.game.add.bitmapText(this.game.width / 2, 10, 'larafont', this._titleText, 64);
@@ -66,7 +67,9 @@ doodleBreakout.LevelSelection.prototype.create = function(){
 
         tile.inputEnabled = true;
 
-        tile.doodleBreakout = { 'targetLevel' : levelIds[i] };
+        tile.doodleBreakout = {
+            'targetLevel' : levelIds[i]
+        };
 
         tile.events.onInputDown.add(this.startLevel, this);
         tile.events.onInputOver.add(this.over, this);
@@ -107,7 +110,7 @@ doodleBreakout.LevelSelection.prototype.create = function(){
     this._setPage(0);
 };
 
-doodleBreakout.LevelSelection.prototype.startLevel = function(target){
+doodleBreakout.LevelSelection.prototype.startLevel = function( target ){
     this.state.start( this._targetState, true, false, {level: target.doodleBreakout.targetLevel} );
 };
 
@@ -123,12 +126,10 @@ doodleBreakout.LevelSelection.prototype._setPage = function(page){
                 items[j].visible = enabled;
             }
         }
-
     }
 
     this._goLeft.visible = (this._currentPage > 0);
     this._goRight.visible = (this._currentPage + 1 < this._pages);
-
 };
 
 doodleBreakout.LevelSelection.prototype.previousPage = function(){

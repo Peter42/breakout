@@ -9,8 +9,6 @@ doodleBreakout.AbstactBlock = function ( game, x, y, key ) {
 
     game.physics.enable(this, Phaser.Physics.ARCADE);
     this.body.immovable = true;
-
-    this.events.onKilled.add( this._onKill, this );
 };
 
 doodleBreakout.AbstactBlock.prototype = Object.create(Phaser.Sprite.prototype);
@@ -22,21 +20,39 @@ doodleBreakout.AbstactBlock.prototype._getMaxHealth = function() {
     return this.game.cache.getFrameCount(this.key);
 };
 
-doodleBreakout.AbstactBlock.prototype.hit = function(ball) {
+doodleBreakout.AbstactBlock.prototype.points = 10;
+
+doodleBreakout.AbstactBlock.prototype.getPoints = function () {
+    return this.points;
+}
+
+doodleBreakout.AbstactBlock.prototype.hit = function( ball ) {
     if( ball.isThunderball ){
-        this.kill();
+        ball.parent.parent.earnPoints( this.getPoints() );
+        this.remove( ball );
         return true;
     }
 
     this.health--;
     if(this.health == 0) {
-        this.kill();
+        ball.parent.parent.earnPoints( this.getPoints() );
+        this.remove( ball );
         return true;
     } else {
         this.playHitSound();
         this.frame = this._getMaxHealth() - this.health;
         return false;
     }
+};
+
+doodleBreakout.AbstactBlock.prototype.remove = function( ball ){
+    this.playKillSound();
+
+    if( this.gimmik != null && ball != null ){
+        this.gimmik.fall( ball );
+    }
+
+    this.destroy();
 };
 
 doodleBreakout.AbstactBlock.prototype.playHitSound = function(){
@@ -46,20 +62,6 @@ doodleBreakout.AbstactBlock.prototype.playHitSound = function(){
 doodleBreakout.AbstactBlock.prototype.playKillSound = function(){
     doodleBreakout.SoundManager.playSfx('blubb');
 };
-
-
-/**
- *
- * @private
- */
-doodleBreakout.AbstactBlock.prototype._onKill = function(){
-    this.playKillSound();
-
-    if( this.gimmik != null ){
-        this.gimmik.fall();
-    }
-};
-
 
 doodleBreakout.AbstactBlock.prototype.setGimmik = function(gimmik){
     if(! gimmik) {

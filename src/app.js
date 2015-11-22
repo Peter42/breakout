@@ -12,6 +12,8 @@ window.onload = function(){
     game.state.add( 'Credits'       , doodleBreakout.Credits );
     game.state.add( 'LevelSelection', doodleBreakout.LevelSelection );
     game.state.add( 'Game'          , doodleBreakout.Game );
+    game.state.add( 'GameComputer'  , doodleBreakout.GameComputer );
+    game.state.add( 'GameMultiplayer', doodleBreakout.GameMultiplayer );
     game.state.add( 'Highscores'    , doodleBreakout.Highscores );
     game.state.add( 'GameOver'      , doodleBreakout.GameOver );
     game.state.add( 'LevelDesigner' , doodleBreakout.LevelDesigner, true );

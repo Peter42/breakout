@@ -1,35 +1,33 @@
 var doodleBreakout = doodleBreakout || {};
 
-doodleBreakout.AutoGame = function (game) {};
-
-doodleBreakout.AutoGame.prototype = Object.create(doodleBreakout.Game.prototype);
-doodleBreakout.AutoGame.prototype.constructor = doodleBreakout.AutoGame;
-
-doodleBreakout.AutoGame.prototype.create = function() {
-    doodleBreakout.Game.prototype.create.call(this);
+doodleBreakout.ComputerPlayer = function( game, plattform, lives ) {
+    doodleBreakout.SinglePlayer.call( this, game, plattform, lives );
 };
 
-doodleBreakout.AutoGame.prototype.update = function() {
-    doodleBreakout.Game.prototype.update.call(this);
+doodleBreakout.ComputerPlayer.prototype = Object.create( doodleBreakout.SinglePlayer.prototype );
+doodleBreakout.ComputerPlayer.prototype.constructor = doodleBreakout.ComputerPlayer;
 
-    this.plattform.releaseBall();
+doodleBreakout.ComputerPlayer.prototype.interact = function( scope, gimmicks ){
+    doodleBreakout.SinglePlayer.prototype.interact.call( this, scope );
 
-    // Stop platform, this may have been set by earlier calls of "update"
-    this.plattform.moveRight = false;
-    this.plattform.moveLeft = false;
+    this.plattform.releaseBalls();
 
-    // allowed deviation from the center of the platform to the desiganted x possition
-    // (because the platform has some width ;) )
+// Stop platform, this may have been set by earlier calls of "update"
+    this.plattform.action.move1 = false;
+    this.plattform.action.move2 = false;
+
+// allowed deviation from the center of the platform to the desiganted x possition
+// (because the platform has some width ;) )
     var width = this.plattform.width / 4;
 
-    //var ball = undefined;
+//var ball = undefined;
     var urgency = Infinity;
 
     var targetX = this.plattform.x;
 
-    // for every ball
-    for( var i = this.ball.children.length - 1; i >= 0; --i) {
-        var currentBall = this.ball.children[i];
+// for every ball
+    for( var i = this.balls.children.length - 1; i >= 0; --i) {
+        var currentBall = this.balls.children[i];
 
         /*
          * Calculate the balls x position when it reaches the platforms y position
@@ -77,12 +75,12 @@ doodleBreakout.AutoGame.prototype.update = function() {
         }
     }
 
-    // if urgency of the most urgent ball (time till it passes the platform) is below the threshold
-    // we don't try to catch gimmiks
+// if urgency of the most urgent ball (time till it passes the platform) is below the threshold
+// we don't try to catch gimmiks
     if (urgency > 0.4) {
 
         // find all falling gimmicks
-        var gimmicks = this.fallingGimmiks.children.filter(function(gimmick){
+        gimmicks = gimmicks.children.filter(function(gimmick){
             return gimmick.body != null && gimmick.alive;
         });
 
@@ -100,25 +98,15 @@ doodleBreakout.AutoGame.prototype.update = function() {
 
     }
 
-    //
 
     if(targetX > this.plattform.x + width) {
-        this.plattform.moveRight = true;
-        this.plattform.moveLeft = false;
+        this.plattform.action.move2 = true;
+        this.plattform.action.move1 = false;
     }
     else if(targetX < this.plattform.x - width) {
-        this.plattform.moveLeft = true;
-        this.plattform.moveRight = false;
+        this.plattform.action.move1 = true;
+        this.plattform.action.move2 = false;
     }
 };
 
-doodleBreakout.Game.prototype.lostGame = function () {
 
-    var oParameters = {
-        level: doodleBreakout.LevelManager.getLevelIds()[0]
-    };
-
-    this._lives = 3;
-    this._score = 0;
-    this.state.start(this.game.state.current, true, false, oParameters);
-};

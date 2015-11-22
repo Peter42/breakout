@@ -14,6 +14,7 @@ doodleBreakout.Preloader.prototype = {
 
         //Load sprite images
         this.game.load.spritesheet('ball', 'assets/images/ball.png', 16, 16);
+        this.game.load.spritesheet('ball1', 'assets/images/ball2.png', 16, 16);
         this.game.load.image('thunder', 'assets/images/feature01.png');
         this.game.load.image('live', 'assets/images/feature02.png');
         this.game.load.image('duplicate', 'assets/images/feature03.png');
@@ -23,6 +24,8 @@ doodleBreakout.Preloader.prototype = {
         this.game.load.image('rotator', 'assets/images/rotator.png');
 
         this.game.load.image('plattform01', 'assets/images/plattform01.png');
+        this.game.load.image('plattform_player1', 'assets/images/plattform_player1.png');
+        this.game.load.image('plattform_player2', 'assets/images/plattform_player2.png');
         this.game.load.spritesheet('block01', 'assets/images/block01.png', 50, 16);
         this.game.load.spritesheet('block02', 'assets/images/block02.png', 50, 16);
         this.game.load.spritesheet('block03', 'assets/images/block03.png', 50, 16);

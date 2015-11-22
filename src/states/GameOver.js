@@ -13,6 +13,10 @@ doodleBreakout.GameOver.prototype.init = function(args){
     this._level = args.level;
     this._lives = args.lives;
 
+    // TODO: other screen for multiplayer
+    if( args.winner ){
+        this._score = args.winner + " ";
+    }
 };
 
 doodleBreakout.GameOver.prototype.create = function(){

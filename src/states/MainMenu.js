@@ -37,7 +37,6 @@ doodleBreakout.MainMenu.prototype._generateMenuIcon = function (spriteName, x, y
 };
 
 doodleBreakout.MainMenu.prototype._enableInput = function (gameObject, targetState, options) {
-
     gameObject.anchor.setTo(0.5, 0);
     gameObject.inputEnabled = true;
     gameObject.doodleBreakout = {
@@ -48,7 +47,6 @@ doodleBreakout.MainMenu.prototype._enableInput = function (gameObject, targetSta
     gameObject.events.onInputDown.add(this.click, this);
     gameObject.events.onInputOver.add(this.over, this);
     gameObject.events.onInputOut.add(this.out, this);
-
 };
 
 doodleBreakout.MainMenu.prototype.click = function (text) {

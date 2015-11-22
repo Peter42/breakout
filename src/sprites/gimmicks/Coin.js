@@ -1,18 +1,18 @@
 var doodleBreakout = doodleBreakout || {};
 
 doodleBreakout.Coin = function ( game, x, y ) {
-    Phaser.Sprite.call(this, game, x, y, 'coin');
+    doodleBreakout.Gimmick.call( this, game, x, y, 'coin');
 };
 
 doodleBreakout.Coin.prototype = Object.create(doodleBreakout.Gimmick.prototype);
 doodleBreakout.Coin.prototype.constructor = doodleBreakout.Coin;
 
-doodleBreakout.Coin.prototype.collected = function(){
+doodleBreakout.Coin.prototype.collected = function( player ){
     //earn Bonus Points for each collected Duplicate
     var iMax = 20;
     var iMin = 200;
 
-    this.game.state.callbackContext.earnPoints( Math.floor(Math.random() * (iMax - iMin + 1)) + iMin );
+    player.earnPoints( Math.floor(Math.random() * (iMax - iMin + 1)) + iMin );
 
     this.kill();
 };

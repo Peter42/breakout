@@ -48,6 +48,17 @@ doodleBreakout.LevelManager = {
         return levels[ (levelIndex+1) ].id;
     },
 
+    getStaticLevelIds: function () {
+        var levelsAmount = this._levels.static.length;
+        var levelIds = [];
+
+        for( var i = 0; i < levelsAmount; i++ ){
+            levelIds.push( this._levels.static[i].id );
+        }
+
+        return levelIds;
+    },
+
     getAlterableLevelIds: function() {
         var levelsAmount = this._levels.alterable.length;
         var levelIds = [];
@@ -67,6 +78,16 @@ doodleBreakout.LevelManager = {
         }
 
         return new doodleBreakout.Level( this._game, levelData.structure, levelData.id, levelData.probability );
+    },
+
+    getMultiplayerLevel: function( id ){
+        var levelData = this.getLevelData( id );
+
+        if( ! levelData ){
+            throw "Level definition error";
+        }
+
+        return new doodleBreakout.LevelMultiplayer( this._game, levelData.structure, levelData.id, levelData.probability );
     },
 
     getLevelData: function( id ){
