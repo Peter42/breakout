@@ -65,6 +65,10 @@ doodleBreakout.Preloader.prototype = {
         //Overlay for Pause Menu
         this.game.create.texture('pause', ['2'], 800, 600);
 
+        this.game.load.text('replaystate', './states/Replay.js');
+        this.game.load.text('replayphaser', './lib/phaser.min.js');
+        this.game.load.text('replayindex', './recordingindex.html');
+
         //	This sets the preloadBar sprite as a loader sprite.
         //	What that does is automatically crop the sprite from 0 to full-width
         //	as the files below are loaded in.

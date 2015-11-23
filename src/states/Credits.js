@@ -18,6 +18,7 @@ doodleBreakout.Credits.prototype.create = function () {
         "-",
         "Libraries:",
         "Phaser.js",
+        "FileSaver.js",
         "-",
         "Tools:",
         "WebStorm",

@@ -12,6 +12,8 @@ doodleBreakout.GameOver.prototype.init = function(args){
     this._score = args.score;
     this._level = args.level;
     this._lives = args.lives;
+    this._recorder = args.recorder;
+
     this._isMultiplayer = false;
 
     // TODO: other screen for multiplayer
@@ -48,7 +50,7 @@ doodleBreakout.GameOver.prototype.create = function(){
             finalScore2.anchor.setTo(0.5, 0);
         }
 
-        this._generateMenuItem('Rematch', 'GameMultiplayer', {level:this._level}, 120);
+        this._generateMenuItem('Rematch', 'GameMultiplayer', {level:this._level}, undefined, 120, 550);
 
     }else{
         doodleBreakout.OnscreenInput.openKeyboard();
@@ -78,14 +80,22 @@ doodleBreakout.GameOver.prototype.create = function(){
             var scoresE = this.game.add.bitmapText(this.world.centerX, 370, 'larafont', 'Your extra life gave you '+(this._lives*50)+' bonus points!', 30);
             scoresE.anchor.setTo(0.5, 0);
         }
-        this._generateMenuItem('Retry', 'Game', {level:this._level}, 120);
+        this._generateMenuItem('Retry', 'Game', {level:this._level}, undefined, 120, 550);
+    }
+
+
+    if(this._recorder){
+        this._generateMenuItem('View Replay', 'Replay', {
+            recorder: this._recorder
+        }, function() {
+            this._recorder.capture(this);
+            this._recorder.shutdown();
+        }, this.world.centerX, 480);
     }
 
 
 
-
-
-    this._generateMenuItem('Select another level', 'LevelSelection', undefined, 520);
+    this._generateMenuItem('Select another level', 'LevelSelection', undefined, undefined, 520, 550);
 
 
     this.game.input.keyboard.addCallbacks(this, null, null, this.keyPressed);
@@ -132,11 +142,11 @@ doodleBreakout.GameOver.prototype.update = function() {
     }
 };
 
-doodleBreakout.GameOver.prototype._generateMenuItem = function (text, targetState, args, x) {
-    var item = this.game.add.bitmapText(x, 500, 'larafont', text, 40);
+doodleBreakout.GameOver.prototype._generateMenuItem = function (text, targetState, args, onclick, x, y) {
+    var item = this.game.add.bitmapText(x, y, 'larafont', text, 40);
     item.anchor.setTo(0.5);
     item.inputEnabled = true;
-    item.doodleBreakout = { 'targetState' : targetState, 'arguments': args };
+    item.doodleBreakout = { 'targetState' : targetState, 'arguments': args, 'onclick': onclick };
 
     item.events.onInputDown.add(this.click, this);
     item.events.onInputOver.add(this.over, this);
@@ -146,5 +156,10 @@ doodleBreakout.GameOver.prototype._generateMenuItem = function (text, targetStat
 };
 
 doodleBreakout.GameOver.prototype.click = function(text){
-    this.game.state.start(text.doodleBreakout.targetState, true, false, text.doodleBreakout.arguments);
+    if(text.doodleBreakout.onclick){
+        text.doodleBreakout.onclick.apply(this, arguments);
+    }
+    if(text.doodleBreakout.targetState) {
+        this.game.state.start(text.doodleBreakout.targetState, true, false, text.doodleBreakout.arguments);
+    }
 };

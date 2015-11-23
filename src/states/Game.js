@@ -44,6 +44,16 @@ doodleBreakout.Game.prototype.create = function () {
     game.world.bringToTop(this.gimmicks);
 
     this.initializePlayers( this.bricks, this.gimmicks );
+
+    if(!this._recorder && doodleBreakout.Recorder.isRecordingActive() ) {
+        this._recorder = new doodleBreakout.Recorder(game);
+    }
+};
+
+doodleBreakout.Game.prototype.render = function() {
+    if(this._recorder && !this.doodlebreakoutIsPaused) {
+        this._recorder.capture(this);
+    }
 };
 
 doodleBreakout.Game.prototype.update = function () {
@@ -163,8 +173,11 @@ doodleBreakout.Game.prototype.lostGame = function () {
     var oParameters = {
         level: this._level,
         score: this.player.points,
-        lives: this.player.livesAmount
+        lives: this.player.livesAmount,
+        recorder: this._recorder
     };
+
+    this._recorder = null;
 
     this._level = 1;
     this.state.start('GameOver', true, false, oParameters);
