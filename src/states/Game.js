@@ -271,9 +271,10 @@ doodleBreakout.Game.prototype.addInputKey = function( key ){
 };
 
 doodleBreakout.Game.prototype.removeInputKeys = function () {
-    for( i in this.inputKeys ){
-        this.input.keyboard.removeKey( this.inputKeys[ i ] );
+    for( var i = 0; i < this.inputKeys.length; ++i ){
+        this.game.input.keyboard.removeKey( this.inputKeys[ i ] );
     }
+    this.inputKeys = [];
 };
 
 doodleBreakout.Game.prototype.shutdown = function () {

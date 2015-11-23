@@ -19,6 +19,8 @@ doodleBreakout.GameMultiplayer.prototype.create = function ( game ) {
     game.physics.arcade.bounds.height = 550;
     game.physics.arcade.bounds.y = 50;
 
+    this.doodlebreakoutIsPaused = false;
+
     this.line = this.game.add.sprite( 0, 0, "block05" );
     this.line.alpha = 0.3;
     this.line.width = 800;
