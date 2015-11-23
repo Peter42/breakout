@@ -105,8 +105,8 @@ doodleBreakout.GameOver.prototype.create = function(){
 };
 
 doodleBreakout.GameOver.prototype.keyPressed = function(key) {
-    // TODO: Add ÄÖÜ äöü ß to font
-    if(! key.match(/[A-z0-9\u0020\-]/) ) {
+    // TODO: Add ÄÖÜ äöüto font
+    if(! key.match(/[A-z0-9ß\u0020\-]/) ) {
         return;
     }
 
