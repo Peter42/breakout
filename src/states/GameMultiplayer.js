@@ -162,7 +162,9 @@ doodleBreakout.GameMultiplayer.prototype.endGame = function () {
 
     var oParameters = {
         level: this._level,
-        winner: winner
+        winner: winner,
+        playerRedScore: this.player1.points,
+        playerBlueScore: this.player2.points
     };
 
     this._level = 1;

@@ -39,7 +39,7 @@ doodleBreakout.LevelManager = {
         var levelIndex = this._getLevelIndex( actualId, levels );
 
         if( levelIndex == -1 || ! levels[ levelIndex ] ){
-            throw "Unknown level id";
+            throw "Unknown level id: " + levels[levelIndex];
         }
         else if( ! levels[ (levelIndex+1) ] ){
             return false;
@@ -96,7 +96,7 @@ doodleBreakout.LevelManager = {
         var levelData = null;
 
         if( levelIndex == -1 || ! levels[ levelIndex ] ){
-            throw "Unknown level id";
+            throw "Unknown level id: " + levels[levelIndex];
         }
 
         levelData = this._processLevelData( id, levels[ levelIndex ] );
