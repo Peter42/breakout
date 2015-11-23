@@ -99,12 +99,13 @@ doodleBreakout.Game.prototype.collideBallVsBrick = function( ball, brick ){
         doodleBreakout.ScoresManager.addBesttime( this._level, Math.floor(this.timer.seconds));
         this.timer.stop();
 
-        this._level = doodleBreakout.LevelManager.getNextLevelId(this._level);
+        var nextLevel = doodleBreakout.LevelManager.getNextLevelId(this._level);
 
-        if( this._level == false ){
+        if( nextLevel == false ){
             this.lostGame();
         }
         else {
+            this._level = nextLevel;
             this.state.start( this.game.state.current );
         }
     }
@@ -278,6 +279,8 @@ doodleBreakout.Game.prototype.removeInputKeys = function () {
 doodleBreakout.Game.prototype.shutdown = function () {
     //reset rotation
     this.deactivateRotation();
+
+    this.player = null;
 
     this.removeInputKeys();
 };
