@@ -13,6 +13,8 @@ doodleBreakout.GameOver.prototype.init = function(args){
     this._level = args.level;
     this._lives = args.lives;
     this._recorder = args.recorder;
+    this._args = args;
+    this._afterReplay = args.afterReplay;
 
     this._isMultiplayer = false;
 
@@ -53,7 +55,9 @@ doodleBreakout.GameOver.prototype.create = function(){
         this._generateMenuItem('Rematch', 'GameMultiplayer', {level:this._level}, undefined, 120, 550);
 
     }else{
-        doodleBreakout.OnscreenInput.openKeyboard();
+        if(! this._afterReplay) {
+            doodleBreakout.OnscreenInput.openKeyboard();
+        }
 
         //For each leftover life, add 50 Points to the score
         this._score += (this._lives * 50);
@@ -86,11 +90,13 @@ doodleBreakout.GameOver.prototype.create = function(){
 
     if(this._recorder){
         this._generateMenuItem('View Replay', 'Replay', {
-            recorder: this._recorder
+            recorder: this._recorder,
+            callbackArgs: this._args
         }, function() {
-            this._recorder.capture(this);
-            this._recorder.shutdown();
-            this._recorder.save();
+            if(! this._recorder.isShutdown()){
+                this._recorder.capture(this);
+                this._recorder.shutdown();
+            }
         }, this.world.centerX, 480);
     }
 
@@ -98,10 +104,12 @@ doodleBreakout.GameOver.prototype.create = function(){
 
     this._generateMenuItem('Select another level', 'LevelSelection', undefined, undefined, 520, 550);
 
+    if(!this._afterReplay){
+        this.game.input.keyboard.addCallbacks(this, null, null, this.keyPressed);
+        var backspace = this.game.input.keyboard.addKey(Phaser.Keyboard.BACKSPACE);
+        backspace.onDown.add(this.backspacePressed, this);
+    }
 
-    this.game.input.keyboard.addCallbacks(this, null, null, this.keyPressed);
-    var backspace = this.game.input.keyboard.addKey(Phaser.Keyboard.BACKSPACE);
-    backspace.onDown.add(this.backspacePressed, this);
 
 };
 
@@ -120,26 +128,41 @@ doodleBreakout.GameOver.prototype.keyPressed = function(key) {
 };
 doodleBreakout.GameOver.prototype.backspacePressed = function() {
     var text = this.name.text;
-    this.name.setText(text.substr(0, text.length - 1));
+
+    if(this.nameIsInitial) {
+        this.nameIsInitial = false;
+        this.name.setText("");
+    }
+    else {
+        this.name.setText(text.substr(0, text.length - 1));
+    }
 };
 
 doodleBreakout.GameOver.prototype.shutdown = function() {
     doodleBreakout.OnscreenInput.closeKeyboard();
-    var name;
-    if(!this._isMultiplayer){
-        if(this.nameIsInitial) {
-            name = "Player";
-        } else {
-            name = this.name.text;
+
+    this.game.input.keyboard.onPressCallback = null;
+
+    if(!this._afterReplay){
+        var name;
+        if(!this._isMultiplayer){
+            if(this.nameIsInitial) {
+                name = "Player";
+            } else {
+                name = this.name.text;
+            }
+            doodleBreakout.ScoresManager.addHighscore(this._score, name);
         }
-        doodleBreakout.ScoresManager.addHighscore(this._score, name);
     }
+
 
 };
 
 doodleBreakout.GameOver.prototype.update = function() {
     if (this.game.input.activePointer.isDown && this.game.input.activePointer.position.y < this.world.centerY) {
-        doodleBreakout.OnscreenInput.openKeyboard();
+        if(!this._afterReplay) {
+            doodleBreakout.OnscreenInput.openKeyboard();
+        }
     }
 };
 

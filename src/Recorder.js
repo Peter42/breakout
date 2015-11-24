@@ -2,16 +2,25 @@ var doodleBreakout = doodleBreakout || {};
 
 doodleBreakout.Recorder = function( game ){
     this.game = game;
+    this._isShutdown = false;
 };
 
 doodleBreakout.Recorder.constructor = doodleBreakout.Recorder;
 
 doodleBreakout.Recorder.prototype.data = [];
-doodleBreakout.Recorder.prototype.usedKeys = [];
+doodleBreakout.Recorder.prototype.usedKeys = ["icon_play","block05"];
 doodleBreakout.Recorder.prototype.times = [];
 doodleBreakout.Recorder.prototype.last = -1;
 
+doodleBreakout.Recorder.prototype.isShutdown = function() {
+    return this._isShutdown === true;
+};
+
 doodleBreakout.Recorder.prototype.capture = function (state) {
+    if(this._isShutdown) {
+        throw "Recorder was already shut down";
+    }
+
     var that = this;
 
     var data = JSON.stringify(state.stage, function(key, value) {
@@ -76,6 +85,11 @@ doodleBreakout.Recorder.prototype.normalize = function(data, target) {
 };
 
 doodleBreakout.Recorder.prototype.shutdown = function() {
+
+    if(this._isShutdown) {
+        return;
+    }
+    this._isShutdown = true;
 
     this.times.push(this.game.time.time - this.last);
 
