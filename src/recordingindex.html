@@ -19,7 +19,9 @@
                     var image = images[i];
                     this.game.load.spritesheet(image.key, image.data, image.width, image.height);
                 }
-                debugger;
+
+                var font = "{{font}}";
+                this.game.load.bitmapFont("larafont", font.image, font.xml);
             };
 
             game.state.add( 'Replay', doodleBreakout.Replay );

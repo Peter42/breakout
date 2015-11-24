@@ -90,6 +90,7 @@ doodleBreakout.GameOver.prototype.create = function(){
         }, function() {
             this._recorder.capture(this);
             this._recorder.shutdown();
+            this._recorder.save();
         }, this.world.centerX, 480);
     }
 

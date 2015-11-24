@@ -17,13 +17,10 @@ doodleBreakout.Recorder.prototype.capture = function (state) {
     var data = JSON.stringify(state.stage, function(key, value) {
 
         if (["","children", "key", "position", "animations", "frame", "_width", "_height", "x", "y", "visible", "_fontSize", "_text", "__obj_id"].indexOf(key) < 0 && !key.match(/^[0-9]+$/)) {
-            //console.log("'"+key+"'", value);
             return;
         }
         if("animations" == key){
             return value.frame;
-            //console.log(key, value);
-//            debugger;
         }
         if(key == "key" && typeof value == "string" && that.usedKeys.indexOf(value) < 0){
             that.usedKeys.push(value);
@@ -36,27 +33,11 @@ doodleBreakout.Recorder.prototype.capture = function (state) {
 
     data = this.normalize([data], []);
 
-    /*data.filter(function(data){
-        return data.visible === true;
-    });*/
-
     if( this.last > 0) {
         this.times.push(this.game.time.time - this.last);
     }
     this.last = this.game.time.time;
     this.data.push(data);
-};
-
-
-doodleBreakout.Recorder.prototype.render = function() {
-    /*JSON.stringify(this.stage, function(key, value) {
-     if (["","children", "key", "position", "frame", "x", "y", "0", "1", "2"].indexOf(key) < 0) {
-     //console.log("'"+key+"'", value);
-     return;
-     }
-
-     return value;
-     });*/
 };
 
 
@@ -70,6 +51,8 @@ doodleBreakout.Recorder.prototype.normalize = function(data, target) {
         data[i].y = data[i].position.y;
         if (data[i].animations) {
             data[i].frame = data[i].animations;
+        } else {
+            data[i].frame = 0;
         }
 
         data[i].width = data[i]._width;
@@ -80,6 +63,9 @@ doodleBreakout.Recorder.prototype.normalize = function(data, target) {
             data[i].fontSize = data[i]._fontSize;
         }
 
+        delete data[i]._fontSize;
+        delete data[i]._width;
+        delete data[i]._height;
         delete data[i]._text;
         delete data[i].position;
         delete data[i].children;
@@ -92,16 +78,6 @@ doodleBreakout.Recorder.prototype.normalize = function(data, target) {
 doodleBreakout.Recorder.prototype.shutdown = function() {
 
     this.times.push(this.game.time.time - this.last);
-
-
-    /*var before = this.data.length;
-
-    // this removes duplicate frames and reduces the file size by about 10 to 20%
-    this.data = this.data.filter(function(element, index, array){
-        return JSON.stringify(element) != JSON.stringify(array[index - 1]);
-    });
-
-    var after = this.data.length;*/
 
     this.dataReduced = [];
     for(var i in this.data) {
@@ -136,9 +112,12 @@ doodleBreakout.Recorder.prototype.shutdown = function() {
         that.images.push(getDataUri(key, that.game));
     });
 
-    //console.log("Reduced data by " + (100 - (after / before * 100)) + "% by removing redudant frames" );
 
-    //console.log(JSON.stringify(this.data));
+    var font = this.game.cache.getBitmapFont("larafont");
+    this.font = {
+        image: imageToDataUri(font.data),
+        xml: "data:application/xml;base64," + btoa(this.game.cache.getText('replayfontxml'))
+    };
 };
 
 
@@ -152,6 +131,7 @@ doodleBreakout.Recorder.prototype.save = function (){
     index = index.replace("\"{{dataReduced}}\"", JSON.stringify(this.dataReduced));
     index = index.replace("\"{{times}}\"", JSON.stringify(this.times));
     index = index.replace("\"{{images}}\"", JSON.stringify(this.images));
+    index = index.replace("\"{{font}}\"", JSON.stringify(this.font));
 
     var blob = new Blob([index], {type: "text/html;charset=utf-8"});
     saveAs(blob, "test.html");
@@ -184,9 +164,7 @@ doodleBreakout.Recorder.isRecordingActive = function () {
 };
 
 
-function getDataUri(key, game) {
-    var image = game.cache.getImage(key);
-
+function imageToDataUri(image) {
     var canvas = document.createElement('canvas');
     canvas.width = image.naturalWidth;
     canvas.height = image.naturalHeight;
@@ -194,12 +172,20 @@ function getDataUri(key, game) {
     var context = canvas.getContext('2d');
     context.drawImage(image, 0, 0);
 
+    return canvas.toDataURL('image/png');
+
+}
+
+function getDataUri(key, game) {
+    var image = game.cache.getImage(key);
+
     var frame = game.cache.getFrameByIndex(key, 0);
 
     return {
         "key": key,
-        "data": canvas.toDataURL('image/png'),
+        "data": imageToDataUri(image),
         "width": frame ? frame.width : undefined,
         "height": frame ? frame.height : undefined
     };
+
 }

@@ -68,6 +68,7 @@ doodleBreakout.Preloader.prototype = {
         this.game.load.text('replaystate', './states/Replay.js');
         this.game.load.text('replayphaser', './lib/phaser.min.js');
         this.game.load.text('replayindex', './recordingindex.html');
+        this.game.load.text('replayfontxml', 'assets/fonts/larafont.xml');
 
         //	This sets the preloadBar sprite as a loader sprite.
         //	What that does is automatically crop the sprite from 0 to full-width
