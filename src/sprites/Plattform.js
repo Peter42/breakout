@@ -1,54 +1,149 @@
 var doodleBreakout = doodleBreakout || {};
 
-doodleBreakout.Plattform = function (game, x, y) {
+doodleBreakout.Plattform = function (game, x, y, key, fieldPosition, velocity, moveKey1, moveKey2, releaseKey, activePointer ) {
 
-    //  We call the Phaser.Sprite passing in the game reference
-    Phaser.Sprite.call(this, game, x, y, 'plattform01');
+    Phaser.Sprite.call(this, game, x, y, key);
 
-    this.leftKey = game.input.keyboard.addKey(Phaser.Keyboard.LEFT);
-    this.rightKey = game.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
-    this.space = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+    this.isPointerActive = !(activePointer === false);
 
-    this.space.onDown.add( this.releaseBall, this );
+    this.moveDirection1 = moveKey1;
+    this.moveDirection2 = moveKey2;
 
-    //game.add.sprite(423 + 98 * 0.45, game.height - 100, bmd);
-    this.anchor.setTo(0.5, 1);
+    this.release = releaseKey;
+    this.release.onDown.add( this.releaseBalls, this );
+
+
     game.physics.enable(this, Phaser.Physics.ARCADE);
     this.body.immovable = true;
     this.body.collideWorldBounds = true;
 
+    this.holdPosition = { x:0, y:0 };
+
+    this.hold = false;
+
+    this.holdBallVelocity = {
+        x: 0,
+        y: 0
+    };
+
     this.sizeValues = {
+        velocity: {
+            x: velocity.x,
+            y: velocity.y
+        },
         height: this.height,
         width: this.width
     };
+
+    this.fieldPosition = fieldPosition;
+
+    switch( fieldPosition ){
+        case "down":
+            this.sizeValues.velocity.x = velocity;
+            this.sizeValues.velocity.y = 0;
+            this.holdPosition.x = this.x;
+            this.holdPosition.y = this.y - this.height/2;
+            game.physics.arcade.checkCollision.down = false;
+            this.stay = this.stayX;
+            this.holdBallVelocity.x = 10;
+            this.holdBallVelocity.y = -270;
+            rotation = 0;
+            break;
+        case "up":
+            this.sizeValues.velocity.x = velocity;
+            this.sizeValues.velocity.y = 0;
+            this.holdPosition.x = this.x;
+            this.holdPosition.y = this.y + this.height/2 + 16;
+            game.physics.arcade.checkCollision.up = false;
+            this.stay = this.stayX;
+            this.holdBallVelocity.x = 10;
+            this.holdBallVelocity.y = 270;
+            rotation = 180;
+            break;
+        case "right":
+            this.sizeValues.velocity.x = 0;
+            this.sizeValues.velocity.y = velocity;
+            this.body.height = this.width;
+            this.body.width = this.height;
+            this.holdPosition.x = this.x - this.body.width/2 - 8;
+            this.holdPosition.y = this.y;
+            this.stay = this.stayY;
+            this.holdBallVelocity.x = -270;
+            this.holdBallVelocity.y = 10;
+            game.physics.arcade.checkCollision.right = false;
+            rotation = -90;
+            break;
+        case "left":
+            this.sizeValues.velocity.x = 0;
+            this.sizeValues.velocity.y = velocity;
+            this.body.height = this.width;
+            this.body.width = this.height;
+            this.holdPosition.x = this.x + this.body.width/2 + 8;
+            this.holdPosition.y = this.y;
+            this.stay = this.stayY;
+            this.holdBallVelocity.x = 270;
+            this.holdBallVelocity.y = 10;
+            game.physics.arcade.checkCollision.left = false;
+            rotation = 90;
+            break;
+        default: throw "no facing direction";
+    }
+
+    this.anchor.setTo(0.5, 0.5);
+    this.rotation = rotation * (Math.PI/180);
 
     var that = this;
     window.addEventListener("deviceorientation", function(event) {
         that.handleOrientationEvent(event);
     }, true);
 
+    this.action = {
+        move1: false,
+        move2: false
+    }
 };
 
 doodleBreakout.Plattform.prototype = Object.create(Phaser.Sprite.prototype);
 doodleBreakout.Plattform.prototype.constructor = doodleBreakout.Plattform;
 
+doodleBreakout.Plattform.prototype.collect = function ( objectToCollect, callback, callbackContext ) {
+
+};
+
+
 doodleBreakout.Plattform.prototype.update = function() {
-    if (this.game.input.activePointer.isDown) {
-        this.releaseBall();
+    if( this.fieldPosition == "left" || this.fieldPosition == "right" ){
+        this.body.height = this.width;
+        this.body.width = this.height;
     }
 
-    if (this.leftKey.isDown || doodleBreakout.OnscreenInput.isLeft()) {
-        this.body.velocity.set(-800, 0);
+    if ( this.isPointerActive && this.game.input.activePointer.isDown ) {
+        this.releaseBalls();
     }
-    else if (this.rightKey.isDown || doodleBreakout.OnscreenInput.isRight()) {
-        this.body.velocity.set(800, 0);
+
+    if (this.moveDirection1.isDown || doodleBreakout.OnscreenInput.isLeft() | this.action.move1 ) {
+        this.body.velocity.set( -this.sizeValues.velocity.x, -this.sizeValues.velocity.y);
+    }
+    else if (this.moveDirection2.isDown || doodleBreakout.OnscreenInput.isRight() | this.action.move2 ) {
+        this.body.velocity.set( this.sizeValues.velocity.x, this.sizeValues.velocity.y);
     } else {
         this.body.velocity.set(0, 0);
     }
 
-    if( this._ball != null ){
-        this._ball.x = this.x;
+
+    if( this._balls != null ){
+        this._balls.forEach( function( ball ){
+            this.stay( ball );
+        }, this );
     }
+};
+
+doodleBreakout.Plattform.prototype.stayX = function ( ball ) {
+    ball.x = this.x;
+};
+
+doodleBreakout.Plattform.prototype.stayY = function ( ball ) {
+    ball.y = this.y;
 };
 
 
@@ -69,21 +164,31 @@ doodleBreakout.Plattform.prototype.handleOrientationEvent = function(event) {
     this.body.velocity.set(800 * gamma, 0);
 };
 
-doodleBreakout.Plattform.prototype._ball = null;
 
-doodleBreakout.Plattform.prototype.holdBall = function( ball ){
-    this._ball = ball;
-    this._ball.setPosition( this.x, this.y - this.height );
-    this._ball.stop();
+doodleBreakout.Plattform.prototype.holdBalls = function( balls ){
+    this.hold = true;
+    this._balls = balls;
+
+    this._balls.forEach( function( ball ){
+        ball.setCollision( false );
+        ball.setPosition( this.holdPosition.x, this.holdPosition.y );
+        ball.stop();
+    }, this );
 
 };
 
-doodleBreakout.Plattform.prototype.releaseBall = function(){
-    if(this._ball && !this.game.state.states.Game.doodlebreakoutIsPaused ) {
-        this._ball.start();
-        this._ball = null;
+doodleBreakout.Plattform.prototype.releaseBalls = function(){
+    if(this._balls && !this.game.state.callbackContext.doodlebreakoutIsPaused ) {
+        this.hold = false;
+        this._balls.forEach( function( ball ){
+            ball.setCollision( true );
+            ball.start();
+            ball.body.velocity.setTo( this.holdBallVelocity.x, this.holdBallVelocity.y );
+        }, this );
+        this._balls = null;
     }
 };
+
 
 doodleBreakout.Plattform.prototype.resetPlattform = function(){
     this.height = this.sizeValues.height;
@@ -96,6 +201,7 @@ doodleBreakout.Plattform.prototype.grow = function(){
     }
     this.width += (this.sizeValues.width/100) * 10;
     this.height += (this.sizeValues.height/100) * 10;
+
     return true;
 };
 
@@ -105,6 +211,7 @@ doodleBreakout.Plattform.prototype.shrink = function(){
     }
     this.width -= (this.sizeValues.width/100) * 10;
     this.height -= (this.sizeValues.height/100) * 10;
+
     return true;
 };
 

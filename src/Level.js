@@ -25,7 +25,7 @@ doodleBreakout.Level.prototype.generateBricks = function( gimmicks ){
 
         var bricks = new Phaser.Group( this.game );
 
-        for ( var y = doodleBreakout.Level.offsetY, i= 0; (i < this._structure.length) && (y<this.game.height); y += 17, i++ ) {
+        for ( var y = doodleBreakout.Level.offsetY, i= 0; (i < this._structure.length) && (y<this.game.height); y += 16, i++ ) {
             for (var x = doodleBreakout.Level.offsetX, j = 0; (j < this._structure[ i].length) && (x <= this.game.width - 50); x += 50, j++ ) {
                 if( this._structure[i][j] ) {
                     var gimmick = gimmicks.randomGimmick( x, y );

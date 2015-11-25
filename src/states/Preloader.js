@@ -14,6 +14,7 @@ doodleBreakout.Preloader.prototype = {
 
         //Load sprite images
         this.game.load.spritesheet('ball', 'assets/images/ball.png', 16, 16);
+        this.game.load.spritesheet('ball1', 'assets/images/ball2.png', 16, 16);
         this.game.load.image('thunder', 'assets/images/feature01.png');
         this.game.load.image('live', 'assets/images/feature02.png');
         this.game.load.image('duplicate', 'assets/images/feature03.png');
@@ -23,6 +24,8 @@ doodleBreakout.Preloader.prototype = {
         this.game.load.image('rotator', 'assets/images/rotator.png');
 
         this.game.load.image('plattform01', 'assets/images/plattform01.png');
+        this.game.load.image('plattform_player1', 'assets/images/plattform_player1.png');
+        this.game.load.image('plattform_player2', 'assets/images/plattform_player2.png');
         this.game.load.spritesheet('block01', 'assets/images/block01.png', 50, 16);
         this.game.load.spritesheet('block02', 'assets/images/block02.png', 50, 16);
         this.game.load.spritesheet('block03', 'assets/images/block03.png', 50, 16);
@@ -43,19 +46,29 @@ doodleBreakout.Preloader.prototype = {
         this.game.load.image('icon_stop', 'assets/icons/stop.png');
 
 
+        this.game.load.image('icon_singleplayer', 'assets/icons/singleplayer.png');
+        this.game.load.image('icon_multiplayer', 'assets/icons/multiplayer.png');
+        this.game.load.image('icon_computer', 'assets/icons/computer.png');
+
+
         //Load font files
         this.game.load.bitmapFont('larafont', 'assets/fonts/larafont.png', 'assets/fonts/larafont.xml');
 
         //Load Setting symbols
         this.game.load.spritesheet('sound', 'assets/images/soundspeaker.png', 70, 70);
         this.game.load.spritesheet('music', 'assets/images/note.png', 70, 70);
-
+        this.game.load.spritesheet('recording', 'assets/icons/onoffswitch.png', 88, 40);
         // Sounds
         this.game.load.audio('music', ['assets/sounds/breakout_background.ogg', 'assets/sounds/breakout_background.mp3', 'assets/sounds/breakout_background.wav']);
         this.game.load.audio('sfx', ['assets/sounds/sfx.ogg', 'assets/sounds/sfx.mp3', 'assets/sounds/sfx.wav']);
 
         //Overlay for Pause Menu
         this.game.create.texture('pause', ['2'], 800, 600);
+
+        this.game.load.text('replaystate', './states/Replay.js');
+        this.game.load.text('replayphaser', './lib/phaser.min.js');
+        this.game.load.text('replayindex', './recordingindex.html');
+        this.game.load.text('replayfontxml', 'assets/fonts/larafont.xml');
 
         //	This sets the preloadBar sprite as a loader sprite.
         //	What that does is automatically crop the sprite from 0 to full-width

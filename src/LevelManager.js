@@ -39,13 +39,24 @@ doodleBreakout.LevelManager = {
         var levelIndex = this._getLevelIndex( actualId, levels );
 
         if( levelIndex == -1 || ! levels[ levelIndex ] ){
-            throw "Unknown level id";
+            throw "Unknown level id: " + levels[levelIndex];
         }
         else if( ! levels[ (levelIndex+1) ] ){
             return false;
         }
 
         return levels[ (levelIndex+1) ].id;
+    },
+
+    getStaticLevelIds: function () {
+        var levelsAmount = this._levels.static.length;
+        var levelIds = [];
+
+        for( var i = 0; i < levelsAmount; i++ ){
+            levelIds.push( this._levels.static[i].id );
+        }
+
+        return levelIds;
     },
 
     getAlterableLevelIds: function() {
@@ -69,13 +80,23 @@ doodleBreakout.LevelManager = {
         return new doodleBreakout.Level( this._game, levelData.structure, levelData.id, levelData.probability );
     },
 
+    getMultiplayerLevel: function( id ){
+        var levelData = this.getLevelData( id );
+
+        if( ! levelData ){
+            throw "Level definition error";
+        }
+
+        return new doodleBreakout.LevelMultiplayer( this._game, levelData.structure, levelData.id, levelData.probability );
+    },
+
     getLevelData: function( id ){
         var levels = this._levels.static.concat( this._levels.alterable );
         var levelIndex = this._getLevelIndex( id, levels );
         var levelData = null;
 
         if( levelIndex == -1 || ! levels[ levelIndex ] ){
-            throw "Unknown level id";
+            throw "Unknown level id: " + levels[levelIndex];
         }
 
         levelData = this._processLevelData( id, levels[ levelIndex ] );

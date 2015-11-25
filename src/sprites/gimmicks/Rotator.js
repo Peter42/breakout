@@ -1,9 +1,7 @@
 var doodleBreakout = doodleBreakout || {};
 
-doodleBreakout.Rotator = function ( game, x, y, ball ) {
-    Phaser.Sprite.call(this, game, x, y, 'rotator');
-    this._ball = ball;
-    this.game = game;
+doodleBreakout.Rotator = function ( game, x, y ) {
+    doodleBreakout.Gimmick.call( this, game, x, y, 'rotator' );
     if(!doodleBreakout.Rotator.rotatorTimer) {
         doodleBreakout.Rotator.rotatorTimer = this.game.time.create(false);
     }
@@ -12,11 +10,13 @@ doodleBreakout.Rotator = function ( game, x, y, ball ) {
 doodleBreakout.Rotator.prototype = Object.create(doodleBreakout.Gimmick.prototype);
 doodleBreakout.Rotator.prototype.constructor = doodleBreakout.Rotator;
 
-doodleBreakout.Rotator.prototype.collected = function(){
+doodleBreakout.Rotator.prototype.collected = function( player ){
     //earn Bonus Points for each collected Duplicate
-    this.game.state.states.Game.earnPoints(120);
+    player.earnPoints(120);
 
     this.kill();
 
-    this.game.state.states.Game.activateRotation();
+    console.log( this.game.state );
+
+    this.game.state.callbackContext.activateRotation();
 };
