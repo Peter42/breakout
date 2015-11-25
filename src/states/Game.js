@@ -57,7 +57,9 @@ doodleBreakout.Game.prototype.render = function() {
 };
 
 doodleBreakout.Game.prototype.update = function () {
-    this.player.interact( this );
+    if(this.player){
+        this.player.interact( this );
+    }
 };
 
 doodleBreakout.Game.prototype.initializePlayers = function( bricks, gimmicks ){
@@ -177,6 +179,8 @@ doodleBreakout.Game.prototype.lostGame = function () {
         recorder: this._recorder
     };
 
+    this.player = null;
+
     this._recorder = null;
 
     this._level = 1;
@@ -229,6 +233,7 @@ doodleBreakout.Game.prototype.pauseGame = function () {
 
         this.retry.events.onInputDown.add(function(){
             this._score = 0;
+            this.player = null;
             this.state.start(this.game.state.current);
         }, this);
         this.retry.events.onInputOver.add(this.over, this);
@@ -248,6 +253,7 @@ doodleBreakout.Game.prototype.pauseGame = function () {
 
         this.back.events.onInputDown.add(function(){
             this._score = 0;
+            this.player = null;
             this.state.start("MainMenu");
         }, this);
         this.back.events.onInputOver.add(this.over, this);
@@ -293,8 +299,6 @@ doodleBreakout.Game.prototype.removeInputKeys = function () {
 doodleBreakout.Game.prototype.shutdown = function () {
     //reset rotation
     this.deactivateRotation();
-
-    this.player = null;
 
     this.removeInputKeys();
 };
