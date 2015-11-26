@@ -47,7 +47,7 @@ doodleBreakout.Plattform = function (game, x, y, key, fieldPosition, velocity, m
             game.physics.arcade.checkCollision.down = false;
             this.stay = this.stayX;
             this.holdBallVelocity.x = 10;
-            this.holdBallVelocity.y = -270;
+            this.holdBallVelocity.y = 270;
             rotation = 0;
             break;
         case "up":
@@ -58,7 +58,7 @@ doodleBreakout.Plattform = function (game, x, y, key, fieldPosition, velocity, m
             game.physics.arcade.checkCollision.up = false;
             this.stay = this.stayX;
             this.holdBallVelocity.x = 10;
-            this.holdBallVelocity.y = 270;
+            this.holdBallVelocity.y = -270;
             rotation = 180;
             break;
         case "right":
@@ -69,7 +69,7 @@ doodleBreakout.Plattform = function (game, x, y, key, fieldPosition, velocity, m
             this.holdPosition.x = this.x - this.body.width/2 - 8;
             this.holdPosition.y = this.y;
             this.stay = this.stayY;
-            this.holdBallVelocity.x = -270;
+            this.holdBallVelocity.x = 270;
             this.holdBallVelocity.y = 10;
             game.physics.arcade.checkCollision.right = false;
             rotation = -90;
@@ -82,7 +82,7 @@ doodleBreakout.Plattform = function (game, x, y, key, fieldPosition, velocity, m
             this.holdPosition.x = this.x + this.body.width/2 + 8;
             this.holdPosition.y = this.y;
             this.stay = this.stayY;
-            this.holdBallVelocity.x = 270;
+            this.holdBallVelocity.x = -270;
             this.holdBallVelocity.y = 10;
             game.physics.arcade.checkCollision.left = false;
             rotation = 90;

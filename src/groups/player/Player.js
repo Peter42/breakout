@@ -57,6 +57,7 @@ doodleBreakout.Player.prototype.interact = function( scope ){
 
     this.game.physics.arcade.collide( this.plattform, this.balls, function ( plattform, ball ) {
         var angle = this.game.physics.arcade.angleBetween(plattform, ball) + Math.PI / 2;
+        angle = angle * 0.7;
 
         var velocity = Math.sqrt(Math.pow(ball.body.velocity.x, 2) + Math.pow(ball.body.velocity.y, 2));
         velocity = Math.min(velocity, 800);
