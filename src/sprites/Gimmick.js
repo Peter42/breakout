@@ -59,3 +59,7 @@ doodleBreakout.Gimmick.prototype.setVelocity = function ( x, y ) {
     this.xVelocity = x;
     this.yVelocity = y;
 };
+
+doodleBreakout.Gimmick.prototype._earnPoints = function( player, points ){
+    player.earnPoints(points, this.x,  this.y);
+};

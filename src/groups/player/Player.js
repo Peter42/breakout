@@ -107,9 +107,13 @@ doodleBreakout.Player.prototype.addBall = function( x, y ){
 };
 
 
-doodleBreakout.Player.prototype.earnPoints = function( points ){
+doodleBreakout.Player.prototype.earnPoints = function( points, x, y ){
     this.points += points;
-
+    if(x&&y){
+        var text = "" + points;
+        var game =  this.game.state.states[this.game.state.current];
+        game.displayText(x,y, text, Phaser.Timer.SECOND);
+    }
     for( i in this.earnPoint ){
         (this.earnPoint[ i ][ 0 ]).call( this.earnPoint[ i ][ 1 ] );
     }

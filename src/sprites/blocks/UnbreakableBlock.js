@@ -11,8 +11,8 @@ doodleBreakout.UnbreakableBlock.prototype.constructor = doodleBreakout.Unbreakab
 doodleBreakout.UnbreakableBlock.prototype.destructionNeeded = false;
 
 doodleBreakout.UnbreakableBlock.prototype.hit = function( ball ){
-    if( ball.isThunderball ){
-        ball.parent.parent.earnPoints( this.getPoints() );
+    if( ball.isThunderball ) {
+        ball.parent.parent.earnPoints( this.getPoints(), this.x + this.width/2, this.y );
         this.remove( ball );
         return true;
     }

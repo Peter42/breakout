@@ -12,11 +12,9 @@ doodleBreakout.Rotator.prototype.constructor = doodleBreakout.Rotator;
 
 doodleBreakout.Rotator.prototype.collected = function( player ){
     //earn Bonus Points for each collected Duplicate
-    player.earnPoints(120);
+    this._earnPoints(player, 120);
 
     this.kill();
-
-    console.log( this.game.state );
 
     this.game.state.callbackContext.activateRotation();
 };

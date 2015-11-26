@@ -12,7 +12,7 @@ doodleBreakout.Coin.prototype.collected = function( player ){
     var iMax = 20;
     var iMin = 200;
 
-    player.earnPoints( Math.floor(Math.random() * (iMax - iMin + 1)) + iMin );
+    this._earnPoints(player,  Math.floor(Math.random() * (iMax - iMin + 1)) + iMin );
 
     this.kill();
 };

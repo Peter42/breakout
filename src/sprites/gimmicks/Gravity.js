@@ -10,7 +10,7 @@ doodleBreakout.Gravity.prototype.constructor = doodleBreakout.Thunderball;
 
 doodleBreakout.Gravity.prototype.collected = function( player ){
     //earn Bonus Points for each collected Gravity
-    player.earnPoints(70);
+    this._earnPoints(player, 70);
 
     this.kill();
 
