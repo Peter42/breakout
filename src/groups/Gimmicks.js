@@ -54,6 +54,11 @@ doodleBreakout.Gimmicks._gimmickProbability = {
             "name": "Rotator",
             "probability": 4,
             "create": doodleBreakout.Rotator
+        },
+        {
+            "name": "Gravity",
+            "probability": 5,
+            "create": doodleBreakout.Gravity
         }
     ]
 };

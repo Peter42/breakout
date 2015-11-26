@@ -15,6 +15,7 @@ doodleBreakout.Plattform = function (game, x, y, key, fieldPosition, velocity, m
 
     game.physics.enable(this, Phaser.Physics.ARCADE);
     this.body.immovable = true;
+    this.body.allowGravity = false;
     this.body.collideWorldBounds = true;
 
     this.holdPosition = { x:0, y:0 };
@@ -105,11 +106,6 @@ doodleBreakout.Plattform = function (game, x, y, key, fieldPosition, velocity, m
 
 doodleBreakout.Plattform.prototype = Object.create(Phaser.Sprite.prototype);
 doodleBreakout.Plattform.prototype.constructor = doodleBreakout.Plattform;
-
-doodleBreakout.Plattform.prototype.collect = function ( objectToCollect, callback, callbackContext ) {
-
-};
-
 
 doodleBreakout.Plattform.prototype.update = function() {
     if( this.fieldPosition == "left" || this.fieldPosition == "right" ){

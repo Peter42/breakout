@@ -8,6 +8,7 @@ doodleBreakout.AbstactBlock = function ( game, x, y, key ) {
     this.health = this._getMaxHealth();
 
     game.physics.enable(this, Phaser.Physics.ARCADE);
+    this.body.allowGravity = false;
     this.body.immovable = true;
 };
 
