@@ -86,8 +86,15 @@ doodleBreakout.Game.prototype.initializePlayers = function( bricks, gimmicks ){
     this.player.balls.collideWith( this.bricks, this.collideBallVsBrick, this.overlapBallVsBrick );
     this.player.plattform.collideWith( this.gimmicks, this.collectGimmick );
     this.player.onBallLost( this.checkLives, this );
+    this.player.onEarnPoint( this.showPointText, this );
 
     this.addScoreText( this.game.width - 10, 10, 1, 0, this.player );
+};
+
+doodleBreakout.Game.prototype.showPointText = function ( points, x, y ) {
+    if( points && x && y ){
+        this.displayText( x, y, points, Phaser.Timer.SECOND );
+    }
 };
 
 doodleBreakout.Game.prototype.checkLives = function(){
@@ -326,7 +333,7 @@ doodleBreakout.Game.prototype._rotate = function( deg ) {
 
 doodleBreakout.Game.prototype.displayText = function(x,y,text,timeout){
 
-    var textPopup = this.game.add.bitmapText(x, y, 'larafont', text, 36);
+    var textPopup = this.game.add.bitmapText(x, y, 'larafont', String(text), 36);
     textPopup.anchor.setTo(0.5, 0);
 
 

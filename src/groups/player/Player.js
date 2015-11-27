@@ -56,8 +56,26 @@ doodleBreakout.Player.prototype.interact = function( scope ){
     }
 
     this.game.physics.arcade.collide( this.plattform, this.balls, function ( plattform, ball ) {
-        var angle = this.game.physics.arcade.angleBetween(plattform, ball) + Math.PI / 2;
-        angle = angle * 0.7;
+
+        var y = plattform.y;
+        var x = plattform.x;
+
+        switch ( plattform.fieldPosition ){
+            case "up":
+                y -= plattform.height / 2;
+                break;
+            case "down":
+                y += plattform.height / 2;
+                break;
+            case "left":
+                x -= plattform.height / 2;
+                break;
+            case "right":
+                x += plattform.height / 2;
+                break;
+        }
+
+        var angle = this.game.physics.arcade.angleToXY(ball, x, y) - Math.PI / 2;
 
         var velocity = Math.sqrt(Math.pow(ball.body.velocity.x, 2) + Math.pow(ball.body.velocity.y, 2));
         velocity = Math.min(velocity, 800);
@@ -110,13 +128,8 @@ doodleBreakout.Player.prototype.addBall = function( x, y ){
 
 doodleBreakout.Player.prototype.earnPoints = function( points, x, y ){
     this.points += points;
-    if(x&&y){
-        var text = "" + points;
-        var game =  this.game.state.states[this.game.state.current];
-        game.displayText(x,y, text, Phaser.Timer.SECOND);
-    }
     for( i in this.earnPoint ){
-        (this.earnPoint[ i ][ 0 ]).call( this.earnPoint[ i ][ 1 ] );
+        (this.earnPoint[ i ][ 0 ]).call( this.earnPoint[ i ][ 1 ], points, x, y );
     }
 };
 
@@ -132,7 +145,7 @@ doodleBreakout.Player.prototype.lostBall = function (ball) {
     if ( this.balls.total <= 1 ){
 
         for( i in this.ballLost ){
-            (this.ballLost[ i ][ 0 ]).call( this.ballLost[ i ][ 1 ] );
+            (this.ballLost[ i ][ 0 ]).call( this.ballLost[ i ][ 1 ], ball );
         }
         this.plattform.resetPlattform();
         this.addBall( 300, 300 );

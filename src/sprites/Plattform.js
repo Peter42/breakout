@@ -152,6 +152,10 @@ doodleBreakout.Plattform.prototype.stayY = function ( ball ) {
 
 
 doodleBreakout.Plattform.prototype.handleOrientationEvent = function(event) {
+    if( ! this.body ){
+        return;
+    }
+
     if(!this.initialBeta) {
         this.initialBeta = event.beta;
     } else {
