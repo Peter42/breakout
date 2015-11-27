@@ -11,6 +11,7 @@ doodleBreakout.Plattform = function (game, x, y, key, fieldPosition, velocity, m
 
     this.release = releaseKey;
     this.release.onDown.add( this.releaseBalls, this );
+    this.release.onDown.add( this.releasePressed, this );
 
 
     game.physics.enable(this, Phaser.Physics.ARCADE);
@@ -101,13 +102,26 @@ doodleBreakout.Plattform = function (game, x, y, key, fieldPosition, velocity, m
     this.action = {
         move1: false,
         move2: false
-    }
+    };
+
+    this.freeze = false;
 };
 
 doodleBreakout.Plattform.prototype = Object.create(Phaser.Sprite.prototype);
 doodleBreakout.Plattform.prototype.constructor = doodleBreakout.Plattform;
 
 doodleBreakout.Plattform.prototype.update = function() {
+    if( this._balls != null ){
+        this._balls.forEach( function( ball ){
+            this.stay( ball );
+        }, this );
+    }
+
+
+    if( this.freeze ){
+        return;
+    }
+
     if( this.fieldPosition == "left" || this.fieldPosition == "right" ){
         this.body.height = this.width;
         this.body.width = this.height;
@@ -126,12 +140,6 @@ doodleBreakout.Plattform.prototype.update = function() {
         this.body.velocity.set(0, 0);
     }
 
-
-    if( this._balls != null ){
-        this._balls.forEach( function( ball ){
-            this.stay( ball );
-        }, this );
-    }
 };
 
 doodleBreakout.Plattform.prototype.stayX = function ( ball ) {
@@ -173,6 +181,35 @@ doodleBreakout.Plattform.prototype.holdBalls = function( balls ){
 
 };
 
+
+doodleBreakout.Plattform.prototype.releasePressed = function () {
+    if( ! this._releaseTimestamps ){
+        this._releaseTimestamps = [];
+    }
+
+    var currentTime = this.game.time.time;
+
+    this._releaseTimestamps = this._releaseTimestamps.filter( function ( value ){
+        return value > ( currentTime - Phaser.Timer.SECOND * 2 );
+    } );
+
+    this._releaseTimestamps.push( currentTime );
+
+    if( ! this.freeze && this._releaseTimestamps.length > 3 ){
+        this.freeze = true;
+
+        var freezeTime = 3 * Phaser.Timer.SECOND;
+
+        this.game.state.getCurrentState().displayText( this.x, this.y, "TILT", freezeTime );
+
+        var timer = this.game.time.create(false);
+        timer.add( freezeTime, function(){
+            this.freeze = false;
+        }, this);
+        timer.start();
+    }
+};
+
 doodleBreakout.Plattform.prototype.releaseBalls = function(){
     if(this._balls && !this.game.state.callbackContext.doodlebreakoutIsPaused ) {
         this.hold = false;
@@ -189,6 +226,7 @@ doodleBreakout.Plattform.prototype.releaseBalls = function(){
 doodleBreakout.Plattform.prototype.resetPlattform = function(){
     this.height = this.sizeValues.height;
     this.width = this.sizeValues.width;
+    this.freeze = false;
 };
 
 doodleBreakout.Plattform.prototype.grow = function(){
