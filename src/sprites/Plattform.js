@@ -183,6 +183,7 @@ doodleBreakout.Plattform.prototype.holdBalls = function( balls ){
         ball.stop();
     }, this );
 
+    this.game.time.events.add( 1.5 * Phaser.Timer.SECOND, this.releaseBalls, this);
 };
 
 
