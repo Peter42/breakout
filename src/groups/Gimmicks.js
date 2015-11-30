@@ -6,9 +6,9 @@ doodleBreakout.Gimmicks = function ( game, gimmicks ) {
     Phaser.Group.call( this, game );
 
     this._probabilityConfig = {
-        "dropProbability": 8,
+        "dropProbability": 100,
         "positiveProbability": 1,
-        "negativeProbability": 1
+        "negativeProbability": 0
     };
 
     if( gimmicks ){
@@ -42,6 +42,11 @@ doodleBreakout.Gimmicks._gimmickProbability = {
             "name": "Coin",
             "probability": 3,
             "create": doodleBreakout.Coin
+        },
+        {
+            "name": "Invincible",
+            "probability": 200,
+            "create": doodleBreakout.Invincible
         }
     ],
     "negative": [
