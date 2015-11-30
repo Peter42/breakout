@@ -98,6 +98,7 @@ doodleBreakout.Game.prototype.showPointText = function ( points, x, y ) {
 };
 
 doodleBreakout.Game.prototype.checkLives = function(){
+    this.clearGimmickLifetimes();
     if ( this.player.lives.countLiving() <= 0 ) {
         this.lostGame();
     }
@@ -105,6 +106,7 @@ doodleBreakout.Game.prototype.checkLives = function(){
 
 doodleBreakout.Game.prototype.collectGimmick = function( plattform, gimmick ){
     gimmick.gathered( plattform.parent );
+    this.showGimmickLifetime( gimmick );
     this.updateScoreText();
 };
 
@@ -304,31 +306,8 @@ doodleBreakout.Game.prototype.removeInputKeys = function () {
 };
 
 doodleBreakout.Game.prototype.shutdown = function () {
-    //reset rotation
-    this.deactivateRotation();
-
+    game.style.transform = 'rotate(0deg)';
     this.removeInputKeys();
-};
-
-doodleBreakout.Game.prototype.activateRotation = function() {
-
-    this._rotationActive = true;
-
-    this.rotatorTimer.stop();
-    this.rotatorTimer.add(7000, this.deactivateRotation, this);
-    this.rotatorTimer.start();
-
-    this._rotate(180);
-};
-
-doodleBreakout.Game.prototype.deactivateRotation = function() {
-    this._rotationActive = false;
-    this.rotatorTimer.stop();
-    this._rotate(0);
-};
-
-doodleBreakout.Game.prototype._rotate = function( deg ) {
-    game.style.transform = 'rotate('  + deg + 'deg)';
 };
 
 doodleBreakout.Game.prototype.displayText = function(x,y,text,timeout){
@@ -347,4 +326,108 @@ doodleBreakout.Game.prototype.displayText = function(x,y,text,timeout){
     }, this);
     this.timer.start();
 
+};
+
+doodleBreakout.Game.prototype.showGimmickLifetime = function ( gimmick ) {
+    if( gimmick.getDuration() <= 0 ){
+        return;
+    }
+
+    var duration = gimmick.getDuration();
+
+    if( ! this._activeDisplayedGimmick ){
+        this._activeDisplayedGimmick = [];
+    }
+
+    for( i in this._activeDisplayedGimmick ){
+        if( this._activeDisplayedGimmick[ i ].className == gimmick.className ){
+            this._activeDisplayedGimmick[ i ].children[ 1 ].setText( duration );
+            return;
+        }
+    }
+
+    var length = this._activeDisplayedGimmick.length;
+
+    var position = 10;
+    if( length > 0 ){
+        position = this._activeDisplayedGimmick[ length - 1 ].nextX;
+    }
+
+    var activeGimmickDisplay = this.game.add.group();
+    activeGimmickDisplay.className = gimmick.className;
+
+    var gimmickImage = this.game.add.sprite( position, this.game.height, gimmick.key );
+    gimmickImage.anchor.setTo( 0, 1 );
+
+    var gimmickImageHeight = gimmickImage.height;
+
+    gimmickImage.height = 30;
+    gimmickImage.width = gimmickImage.width / (gimmickImageHeight/gimmickImage.height);
+
+    activeGimmickDisplay.nextX = gimmickImage.x + gimmickImage.width + 10;
+    activeGimmickDisplay.add( gimmickImage );
+
+    var xTimerText = Math.floor( (gimmickImage.x) + gimmickImage.width / 2 );
+    var yTimerText = Math.floor( (gimmickImage.y - gimmickImage.height ) + gimmickImage.height / 2 );
+    var timerText = this.game.add.bitmapText( xTimerText, yTimerText, 'larafont', String(duration), 32 );
+    timerText.anchor.setTo( 0.5 );
+
+    activeGimmickDisplay.add( timerText );
+
+    this._activeDisplayedGimmick.push( activeGimmickDisplay );
+
+    activeGimmickDisplay.destructionTimer = this.game.time.create();
+
+    activeGimmickDisplay.destructionTimer.loop( Phaser.Timer.SECOND, function( activeGimmick ){
+        var text = activeGimmick.children[ 1 ];
+
+        var time = parseInt( text.text ) - 1;
+
+        text.setText( time );
+
+        if( time <= 0 ){
+            var gimmickTween = this.game.add.tween( activeGimmick.children[ 0 ] );
+            var textTween = this.game.add.tween( activeGimmick.children[ 1 ] );
+
+            gimmickTween.onComplete.add( this._removeGimmickLifetime, this, null, activeGimmick );
+
+            gimmickTween.to( { alpha: 0 }, 250, Phaser.Easing.Linear.None, true, 0, 0, false );
+            textTween.to( { alpha: 0 }, 250, Phaser.Easing.Linear.None, true, 0, 0, false );
+        }
+    }, this, activeGimmickDisplay );
+    activeGimmickDisplay.destructionTimer.start();
+};
+
+doodleBreakout.Game.prototype.clearGimmickLifetimes = function( keepStayAlive ){
+    if( ! this._activeDisplayedGimmick ){
+        return;
+    }
+
+    for( i in this._activeDisplayedGimmick ){
+        if( ! ( keepStayAlive && this._activeDisplayedGimmick[ i ].children[ 0].stayAlive ) ){
+            this._removeGimmickLifetime( null, null, this._activeDisplayedGimmick[ i ] );
+        }
+    }
+};
+
+doodleBreakout.Game.prototype._removeGimmickLifetime = function ( sprite, tween, activeGimmick ) {
+    activeGimmick.destructionTimer.destroy();
+
+    this._activeDisplayedGimmick.splice( this._activeDisplayedGimmick.indexOf( activeGimmick ), 1 );
+
+    activeGimmick.destroy();
+
+    for( i in this._activeDisplayedGimmick ){
+        var pos = 0;
+        if( this._activeDisplayedGimmick[ i - 1 ] ){
+            pos = this._activeDisplayedGimmick[ i - 1 ].nextX;
+        }
+
+        var textPos = Math.floor((pos) + this._activeDisplayedGimmick[ i ].children[ 0 ].width / 2);
+
+        this.game.add.tween(this._activeDisplayedGimmick[ i ].children[ 0 ]).to( { x: pos }, 250, Phaser.Easing.Linear.None, true );
+        this.game.add.tween(this._activeDisplayedGimmick[ i ].children[ 1 ]).to( { x: textPos }, 250, Phaser.Easing.Linear.None, true );
+
+        this._activeDisplayedGimmick[ i ].nextX = pos + this._activeDisplayedGimmick[ i ].children[ 0 ].width + 10;
+    }
 };

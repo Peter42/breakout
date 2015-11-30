@@ -2,6 +2,8 @@ var doodleBreakout = doodleBreakout || {};
 
 doodleBreakout.Thunderball = function (game, x, y) {
     doodleBreakout.Gimmick.call(this, game, x, y, 'thunder');
+    this.setDuration( 7 );
+    this._thunderballs = null;
 };
 
 doodleBreakout.Thunderball.prototype = Object.create(doodleBreakout.Gimmick.prototype);
@@ -13,7 +15,17 @@ doodleBreakout.Thunderball.prototype.collected = function (player) {
 
     this.kill();
 
-    player.balls.forEachAlive(function (ball) {
-        ball.activateThunderpower(6500);
-    }, this._ball);
+    this._thunderballs = player.balls;
+
+    console.log( "addThunderpower" );
+
+    player.balls.forEachAlive( function (ball) {
+        ball.activateThunderpower();
+    } );
+};
+
+doodleBreakout.Thunderball.prototype.onTimerTimeout = function() {
+    this._thunderballs.forEachAlive( function (ball) {
+        ball.removeThunderpower();
+    } );
 };

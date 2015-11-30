@@ -18,7 +18,7 @@ doodleBreakout.Preloader.prototype = {
         this.game.load.image('thunder', 'assets/images/feature01.png');
         this.game.load.image('live', 'assets/images/feature02.png');
         this.game.load.image('duplicate', 'assets/images/feature03.png');
-        this.game.load.image('gravity', 'assets/images/feature04.png');
+        this.game.load.image('gravity', 'assets/images/schwerkraft.png');
         this.game.load.image('minus', 'assets/images/minus.png');
         this.game.load.image('plus', 'assets/images/plus.png');
         this.game.load.image('coin', 'assets/images/coin.png');

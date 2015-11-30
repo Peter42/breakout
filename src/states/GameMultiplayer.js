@@ -138,6 +138,11 @@ doodleBreakout.GameMultiplayer.prototype.initializePlayers = function( bricks, g
     this.addScoreText( this.game.width - 10, 5, 1, 0, this.player2 );
 };
 
+doodleBreakout.GameMultiplayer.prototype.collectGimmick = function( plattform, gimmick ){
+    gimmick.gathered( plattform.parent );
+    this.updateScoreText();
+};
+
 doodleBreakout.GameMultiplayer.prototype.collideBallVsBrick = function( ball, brick ){
     player = ball.parent.parent;
 

@@ -1,10 +1,9 @@
 var doodleBreakout = doodleBreakout || {};
 
-doodleBreakout.Rotator = function ( game, x, y ) {
+doodleBreakout.Rotator = function( game, x, y ){
     doodleBreakout.Gimmick.call( this, game, x, y, 'rotator' );
-    if(!doodleBreakout.Rotator.rotatorTimer) {
-        doodleBreakout.Rotator.rotatorTimer = this.game.time.create(false);
-    }
+    this.setDuration( 7 );
+    this.stayAlive = true;
 };
 
 doodleBreakout.Rotator.prototype = Object.create(doodleBreakout.Gimmick.prototype);
@@ -14,7 +13,16 @@ doodleBreakout.Rotator.prototype.collected = function( player ){
     //earn Bonus Points for each collected Duplicate
     this._earnPoints(player, 120);
 
-    this.kill();
+    this._rotate(180);
 
-    this.game.state.callbackContext.activateRotation();
+    this.kill();
+};
+
+doodleBreakout.Rotator.prototype.onTimerTimeout = function() {
+    this._rotate(0);
+};
+
+doodleBreakout.Rotator.prototype._rotate = function( deg ) {
+    // game represents the game div
+    game.style.transform = 'rotate('  + deg + 'deg)';
 };

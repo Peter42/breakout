@@ -80,14 +80,9 @@ doodleBreakout.Ball.prototype.stop = function() {
  * Sets the ball to a Thunderball
  * @param {number} duration - The duration of the activity.
  */
-doodleBreakout.Ball.prototype.activateThunderpower = function( duration ){
+doodleBreakout.Ball.prototype.activateThunderpower = function(){
     this.frame = 1;
     this.isThunderball = true;
-
-    this.powerTimer.destroy();
-    this.powerTimer.stop();
-    this.powerTimer.add( duration, this.removeThunderpower, this);
-    this.powerTimer.start();
 };
 
 /**
@@ -95,8 +90,6 @@ doodleBreakout.Ball.prototype.activateThunderpower = function( duration ){
  */
 doodleBreakout.Ball.prototype.removeThunderpower = function(){
     if( this.isThunderball ){
-        this.powerTimer.destroy();
-        this.powerTimer.stop();
         this.frame = 0;
         this.isThunderball = false;
     }

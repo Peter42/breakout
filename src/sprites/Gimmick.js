@@ -5,14 +5,49 @@ doodleBreakout.Gimmick = function ( game, x, y, texture ) {
     Phaser.Sprite.call( this, game, x, y, texture );
     this.visible = false;
     this.isFalling = false;
+    this._duration = 0;
+    this.stayAlive = false;
+
+    this.className = "";
+    for( name in doodleBreakout ){
+        if( doodleBreakout.hasOwnProperty( name ) && typeof doodleBreakout[name] == "function" && doodleBreakout[name] != doodleBreakout.Gimmick && this instanceof doodleBreakout[name] ){
+            this.className = name;
+            break;
+        }
+    }
 };
 
 doodleBreakout.Gimmick.prototype = Object.create(Phaser.Sprite.prototype);
 doodleBreakout.Gimmick.prototype.constructor = doodleBreakout.Gimmick;
 
-doodleBreakout.Gimmick.prototype.gathered = function( player ) {
+
+doodleBreakout.Gimmick.prototype.gathered = function( player ){
     this.playCollectSound();
     this.collected( player );
+    this._startTimer();
+};
+
+doodleBreakout.Gimmick.prototype.setDuration = function ( duration ) {
+    this._duration = duration;
+};
+
+doodleBreakout.Gimmick.prototype.getDuration = function () {
+    return this._duration;
+};
+
+doodleBreakout.Gimmick.prototype._startTimer = function () {
+  if( this._duration > 0 ){
+      if( doodleBreakout[ this.className ]._timer ){
+          doodleBreakout[ this.className ]._timer.destroy();
+      }
+      doodleBreakout[ this.className ]._timer = this.game.time.create();
+      doodleBreakout[ this.className ]._timer.add( this._duration * Phaser.Timer.SECOND, this.onTimerTimeout, this );
+      doodleBreakout[ this.className ]._timer.start();
+  }
+};
+
+doodleBreakout.Gimmick.prototype.onTimerTimeout = function () {
+    throw this.constructor.name + " Gimmick: Timeout method not implemented.";
 };
 
 doodleBreakout.Gimmick.prototype.playCollectSound = function(){
