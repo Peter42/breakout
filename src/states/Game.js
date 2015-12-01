@@ -268,7 +268,9 @@ doodleBreakout.Game.prototype.pauseGame = function () {
         this.back.events.onInputOver.add(this.over, this);
         this.back.events.onInputOut.add(this.out, this);
 
-        this._rotate(0);
+        this._gameDivRotation = this._getGameRotation();
+
+        this._setGameRotation(0);
 
     } else {
         this.doodlebreakoutIsPaused = false;
@@ -284,14 +286,18 @@ doodleBreakout.Game.prototype.pauseGame = function () {
         this.back.kill();
         this.destroySoundSettings();
 
-        this._rotate(this._rotationActive ? 180 : 0);
+        this._setGameRotation( this._gameDivRotation );
     }
-
 };
 
-doodleBreakout.Game.prototype._rotate = function( deg ) {
+doodleBreakout.Game.prototype._setGameRotation = function( deg ) {
     // game represents the game div
-    game.style.transform = 'rotate('  + deg + 'deg)';
+    game.style.transform = 'rotate(' + deg + 'deg)';
+};
+
+doodleBreakout.Game.prototype._getGameRotation = function() {
+    // game represents the game div
+    return parseInt( game.style.transform.match( /rotate\((.*)\)/ )[ 1 ] );
 };
 
 doodleBreakout.Game.prototype.addInputKey = function( key ){
@@ -311,7 +317,7 @@ doodleBreakout.Game.prototype.removeInputKeys = function () {
 };
 
 doodleBreakout.Game.prototype.shutdown = function () {
-    this._rotate(0);
+    this._setGameRotation(0);
     this.removeInputKeys();
 };
 
@@ -319,7 +325,6 @@ doodleBreakout.Game.prototype.displayText = function(x,y,text,timeout){
 
     var textPopup = this.game.add.bitmapText(x, y, 'larafont', String(text), 36);
     textPopup.anchor.setTo(0.5, 0);
-
 
     this.game.add.tween(textPopup).to( { alpha: 0 }, 500, Phaser.Easing.Linear.None, true, 500, -1, false);
     this.timer = this.game.time.create(false);
