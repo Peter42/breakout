@@ -31,6 +31,7 @@ doodleBreakout.GameComputer.prototype.initializePlayers = function( bricks, gimm
     this.player.balls.collideWith( this.bricks, this.collideBallVsBrick, this.overlapBallVsBrick );
     this.player.plattform.collideWith( this.gimmicks, this.collectGimmick );
     this.player.onBallLost( this.checkLives, this );
+    this.player.onEarnPoint( this.showPointText, this );
 
     this.addScoreText( this.game.width - 10, 10, 1, 0, this.player );
 };

@@ -134,6 +134,9 @@ doodleBreakout.GameMultiplayer.prototype.initializePlayers = function( bricks, g
     this.player1.onEarnPoint( this.updateScoreText, this );
     this.player2.onEarnPoint( this.updateScoreText, this );
 
+    this.player1.onEarnPoint( this.showPointText, this );
+    this.player2.onEarnPoint( this.showPointText, this );
+
     this.addScoreText( 10, 5, 0, 0, this.player1 );
     this.addScoreText( this.game.width - 10, 5, 1, 0, this.player2 );
 };

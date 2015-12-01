@@ -9,15 +9,21 @@ doodleBreakout.Gravity = function ( game, x, y ) {
 doodleBreakout.Gravity.prototype = Object.create(doodleBreakout.Gimmick.prototype);
 doodleBreakout.Gravity.prototype.constructor = doodleBreakout.Thunderball;
 
+doodleBreakout.Gravity.active = false;
+
 doodleBreakout.Gravity.prototype.collected = function( player ){
     //earn Bonus Points for each collected Gravity
     this._earnPoints(player, 70);
 
     this.kill();
 
-    this.game.physics.arcade.gravity.y += 100;
+    if( ! doodleBreakout.Gravity.active ){
+        doodleBreakout.Gravity.active = true;
+        this.game.physics.arcade.gravity.y += 100;
+    }
 };
 
 doodleBreakout.Gravity.prototype.onTimerTimeout = function() {
+    doodleBreakout.Gravity.active = false;
     this.game.physics.arcade.gravity.y -= 100;
 };

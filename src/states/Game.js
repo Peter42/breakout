@@ -289,6 +289,11 @@ doodleBreakout.Game.prototype.pauseGame = function () {
 
 };
 
+doodleBreakout.Game.prototype._rotate = function( deg ) {
+    // game represents the game div
+    game.style.transform = 'rotate('  + deg + 'deg)';
+};
+
 doodleBreakout.Game.prototype.addInputKey = function( key ){
     if( ! this.inputKeys ){
         this.inputKeys = [];
@@ -306,7 +311,7 @@ doodleBreakout.Game.prototype.removeInputKeys = function () {
 };
 
 doodleBreakout.Game.prototype.shutdown = function () {
-    game.style.transform = 'rotate(0deg)';
+    this._rotate(0);
     this.removeInputKeys();
 };
 
