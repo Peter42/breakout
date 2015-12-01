@@ -13,7 +13,7 @@ doodleBreakout.GameComputer.prototype.update = function () {
 };
 
 doodleBreakout.GameComputer.prototype.initializePlayers = function( bricks, gimmicks ){
-    var plattform = new doodleBreakout.Plattform( this.game, 550, 550, 'plattform_player2', "down", 800, false, false, {onDown:{add:function(){}}}, false );
+    var plattform = new doodleBreakout.Plattform( this.game, 550, 550, 'plattform01', "down", 800, false, false, {onDown:{add:function(){}}}, false );
 
     var playerPoints = 0;
     var playerLives = 3;
@@ -24,7 +24,7 @@ doodleBreakout.GameComputer.prototype.initializePlayers = function( bricks, gimm
     }
 
     this.player = new doodleBreakout.ComputerPlayer( this.game, plattform, playerLives );
-    this.player.balls.imageKey = "ball1";
+    this.player.balls.imageKey = "ball";
     this.player.earnPoints( playerPoints );
     this.player.addBall( 500, 500 );
     this.player.setBallsOnPlattform();

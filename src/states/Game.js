@@ -67,7 +67,7 @@ doodleBreakout.Game.prototype.initializePlayers = function( bricks, gimmicks ){
     var keyLeft = this.addInputKey( Phaser.Keyboard.LEFT );
     var keyRight = this.addInputKey( Phaser.Keyboard.RIGHT );
 
-    var plattform = new doodleBreakout.Plattform( this.game, 550, 550, 'plattform_player2', "down", 800, keyLeft, keyRight, keySpacebar );
+    var plattform = new doodleBreakout.Plattform( this.game, 550, 550, 'plattform01', "down", 800, keyLeft, keyRight, keySpacebar );
 
 
     var playerPoints = 0;
@@ -80,7 +80,7 @@ doodleBreakout.Game.prototype.initializePlayers = function( bricks, gimmicks ){
 
     this.player = new doodleBreakout.SinglePlayer( this.game, plattform, playerLives );
     this.player.earnPoints( playerPoints );
-    this.player.balls.imageKey = "ball1";
+    this.player.balls.imageKey = "ball";
     this.player.addBall( 500, 500 );
     this.player.setBallsOnPlattform();
     this.player.balls.collideWith( this.bricks, this.collideBallVsBrick, this.overlapBallVsBrick );

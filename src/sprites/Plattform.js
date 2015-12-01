@@ -117,8 +117,8 @@ doodleBreakout.Plattform.prototype.update = function() {
         }, this );
     }
 
-
     if( this.freeze ){
+        this.body.velocity.set( 0, 0 );
         return;
     }
 
@@ -181,6 +181,9 @@ doodleBreakout.Plattform.prototype.holdBalls = function( balls ){
         ball.setCollision( false );
         ball.setPosition( this.holdPosition.x, this.holdPosition.y );
         ball.stop();
+
+        ball.animations.add('blink');
+        ball.animations.play('blink', 8, true);
     }, this );
 
     var timer = this.game.time.create();
@@ -221,6 +224,8 @@ doodleBreakout.Plattform.prototype.releaseBalls = function(){
     if( this.hold && this._balls && !this.game.state.callbackContext.doodlebreakoutIsPaused ) {
         this.hold = false;
         this._balls.forEach( function( ball ){
+            ball.animations.getAnimation("blink").destroy();
+            ball.frame = 0;
             ball.setCollision( true );
             ball.start();
             ball.body.velocity.setTo( this.holdBallVelocity.x, this.holdBallVelocity.y );
