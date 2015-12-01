@@ -20,7 +20,6 @@ doodleBreakout.Gimmick = function ( game, x, y, texture ) {
 doodleBreakout.Gimmick.prototype = Object.create(Phaser.Sprite.prototype);
 doodleBreakout.Gimmick.prototype.constructor = doodleBreakout.Gimmick;
 
-
 doodleBreakout.Gimmick.prototype.gathered = function( player ){
     this.playCollectSound();
     this.collected( player );

@@ -183,7 +183,9 @@ doodleBreakout.Plattform.prototype.holdBalls = function( balls ){
         ball.stop();
     }, this );
 
-    this.game.time.events.add( 1.5 * Phaser.Timer.SECOND, this.releaseBalls, this);
+    var timer = this.game.time.create();
+    timer.add( 1.5 * Phaser.Timer.SECOND, this.releaseBalls, this);
+    timer.start();
 };
 
 
@@ -216,7 +218,7 @@ doodleBreakout.Plattform.prototype.releasePressed = function () {
 };
 
 doodleBreakout.Plattform.prototype.releaseBalls = function(){
-    if(this._balls && !this.game.state.callbackContext.doodlebreakoutIsPaused ) {
+    if( this.hold && this._balls && !this.game.state.callbackContext.doodlebreakoutIsPaused ) {
         this.hold = false;
         this._balls.forEach( function( ball ){
             ball.setCollision( true );

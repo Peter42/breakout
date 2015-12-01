@@ -297,7 +297,12 @@ doodleBreakout.Game.prototype._setGameRotation = function( deg ) {
 
 doodleBreakout.Game.prototype._getGameRotation = function() {
     // game represents the game div
-    return parseInt( game.style.transform.match( /rotate\((.*)\)/ )[ 1 ] );
+    var rotation = game.style.transform.match( /rotate\((.*)\)/ );
+
+    if( rotation == null || rotation.length < 2 ){
+        return 0;
+    }
+    return parseInt( rotation[ 1 ] );
 };
 
 doodleBreakout.Game.prototype.addInputKey = function( key ){
