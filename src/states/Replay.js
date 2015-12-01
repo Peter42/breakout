@@ -74,7 +74,6 @@ doodleBreakout.Replay.prototype.back = function(){
 doodleBreakout.Replay.prototype._updateObject = function (data, id) {
     if(this._objects[id]){
         if(!data) {
-            //console.log("kill " + id);
             this._objects[id].visible = false;
             this._objects[id].kill();
             delete this._objects[id];
@@ -113,7 +112,6 @@ doodleBreakout.Replay.prototype._updateObject = function (data, id) {
             return;
         }
         if(data.key && typeof data.key === 'string'){
-            //console.log("create " + id + " with key " + data.key);
             this._objects[id] = this.game.add.sprite(data.x, data.y, data.key);
             this._objects[id].visible = data.visible;
             this._objects[id].frame = data.frame;
@@ -149,8 +147,6 @@ doodleBreakout.Replay.prototype.update = function(){
             this.world.removeAll();
             this._objects = [];
         }
-
-        //console.log("nextFrame");
 
         for(var i in this._data){
             var offset = this._nextFrame - this._data[i][0].offset;

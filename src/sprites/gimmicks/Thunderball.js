@@ -17,8 +17,6 @@ doodleBreakout.Thunderball.prototype.collected = function (player) {
 
     this._thunderballs = player.balls;
 
-    console.log( "addThunderpower" );
-
     player.balls.forEachAlive( function (ball) {
         ball.activateThunderpower();
     } );
