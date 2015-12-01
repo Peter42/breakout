@@ -13,7 +13,7 @@ doodleBreakout.Gravity.active = false;
 
 doodleBreakout.Gravity.prototype.collected = function( player ){
     //earn Bonus Points for each collected Gravity
-    this._earnPoints(player, 70);
+    this._earnPoints(player, 75);
 
     this.kill();
 

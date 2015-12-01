@@ -9,7 +9,7 @@ doodleBreakout.Duplicate.prototype.constructor = doodleBreakout.Duplicate;
 
 doodleBreakout.Duplicate.prototype.collected = function( player ){
     //earn Bonus Points for each collected Duplicate
-    this._earnPoints(player, 40);
+    this._earnPoints(player, 20);
     var currentBall = player.balls.getFirstAlive();
 
     var x = currentBall.body.velocity.x;
