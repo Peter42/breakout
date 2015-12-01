@@ -47,7 +47,7 @@ doodleBreakout.Player.prototype.constructor = doodleBreakout.Player;
 
 
 doodleBreakout.Player.prototype.interact = function( scope ){
-    for( i in this.customCollisions ){
+    for( var i = 0; i < this.customCollisions.length; ++i ){
         var callbackContext = this.customCollisions[ i ].callbackContext;
         if( ! callbackContext ){
             callbackContext = scope;
@@ -128,7 +128,7 @@ doodleBreakout.Player.prototype.addBall = function( x, y ){
 
 doodleBreakout.Player.prototype.earnPoints = function( points, x, y ){
     this.points += points;
-    for( i in this.earnPoint ){
+    for( var i = 0; i < this.earnPoint.length; ++i ){
         (this.earnPoint[ i ][ 0 ]).call( this.earnPoint[ i ][ 1 ], points, x, y );
     }
 };
@@ -144,7 +144,7 @@ doodleBreakout.Player.prototype.onEarnPoint = function( fn, scope ){
 doodleBreakout.Player.prototype.lostBall = function (ball) {
     if ( this.balls.total <= 1 ){
 
-        for( i in this.ballLost ){
+        for( var i = 0; i < this.ballLost.length; ++i ){
             (this.ballLost[ i ][ 0 ]).call( this.ballLost[ i ][ 1 ], ball );
         }
         this.plattform.resetPlattform();

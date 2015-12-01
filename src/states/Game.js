@@ -174,7 +174,7 @@ doodleBreakout.Game.prototype.addScoreText = function( x, y, xAnchor, yAnchor, p
 };
 
 doodleBreakout.Game.prototype.updateScoreText = function () {
-    for( i in this._scoreTexts ){
+    for( var i = 0; i < this._scoreTexts.length; ++i ){
         this._scoreTexts[ i ].text.setText( this._scoreTexts[ i ].player.points );
     }
 };
@@ -349,7 +349,7 @@ doodleBreakout.Game.prototype.showGimmickLifetime = function ( gimmick ) {
         this._activeDisplayedGimmick = [];
     }
 
-    for( i in this._activeDisplayedGimmick ){
+    for( var i = 0; i < this._activeDisplayedGimmick.length; ++i ){
         if( this._activeDisplayedGimmick[ i ].className == gimmick.className ){
             this._activeDisplayedGimmick[ i ].children[ 1 ].setText( duration );
             return;
@@ -414,7 +414,7 @@ doodleBreakout.Game.prototype.clearGimmickLifetimes = function( keepStayAlive ){
         return;
     }
 
-    for( i in this._activeDisplayedGimmick ){
+    for( var i = 0; i < this._activeDisplayedGimmick.length; ++i ){
         if( ! ( keepStayAlive && this._activeDisplayedGimmick[ i ].stayAlive ) ){
             this._removeGimmickLifetime( null, null, this._activeDisplayedGimmick[ i ] );
         }
@@ -428,7 +428,7 @@ doodleBreakout.Game.prototype._removeGimmickLifetime = function ( sprite, tween,
 
     activeGimmick.destroy();
 
-    for( i in this._activeDisplayedGimmick ){
+    for( var i = 0; i < this._activeDisplayedGimmick.length; ++i ){
         var pos = 0;
         if( this._activeDisplayedGimmick[ i - 1 ] ){
             pos = this._activeDisplayedGimmick[ i - 1 ].nextX;

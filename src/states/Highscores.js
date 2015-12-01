@@ -17,7 +17,7 @@ doodleBreakout.Highscores.prototype.create = function(){
 
     var scores = doodleBreakout.ScoresManager.getHighscores();
 
-    for(var i in scores){
+    for(var i = 0; i < scores.length; ++i){
         this._addScore(scores[i], 45 * i + 120);
     }
 

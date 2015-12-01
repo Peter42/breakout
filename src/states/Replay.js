@@ -148,7 +148,7 @@ doodleBreakout.Replay.prototype.update = function(){
             this._objects = [];
         }
 
-        for(var i in this._data){
+        for(var i = 0; i < this._data.length; ++i){
             var offset = this._nextFrame - this._data[i][0].offset;
             if(offset >= 0) {
                 this._updateObject(this._data[i][offset], this._data[i][0].__obj_id);
