@@ -10,7 +10,28 @@ doodleBreakout.ComputerPlayer.prototype.constructor = doodleBreakout.ComputerPla
 doodleBreakout.ComputerPlayer.prototype.interact = function( scope, gimmicks ){
     doodleBreakout.SinglePlayer.prototype.interact.call( this, scope );
 
-    this.plattform.releaseBalls();
+    var x = "";
+    var y = "";
+    var gameWidth = 0;
+
+    switch ( this.plattform.fieldPosition ){
+        case "up":
+            throw "not supported";
+            break;
+        case "down":
+            x = "x";
+            y = "y";
+            gameWidth = this.game.width;
+            break;
+        case "left":
+            x = "y";
+            y = "x";
+            gameWidth = this.game.height;
+            break;
+        case "right":
+            throw "not supported";
+            break;
+    }
 
 // Stop platform, this may have been set by earlier calls of "update"
     this.plattform.action.move1 = false;
@@ -23,7 +44,7 @@ doodleBreakout.ComputerPlayer.prototype.interact = function( scope, gimmicks ){
 //var ball = undefined;
     var urgency = Infinity;
 
-    var targetX = this.plattform.x;
+    var targetX = this.plattform[x];
 
 // for every ball
     for( var i = this.balls.children.length - 1; i >= 0; --i) {
@@ -34,13 +55,13 @@ doodleBreakout.ComputerPlayer.prototype.interact = function( scope, gimmicks ){
          */
 
         // Platform y position
-        var py = this.plattform.y;
+        var py = this.plattform[y];
         // Ball x and y position
-        var by = currentBall.y;
-        var bx = currentBall.x;
+        var by = currentBall[y];
+        var bx = currentBall[x];
         // Velocity of the ball (in x and y)
-        var vy = currentBall.body.velocity.y;
-        var vx = currentBall.body.velocity.x;
+        var vy = currentBall.body.velocity[y];
+        var vx = currentBall.body.velocity[x];
 
         var currentUrgency = Infinity;// = (by + (faktor * vy)) - py;
         //currentUrgency *= -1;
@@ -55,10 +76,10 @@ doodleBreakout.ComputerPlayer.prototype.interact = function( scope, gimmicks ){
         var tx = t * vx + bx;
 
         // "normalize" the balls target position (because it could possibly hit a wall)
-        var n = Math.ceil(Math.abs( tx / this.game.width ));
-        var ctx = Math.abs(tx % this.game.width);
+        var n = Math.ceil(Math.abs( tx / gameWidth ));
+        var ctx = Math.abs(tx % gameWidth);
         if( vy > 0 && n % 2 == 0 ) {
-            ctx = this.game.width - ctx;
+            ctx = gameWidth - ctx;
         }
 
         /*
@@ -86,24 +107,24 @@ doodleBreakout.ComputerPlayer.prototype.interact = function( scope, gimmicks ){
 
         // find the closest one
         var gimmick = gimmicks.reduce(function(a,b){
-            return a.y > b.y ? a : b;
-        }, {y: -Infinity});
+            return a[y] > b[y] ? a : b;
+        }, {y: -Infinity, x: -Infinity});
 
-        if( gimmick.y > 0 ){
-            var t = (this.plattform.y - gimmick.y) / gimmick.body.velocity.y;
+        if( gimmick[y] > 0 ){
+            var t = (this.plattform[y] - gimmick[y]) / gimmick.body.velocity[y];
             if(urgency - t > 0.4) {
-                targetX = gimmick.x;
+                targetX = gimmick[x];
             }
         }
 
     }
 
 
-    if(targetX > this.plattform.x + width) {
+    if(targetX > this.plattform[x] + width) {
         this.plattform.action.move2 = true;
         this.plattform.action.move1 = false;
     }
-    else if(targetX < this.plattform.x - width) {
+    else if(targetX < this.plattform[x] - width) {
         this.plattform.action.move1 = true;
         this.plattform.action.move2 = false;
     }
