@@ -95,7 +95,8 @@ doodleBreakout.Plattform = function (game, x, y, key, fieldPosition, velocity, m
     this.rotation = rotation * (Math.PI/180);
 
     var that = this;
-    window.addEventListener("deviceorientation", function(event) {
+    window.addEventListener("devicemotion", function(event) {
+        console.log(event);
         that.handleOrientationEvent(event);
     }, true);
 
@@ -156,20 +157,20 @@ doodleBreakout.Plattform.prototype.handleOrientationEvent = function(event) {
         return;
     }
 
-    if(!this.initialBeta) {
-        this.initialBeta = event.beta;
-    } else {
-        if( Math.abs(event.beta - this.initialBeta) > 20 ){
-            this.releaseBall();
-        }
-    }
-    var gamma = event.gamma;
-    gamma = Math.max(Math.min(gamma, 10), -10);
-    gamma = gamma / 10;
-    if(Math.abs(gamma) < 0.5) {
+    this.action.move1 = false;
+    this.action.move2 = false;
+
+    var gamma = event.accelerationIncludingGravity.x;
+    if(Math.abs(gamma) < 1) {
         gamma = 0;
     }
-    this.body.velocity.set(800 * gamma, 0);
+
+    if( gamma >  0 ) {
+        this.action.move1 = true;
+    }
+    else if ( gamma <  0 ) {
+        this.action.move2 = true;
+    }
 };
 
 
