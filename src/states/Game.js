@@ -333,7 +333,7 @@ doodleBreakout.Game.prototype.displayText = function(x,y,text,timeout){
     var textPopup = this.game.add.bitmapText(x, y, 'larafont', String(text), 36);
     textPopup.anchor.setTo(0.5, 0);
 
-    this.game.add.tween(textPopup).to( { alpha: 0 }, 500, Phaser.Easing.Linear.None, true, 500, -1, false);
+    this.game.add.tween(textPopup).to( { alpha: 0 }, timeout/2, Phaser.Easing.Linear.None, true, timeout/2, 0, false);
     this.timer = this.game.time.create(false);
     this.timer.destroy();
     this.timer.stop();
