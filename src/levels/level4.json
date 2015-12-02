@@ -9,5 +9,11 @@
     [0,0,0,0,1,1,1,0,0,1,1,1,0,0,0,0],
     [1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1],
     [0,0,0,0,0,0,0,4,4,0,0,0,0,0,0,0]
-  ]
+  ],
+  "probability": {
+    "dropProbability": 10,
+    "positiveProbability": 1,
+    "negativeProbability": 1
+  },
+  "multiplayer": 0
 }

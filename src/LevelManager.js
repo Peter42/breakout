@@ -22,13 +22,15 @@ doodleBreakout.LevelManager = {
         this._loadLevels();
     },
 
-    getLevelIds: function(){
+    getLevelIds: function( multiplayer ){
         var levels = this._levels.static.concat( this._levels.alterable );
         var levelsAmount = levels.length;
         var levelIds = [];
 
         for( var i = 0; i < levelsAmount; i++ ){
-            levelIds.push( levels[i].id );
+            if( ( multiplayer && levels[i].multiplayer > 0 ) || ( ! multiplayer && ( levels[i].multiplayer < 2 || ! levels[i].multiplayer ) ) ){
+                levelIds.push( levels[i].id );
+            }
         }
 
         return levelIds;
@@ -214,6 +216,7 @@ doodleBreakout.LevelManager = {
     _processLevelData: function( id, levelData ){
         var probability = {};
         var structure = [];
+        var multiplayer = 0;
 
         if( ! levelData || typeof levelData !== 'object' ){
             throw "Corrupt level data";
@@ -243,10 +246,15 @@ doodleBreakout.LevelManager = {
             }
         }
 
+        if( levelData.hasOwnProperty( "multiplayer" ) ){
+            multiplayer = levelData.multiplayer;
+        }
+
         return {
             id: id,
             structure: structure,
-            probability: probability
+            probability: probability,
+            multiplayer: multiplayer
         }
     }
 };

@@ -34,6 +34,8 @@ doodleBreakout.LevelDesigner = function( game ){
     this._dataBricks = null;
 
     this.savedLevel = true;
+
+    this.drawMode = 0;
 };
 
 doodleBreakout.LevelDesigner.prototype = Object.create(doodleBreakout.AbstractMenu.prototype);
@@ -143,12 +145,46 @@ doodleBreakout.LevelDesigner.prototype._createUI = function() {
 
     this._updateButtons();
 
+    this._drawModeText = this.game.add.bitmapText( 225, 75, 'larafont', this.getLevelDescriptorText( this.drawMode ), 25 );
+    this._drawModeText.inputEnabled = true;
+    this._drawModeText.input.useHandCursor = true;
+    this._drawModeText.events.onInputDown.add( function(){
+        this.setDrawMode( ++this.drawMode );
+    }, this );
+
     this._coords = this.game.add.text( 75, 70, "X: 1\tY: 1", { font: "20px Courier", fill: "#000", tabs: 80 } );
 
     this._drawPalette();
 
     this.game.create.grid( 'drawingGrid', this._drawAreaWidth, this._drawAreaHeight+1, this.blockWidth, this.blockHeight, 'rgb(50,50,100)');
     this.game.add.sprite( this.offsetX , this.offsetY , 'drawingGrid');
+};
+
+
+doodleBreakout.LevelDesigner.prototype.getLevelDescriptorText = function ( drawMode ) {
+    var result = "";
+    switch ( drawMode ){
+        case 0:
+            result = "Single";
+            break;
+        case 1:
+            result = "Both";
+            break;
+        case 2:
+            result = "Multi";
+            break;
+        default:
+            result = "Single";
+    }
+    return result;
+};
+
+doodleBreakout.LevelDesigner.prototype.setDrawMode = function ( mode ) {
+    if( mode > 2 || ! mode ){
+        mode = 0;
+    }
+    this._drawModeText.setText( this.getLevelDescriptorText( mode ) );
+    this.drawMode = mode;
 };
 
 
@@ -160,7 +196,8 @@ doodleBreakout.LevelDesigner.prototype._saveLevel = function(){
 
     if( this.levelId ){
         doodleBreakout.LevelManager.editLevel( this.levelId, {
-            structure: this.data
+            structure: this.data,
+            multiplayer: this.drawMode
         }, true );
 
         this.savedLevel = true;
@@ -178,7 +215,8 @@ doodleBreakout.LevelDesigner.prototype._saveLevel = function(){
     levelText.input.useHandCursor = true;
     levelText.events.onInputDown.add( function(){
         this.levelId = doodleBreakout.LevelManager.addLevel( {
-            structure: this.data
+            structure: this.data,
+            multiplayer: this.drawMode
         }, true );
         this._updateButtons();
         this._closePopup();
@@ -267,22 +305,23 @@ doodleBreakout.LevelDesigner.prototype._openLevel = function(){
     var yPos = 75;
 
     for( var i = 0; i < levelAmount; i++ ){
-        var levelText = this.game.add.bitmapText( xPos, yPos, 'larafont', 'L'+ i, 30 );
+        var levelData = doodleBreakout.LevelManager.getLevelData( levels[ i ] );
+
+        var levelText = this.game.add.bitmapText( xPos, yPos, 'larafont', this.getLevelDescriptorText( levelData.multiplayer ) + i, 30 );
         levelText.anchor.setTo(0, 0);
         levelText.inputEnabled = true;
         levelText.input.useHandCursor = true;
-        levelText.events.onInputDown.add( function( text, pointer, levelId ){
+        levelText.events.onInputDown.add( function( text, pointer, levelData ){
             this._reset();
-
-            var levelData = doodleBreakout.LevelManager.getLevelData( levelId );
 
             this.data = levelData.structure;
             this.levelId = levelData.id;
+            this.setDrawMode( levelData.multiplayer );
 
             this._updateButtons();
             this._refresh();
             this._closePopup();
-        }, this, null, levels[ i ] );
+        }, this, null, levelData );
 
         xPos += levelText.width + 25;
 

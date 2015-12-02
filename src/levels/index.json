@@ -1,7 +1,9 @@
 [
   "level1.json",
   "level2.json",
+  "level2multiplayer.json",
   "level3.json",
+  "level3multiplayer.json",
   "level4.json",
   "level5.json"
 ]

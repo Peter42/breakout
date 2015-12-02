@@ -17,8 +17,6 @@ doodleBreakout.LevelSelection.prototype._isComputerPlayerActive = false;
 
 
 doodleBreakout.LevelSelection.prototype.init = function(gameMode){
-    this._playerClass = null;
-
     switch(gameMode){
         case 'singlePlayer':
             this._tileTint = 0x0080FF;
@@ -45,6 +43,8 @@ doodleBreakout.LevelSelection.prototype.create = function(){
     var title = this.game.add.bitmapText(this.game.width / 2, 10, 'larafont', this._titleText, 64);
     title.anchor.setTo(0.5, 0);
 
+    var multiplayer = false;
+
     if (this._titleText == 'Multi-Player'){
         //Computer vs Player Switch
         var recordingText = this.game.add.bitmapText(this.game.width / 2 + 50, 80, 'larafont', 'Player vs. Computer', 42);
@@ -57,10 +57,10 @@ doodleBreakout.LevelSelection.prototype.create = function(){
         }
         this.computerPlayerSwitch.inputEnabled = true;
         this.computerPlayerSwitch.events.onInputDown.add(this.toggleComputerPlayer, this);
-
+        multiplayer = true;
     }
 
-    var levelIds = doodleBreakout.LevelManager.getLevelIds();
+    var levelIds = doodleBreakout.LevelManager.getLevelIds( multiplayer );
 
     this._pages = Math.ceil(levelIds.length/12);
     this._items = [];
