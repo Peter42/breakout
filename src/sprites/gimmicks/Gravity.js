@@ -4,6 +4,7 @@ doodleBreakout.Gravity = function ( game, x, y ) {
     doodleBreakout.Gimmick.call( this, game, x, y, 'gravity' );
     this.setDuration( 20 );
     this.stayAlive = true;
+    this.globalEffect = true;
 };
 
 doodleBreakout.Gravity.prototype = Object.create(doodleBreakout.Gimmick.prototype);

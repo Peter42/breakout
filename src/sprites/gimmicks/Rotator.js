@@ -4,6 +4,7 @@ doodleBreakout.Rotator = function( game, x, y ){
     doodleBreakout.Gimmick.call( this, game, x, y, 'rotator' );
     this.setDuration( 7 );
     this.stayAlive = true;
+    this.globalEffect = true;
 };
 
 doodleBreakout.Rotator.prototype = Object.create(doodleBreakout.Gimmick.prototype);

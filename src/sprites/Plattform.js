@@ -96,7 +96,6 @@ doodleBreakout.Plattform = function (game, x, y, key, fieldPosition, velocity, m
 
     var that = this;
     window.addEventListener("devicemotion", function(event) {
-        console.log(event);
         that.handleOrientationEvent(event);
     }, true);
 

@@ -7,6 +7,7 @@ doodleBreakout.Gimmick = function ( game, x, y, texture ) {
     this.isFalling = false;
     this._duration = 0;
     this.stayAlive = false;
+    this.globalEffect = false;
 
     this.className = "";
     for( name in doodleBreakout ){
@@ -36,16 +37,34 @@ doodleBreakout.Gimmick.prototype.getDuration = function () {
 
 doodleBreakout.Gimmick.prototype._startTimer = function ( player ) {
   if( this._duration > 0 ){
-      if( ! player._gimmickTimer ){
-          player._gimmickTimer = [];
+      var scope;
+      if( this.globalEffect ){
+
+          if( ! doodleBreakout[ this.className ]._gimmickTimer ){
+              doodleBreakout[ this.className ]._gimmickTimer = false;
+          }
+          scope = doodleBreakout[ this.className ];
+      }
+      else {
+          if( ! player._gimmickTimer ){
+              player._gimmickTimer = [];
+          }
+
+          if( ! player._gimmickTimer[ this.className ] ){
+              player._gimmickTimer[ this.className ] = {
+                  _gimmickTimer: false
+              };
+          }
+
+          scope = player._gimmickTimer[ this.className ];
       }
 
-      if( player._gimmickTimer[ this.className ] ){
-          player._gimmickTimer[ this.className ].destroy();
+      if( scope._gimmickTimer ){
+          scope._gimmickTimer.destroy();
       }
-      player._gimmickTimer[ this.className ] = this.game.time.create();
-      player._gimmickTimer[ this.className ].add( this._duration * Phaser.Timer.SECOND, this.onTimerTimeout, this );
-      player._gimmickTimer[ this.className ].start();
+      scope._gimmickTimer = this.game.time.create();
+      scope._gimmickTimer.add( this._duration * Phaser.Timer.SECOND, this.onTimerTimeout, this );
+      scope._gimmickTimer.start();
   }
 };
 

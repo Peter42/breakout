@@ -3,6 +3,7 @@ var doodleBreakout = doodleBreakout || {};
 doodleBreakout.Invincible = function ( game, x, y ) {
     doodleBreakout.Gimmick.call( this, game, x, y, 'invincible' );
     this.setDuration( 8 );
+    this.globalEffect = true;
 };
 
 doodleBreakout.Invincible.prototype = Object.create(doodleBreakout.Gimmick.prototype);
