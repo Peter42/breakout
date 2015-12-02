@@ -11,6 +11,7 @@ doodleBreakout.GameMultiplayer.prototype.constructor = doodleBreakout.GameMultip
 doodleBreakout.GameMultiplayer.prototype.init = function (args) {
     if (args && args.level) {
         this._level = args.level;
+        this._isComputerPlayerActive = args.computerPlayer;
     }
 };
 
@@ -90,8 +91,13 @@ doodleBreakout.GameMultiplayer.prototype.create = function ( game ) {
 };
 
 doodleBreakout.GameMultiplayer.prototype.update = function () {
-    this.player1.interact( this );
-    this.player2.interact( this );
+    if(this._isComputerPlayerActive){
+        this.player1.interact( this, this.gimmicks );
+        this.player2.interact( this );
+    } else {
+        this.player1.interact( this );
+        this.player2.interact( this );
+    }
 };
 
 doodleBreakout.GameMultiplayer.prototype.initializePlayers = function( bricks, gimmicks ){
@@ -99,9 +105,19 @@ doodleBreakout.GameMultiplayer.prototype.initializePlayers = function( bricks, g
     var keyS = this.addInputKey( Phaser.Keyboard.S );
     var keyD = this.addInputKey( Phaser.Keyboard.D );
 
-    var plattform = new doodleBreakout.Plattform( this.game, 40, 300, 'plattform_player1', "left", 800, keyW, keyS, keyD, false );
+    var plattform;
+    if(this._isComputerPlayerActive){
+        plattform = new doodleBreakout.Plattform( this.game, 40, 300, 'plattform_player1', "left", 800, false, false, {onDown:{add:function(){}}}, false);
+    } else {
+        plattform = new doodleBreakout.Plattform( this.game, 40, 300, 'plattform_player1', "left", 800, keyW, keyS, keyD, false );
+    }
 
-    this.player1 = new doodleBreakout.Player( this.game, plattform );
+
+    if(this._isComputerPlayerActive) {
+        this.player1 = new doodleBreakout.ComputerPlayer(this.game, plattform);
+    } else {
+        this.player1 = new doodleBreakout.Player(this.game, plattform);
+    }
     this.player1.addBall( 100, 100 );
     this.player1.setBallsOnPlattform();
 
