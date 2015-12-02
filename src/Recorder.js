@@ -3,14 +3,15 @@ var doodleBreakout = doodleBreakout || {};
 doodleBreakout.Recorder = function( game ){
     this.game = game;
     this._isShutdown = false;
+
+    this.data = [];
+    this.usedKeys = ["icon_play","block05"];
+    this.times = [];
+    this.last = -1;
 };
 
 doodleBreakout.Recorder.constructor = doodleBreakout.Recorder;
 
-doodleBreakout.Recorder.prototype.data = [];
-doodleBreakout.Recorder.prototype.usedKeys = ["icon_play","block05"];
-doodleBreakout.Recorder.prototype.times = [];
-doodleBreakout.Recorder.prototype.last = -1;
 
 doodleBreakout.Recorder.prototype.isShutdown = function() {
     return this._isShutdown === true;
@@ -52,7 +53,7 @@ doodleBreakout.Recorder.prototype.capture = function (state) {
 
 doodleBreakout.Recorder.prototype.normalize = function(data, target) {
 
-    for(var i in data) {
+    for(var i = 0; i < data.length; ++i) {
         target.push(data[i]);
         this.normalize(data[i].children, target);
 
@@ -94,8 +95,8 @@ doodleBreakout.Recorder.prototype.shutdown = function() {
     this.times.push(this.game.time.time - this.last);
 
     this.dataReduced = [];
-    for(var i in this.data) {
-        for(var j in this.data[i]) {
+    for(var i = 0; i < this.data.length; ++i) {
+        for(var j = 0; j < this.data[i].length; ++j) {
             var d = this.data[i][j];
             if(this.dataReduced[d.__obj_id]){
                 this.dataReduced[d.__obj_id].push(d);
@@ -108,9 +109,9 @@ doodleBreakout.Recorder.prototype.shutdown = function() {
 
     this.dataReduced = this.dataReduced.filter(function(a){ return a !== null; });
 
-    for(var i in this.dataReduced) {
+    for(var i = 0; i < this.dataReduced.length; ++i) {
         var a = {};
-        for(var j in this.dataReduced[i]) {
+        for(var j = 0; j < this.dataReduced[i].length; ++j) {
             var b = this.dataReduced[i][j];
             var c = JSON.parse(JSON.stringify(b));
             Object.keys(a).forEach(function(key){ if(a[key] == b[key]) delete b[key]; });
@@ -201,5 +202,4 @@ function getDataUri(key, game) {
         "width": frame ? frame.width : undefined,
         "height": frame ? frame.height : undefined
     };
-
 }

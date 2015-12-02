@@ -13,6 +13,7 @@ doodleBreakout.LevelSelection.prototype._targetState = '';
 doodleBreakout.LevelSelection.prototype._pages = 0;
 doodleBreakout.LevelSelection.prototype._currentPage = -1;
 doodleBreakout.LevelSelection.prototype._items = [];
+doodleBreakout.LevelSelection.prototype._isComputerPlayerActive = false;
 
 
 doodleBreakout.LevelSelection.prototype.init = function(gameMode){
@@ -27,13 +28,11 @@ doodleBreakout.LevelSelection.prototype.init = function(gameMode){
         case 'multiPlayer':
             this._tileTint = 0xFF4500;
             this._titleText = 'Multi-Player';
-            //TODO: enter target state name for multiplayer
             this._targetState = 'GameMultiplayer';
             break;
         case 'computer':
             this._tileTint = 0x80FF00;
             this._titleText = 'Computer Mode';
-            //TODO: enter target state name for computer
             this._targetState = 'GameComputer';
             break;
     }
@@ -46,14 +45,29 @@ doodleBreakout.LevelSelection.prototype.create = function(){
     var title = this.game.add.bitmapText(this.game.width / 2, 10, 'larafont', this._titleText, 64);
     title.anchor.setTo(0.5, 0);
 
+    if (this._titleText == 'Multi-Player'){
+        //Computer vs Player Switch
+        var recordingText = this.game.add.bitmapText(this.game.width / 2 + 50, 80, 'larafont', 'Player vs. Computer', 42);
+        recordingText.anchor.setTo(0.7, 0);
+        this.computerPlayerSwitch = this.game.add.sprite(this.game.width / 2 + 200, 80, 'recording');
+        if(this._isComputerPlayerActive){
+            this.computerPlayerSwitch.frame = 1;
+        } else {
+            this.computerPlayerSwitch.frame = 0;
+        }
+        this.computerPlayerSwitch.inputEnabled = true;
+        this.computerPlayerSwitch.events.onInputDown.add(this.toggleComputerPlayer, this);
+
+    }
+
     var levelIds = doodleBreakout.LevelManager.getLevelIds();
 
-    this._pages = Math.ceil(levelIds.length/9);
+    this._pages = Math.ceil(levelIds.length/12);
     this._items = [];
 
     for(var i = 0; i < levelIds.length; ++i) {
-        var x = 230 * (i % 3) + 170;
-        var y = 170 * (Math.floor( (i % 9) / 3) + 1);
+        var x = 160 * (i % 4) + 170;
+        var y = 150 * (Math.floor( (i % 12) / 4) + 1) + 60;
 
         var text = (i + 1) + "";
         var besttime = doodleBreakout.ScoresManager.getBesttimes()[levelIds[i]];
@@ -111,7 +125,8 @@ doodleBreakout.LevelSelection.prototype.create = function(){
 };
 
 doodleBreakout.LevelSelection.prototype.startLevel = function( target ){
-    this.state.start( this._targetState, true, false, {level: target.doodleBreakout.targetLevel} );
+    this.state.start( this._targetState, true, false, {level: target.doodleBreakout.targetLevel,
+                                                        computerPlayer: this._isComputerPlayerActive} );
 };
 
 doodleBreakout.LevelSelection.prototype._setPage = function(page){
@@ -119,7 +134,7 @@ doodleBreakout.LevelSelection.prototype._setPage = function(page){
 
     for(var i = 0; i < this._items.length; ++i) {
         var items = this._items[i];
-        var enabled = (Math.floor(i/9) === page);
+        var enabled = (Math.floor(i/12) === page);
 
         for(var j = 0; j < items.length; ++j) {
             if (items[j]) {
@@ -142,4 +157,13 @@ doodleBreakout.LevelSelection.prototype.nextPage = function(){
     if(this._currentPage + 1 < this._pages){
         this._setPage(this._currentPage + 1);
     }
+};
+doodleBreakout.LevelSelection.prototype.toggleComputerPlayer = function() {
+  if (this._isComputerPlayerActive){
+      this._isComputerPlayerActive = false;
+      this.computerPlayerSwitch.frame = 0;
+  } else {
+      this._isComputerPlayerActive = true;
+      this.computerPlayerSwitch.frame = 1;
+  }
 };

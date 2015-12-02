@@ -8,6 +8,7 @@ doodleBreakout.AbstactBlock = function ( game, x, y, key ) {
     this.health = this._getMaxHealth();
 
     game.physics.enable(this, Phaser.Physics.ARCADE);
+    this.body.allowGravity = false;
     this.body.immovable = true;
 };
 
@@ -24,18 +25,18 @@ doodleBreakout.AbstactBlock.prototype.points = 10;
 
 doodleBreakout.AbstactBlock.prototype.getPoints = function () {
     return this.points;
-}
+};
 
 doodleBreakout.AbstactBlock.prototype.hit = function( ball ) {
     if( ball.isThunderball ){
-        ball.parent.parent.earnPoints( this.getPoints() );
+        ball.parent.parent.earnPoints( this.getPoints(), this.x + this.width/2, this.y );
         this.remove( ball );
         return true;
     }
 
     this.health--;
     if(this.health == 0) {
-        ball.parent.parent.earnPoints( this.getPoints() );
+        ball.parent.parent.earnPoints( this.getPoints(), this.x + this.width/2, this.y );
         this.remove( ball );
         return true;
     } else {

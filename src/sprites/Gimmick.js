@@ -5,14 +5,71 @@ doodleBreakout.Gimmick = function ( game, x, y, texture ) {
     Phaser.Sprite.call( this, game, x, y, texture );
     this.visible = false;
     this.isFalling = false;
+    this._duration = 0;
+    this.stayAlive = false;
+    this.globalEffect = false;
+
+    this.className = "";
+    for( name in doodleBreakout ){
+        if( doodleBreakout.hasOwnProperty( name ) && typeof doodleBreakout[name] == "function" && doodleBreakout[name] != doodleBreakout.Gimmick && this instanceof doodleBreakout[name] ){
+            this.className = name;
+            break;
+        }
+    }
 };
 
 doodleBreakout.Gimmick.prototype = Object.create(Phaser.Sprite.prototype);
 doodleBreakout.Gimmick.prototype.constructor = doodleBreakout.Gimmick;
 
-doodleBreakout.Gimmick.prototype.gathered = function( player ) {
+doodleBreakout.Gimmick.prototype.gathered = function( player ){
     this.playCollectSound();
     this.collected( player );
+    this._startTimer( player );
+};
+
+doodleBreakout.Gimmick.prototype.setDuration = function ( duration ) {
+    this._duration = duration;
+};
+
+doodleBreakout.Gimmick.prototype.getDuration = function () {
+    return this._duration;
+};
+
+doodleBreakout.Gimmick.prototype._startTimer = function ( player ) {
+  if( this._duration > 0 ){
+      var scope;
+      if( this.globalEffect ){
+
+          if( ! doodleBreakout[ this.className ]._gimmickTimer ){
+              doodleBreakout[ this.className ]._gimmickTimer = false;
+          }
+          scope = doodleBreakout[ this.className ];
+      }
+      else {
+          if( ! player._gimmickTimer ){
+              player._gimmickTimer = [];
+          }
+
+          if( ! player._gimmickTimer[ this.className ] ){
+              player._gimmickTimer[ this.className ] = {
+                  _gimmickTimer: false
+              };
+          }
+
+          scope = player._gimmickTimer[ this.className ];
+      }
+
+      if( scope._gimmickTimer ){
+          scope._gimmickTimer.destroy();
+      }
+      scope._gimmickTimer = this.game.time.create();
+      scope._gimmickTimer.add( this._duration * Phaser.Timer.SECOND, this.onTimerTimeout, this );
+      scope._gimmickTimer.start();
+  }
+};
+
+doodleBreakout.Gimmick.prototype.onTimerTimeout = function () {
+    throw this.constructor.name + " Gimmick: Timeout method not implemented.";
 };
 
 doodleBreakout.Gimmick.prototype.playCollectSound = function(){
@@ -58,4 +115,8 @@ doodleBreakout.Gimmick.prototype.yVelocity = 300;
 doodleBreakout.Gimmick.prototype.setVelocity = function ( x, y ) {
     this.xVelocity = x;
     this.yVelocity = y;
+};
+
+doodleBreakout.Gimmick.prototype._earnPoints = function( player, points ){
+    player.earnPoints(points, this.x,  this.y);
 };

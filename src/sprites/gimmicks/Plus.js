@@ -9,7 +9,7 @@ doodleBreakout.Plus.prototype.constructor = doodleBreakout.Plus;
 
 doodleBreakout.Plus.prototype.collected = function( player ){
     //earn Bonus Points for each collected Plus
-    player.earnPoints(50);
+    this._earnPoints(player, 25);
     player.plattform.grow();
     this.kill();
 };
