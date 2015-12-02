@@ -3,14 +3,15 @@ var doodleBreakout = doodleBreakout || {};
 doodleBreakout.Recorder = function( game ){
     this.game = game;
     this._isShutdown = false;
+
+    this.data = [];
+    this.usedKeys = ["icon_play","block05"];
+    this.times = [];
+    this.last = -1;
 };
 
 doodleBreakout.Recorder.constructor = doodleBreakout.Recorder;
 
-doodleBreakout.Recorder.prototype.data = [];
-doodleBreakout.Recorder.prototype.usedKeys = ["icon_play","block05"];
-doodleBreakout.Recorder.prototype.times = [];
-doodleBreakout.Recorder.prototype.last = -1;
 
 doodleBreakout.Recorder.prototype.isShutdown = function() {
     return this._isShutdown === true;

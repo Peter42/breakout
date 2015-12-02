@@ -243,6 +243,7 @@ doodleBreakout.Game.prototype.pauseGame = function () {
         this.retry.events.onInputDown.add(function(){
             this._score = 0;
             this.player = null;
+            this._recorder = null;
             this.state.start(this.game.state.current);
         }, this);
         this.retry.events.onInputOver.add(this.over, this);
@@ -263,6 +264,7 @@ doodleBreakout.Game.prototype.pauseGame = function () {
         this.back.events.onInputDown.add(function(){
             this._score = 0;
             this.player = null;
+            this._recorder = null;
             this.state.start("MainMenu");
         }, this);
         this.back.events.onInputOver.add(this.over, this);
