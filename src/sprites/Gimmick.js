@@ -23,7 +23,7 @@ doodleBreakout.Gimmick.prototype.constructor = doodleBreakout.Gimmick;
 doodleBreakout.Gimmick.prototype.gathered = function( player ){
     this.playCollectSound();
     this.collected( player );
-    this._startTimer();
+    this._startTimer( player );
 };
 
 doodleBreakout.Gimmick.prototype.setDuration = function ( duration ) {
@@ -34,14 +34,18 @@ doodleBreakout.Gimmick.prototype.getDuration = function () {
     return this._duration;
 };
 
-doodleBreakout.Gimmick.prototype._startTimer = function () {
+doodleBreakout.Gimmick.prototype._startTimer = function ( player ) {
   if( this._duration > 0 ){
-      if( doodleBreakout[ this.className ]._timer ){
-          doodleBreakout[ this.className ]._timer.destroy();
+      if( ! player._gimmickTimer ){
+          player._gimmickTimer = [];
       }
-      doodleBreakout[ this.className ]._timer = this.game.time.create();
-      doodleBreakout[ this.className ]._timer.add( this._duration * Phaser.Timer.SECOND, this.onTimerTimeout, this );
-      doodleBreakout[ this.className ]._timer.start();
+
+      if( player._gimmickTimer[ this.className ] ){
+          player._gimmickTimer[ this.className ].destroy();
+      }
+      player._gimmickTimer[ this.className ] = this.game.time.create();
+      player._gimmickTimer[ this.className ].add( this._duration * Phaser.Timer.SECOND, this.onTimerTimeout, this );
+      player._gimmickTimer[ this.className ].start();
   }
 };
 
