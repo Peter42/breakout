@@ -11,7 +11,9 @@ doodleBreakout.GameMultiplayer.prototype.constructor = doodleBreakout.GameMultip
 doodleBreakout.GameMultiplayer.prototype.init = function (args) {
     if (args && args.level) {
         this._level = args.level;
-        this._isComputerPlayerActive = args.computerPlayer;
+        if(args.computerPlayer !== undefined){
+            this._isComputerPlayerActive = args.computerPlayer;
+        }
     }
 };
 
