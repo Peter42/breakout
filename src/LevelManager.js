@@ -36,18 +36,29 @@ doodleBreakout.LevelManager = {
         return levelIds;
     },
 
-    getNextLevelId: function( actualId ){
+    getNextLevelId: function( actualId, multiplayer ){
         var levels = this._levels.static.concat( this._levels.alterable );
-        var levelIndex = this._getLevelIndex( actualId, levels );
+        var levelsAmount = levels.length;
 
-        if( levelIndex == -1 || ! levels[ levelIndex ] ){
-            throw "Unknown level id: " + levels[levelIndex];
+        var newLevels = [];
+
+        for( var i = 0; i < levelsAmount; i++ ){
+            if( ( multiplayer && levels[i].multiplayer > 0 ) || ( ! multiplayer && ( levels[i].multiplayer < 2 || ! levels[i].multiplayer ) ) ){
+                newLevels.push( levels[i] );
+            }
         }
-        else if( ! levels[ (levelIndex+1) ] ){
+
+        var levelIndex = this._getLevelIndex( actualId, newLevels );
+        var nextLevel = newLevels[ (levelIndex+1) ];
+
+        if( levelIndex == -1 || ! newLevels[ levelIndex ] ){
+            throw "Unknown level id: " + newLevels[levelIndex];
+        }
+        else if( ! nextLevel ){
             return false;
         }
 
-        return levels[ (levelIndex+1) ].id;
+        return nextLevel.id;
     },
 
     getStaticLevelIds: function () {
