@@ -117,7 +117,9 @@ doodleBreakout.Game.prototype.collideBallVsBrick = function( ball, brick ){
 
     if ( !this.bricks.children.find(function(brick){ return brick.destructionNeeded && brick.alive; } ) ) {
 
-        doodleBreakout.ScoresManager.addBesttime( this._level, Math.floor(this.timer.seconds));
+        if(this.state.current == "Game"){
+            doodleBreakout.ScoresManager.addBesttime( this._level, Math.floor(this.timer.seconds));
+        }
         this.timer.stop();
 
         var nextLevel = doodleBreakout.LevelManager.getNextLevelId(this._level);

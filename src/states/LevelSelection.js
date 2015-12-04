@@ -90,7 +90,7 @@ doodleBreakout.LevelSelection.prototype.create = function(){
         tile.events.onInputOut.add(this.out, this);
 
         var besttimeitem = undefined;
-        if(besttime){
+        if(besttime && this._targetState == "Game"){
             if(besttime % 60 < 10) {
                 besttime = Math.floor(besttime / 60) + ":0" + (besttime % 60);
             } else {
