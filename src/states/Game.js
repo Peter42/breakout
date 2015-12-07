@@ -103,9 +103,14 @@ doodleBreakout.Game.prototype.checkLives = function(){
     }
 };
 
+/**
+ * Exexuted if gimmick is gatherd
+ * @param plattform
+ * @param gimmick
+ */
 doodleBreakout.Game.prototype.collectGimmick = function( plattform, gimmick ){
-    gimmick.gathered( plattform.parent );
     this.showGimmickLifetime( gimmick );
+    gimmick.gathered( plattform.parent );
     this.updateScoreText();
 };
 

@@ -1,6 +1,9 @@
 var doodleBreakout = doodleBreakout || {};
 
-// "abstract" class
+/**
+ * Generic Gimmick
+ * @constructor
+ */
 doodleBreakout.Gimmick = function ( game, x, y, texture ) {
     Phaser.Sprite.call( this, game, x, y, texture );
     this.visible = false;
@@ -8,6 +11,9 @@ doodleBreakout.Gimmick = function ( game, x, y, texture ) {
     this._duration = 0;
     this.stayAlive = false;
     this.globalEffect = false;
+
+    this.xVelocity = 0;
+    this.yVelocity = 300;
 
     this.className = "";
     for( name in doodleBreakout ){
@@ -21,20 +27,40 @@ doodleBreakout.Gimmick = function ( game, x, y, texture ) {
 doodleBreakout.Gimmick.prototype = Object.create(Phaser.Sprite.prototype);
 doodleBreakout.Gimmick.prototype.constructor = doodleBreakout.Gimmick;
 
+/**
+ * Call this mehtod if a gimmick is gathered
+ * @public
+ * @param {object} player - The player gathered the gimmick
+ */
 doodleBreakout.Gimmick.prototype.gathered = function( player ){
     this.playCollectSound();
     this.collected( player );
     this._startTimer( player );
 };
 
+/**
+ * Set duration of a gimmick in seconds
+ *  @protected@protected
+ * @param {number} duration - Duration in seconds
+ */
 doodleBreakout.Gimmick.prototype.setDuration = function ( duration ) {
     this._duration = duration;
 };
 
+/**
+ * Get the duration in seconds
+ * @public
+ * @returns {number}
+ */
 doodleBreakout.Gimmick.prototype.getDuration = function () {
     return this._duration;
 };
 
+/**
+ * If the gimmick is gathered the timer is started
+ * @private
+ * @param player -- The player gathered the gimmick
+ */
 doodleBreakout.Gimmick.prototype._startTimer = function ( player ) {
   if( this._duration > 0 ){
       var scope;
@@ -68,18 +94,36 @@ doodleBreakout.Gimmick.prototype._startTimer = function ( player ) {
   }
 };
 
-doodleBreakout.Gimmick.prototype.onTimerTimeout = function () {
+/**
+ * The method is called when the timer is timed out
+ * @protected
+ */
+doodleBreakout.Gimmick.prototype.onTimerTimeout = function(){
     throw this.constructor.name + " Gimmick: Timeout method not implemented.";
 };
 
+/**
+ * Play the specified sound
+ * @protected
+ */
 doodleBreakout.Gimmick.prototype.playCollectSound = function(){
     doodleBreakout.SoundManager.playSfx('flop');
 };
 
-doodleBreakout.Gimmick.prototype.collected = function(){
+/**
+ * Do this if the gimmick was collected
+ * @protected
+ * @param {object} player - The player gathered the gimmick
+ */
+doodleBreakout.Gimmick.prototype.collected = function( player ){
     this.destroy();
 };
 
+/**
+ * Let the Gimmick fall in the direction of the platform
+ * @public
+ * @param ball - The ball which hit the block of the gimmick
+ */
 doodleBreakout.Gimmick.prototype.fall = function( ball ){
     this.isFalling = true;
     this.visible = true;
@@ -106,17 +150,15 @@ doodleBreakout.Gimmick.prototype.fall = function( ball ){
     }
     this.body.velocity.set( this.xVelocity, this.yVelocity );
     this.checkWorldBounds = true;
-    this.events.onOutOfBounds.add( this.kill, this );
+    this.events.onOutOfBounds.add( this.destroy, this );
 };
 
-doodleBreakout.Gimmick.prototype.xVelocity = 0;
-doodleBreakout.Gimmick.prototype.yVelocity = 300;
-
-doodleBreakout.Gimmick.prototype.setVelocity = function ( x, y ) {
-    this.xVelocity = x;
-    this.yVelocity = y;
-};
-
-doodleBreakout.Gimmick.prototype._earnPoints = function( player, points ){
+/**
+ * Earn points from gimmick
+ * @protected
+ * @param {object} player - The player gathered the gimmick
+ * @param {number} points - Amount of points from Gimmick
+ */
+doodleBreakout.Gimmick.prototype.earnPoints = function( player, points ){
     player.earnPoints(points, this.x,  this.y);
 };

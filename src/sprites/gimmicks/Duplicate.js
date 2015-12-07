@@ -1,5 +1,9 @@
 var doodleBreakout = doodleBreakout || {};
 
+/**
+ * @constructor
+ * @augments doodleBreakout.Gimmick
+ */
 doodleBreakout.Duplicate = function ( game, x, y ) {
     doodleBreakout.Gimmick.call( this, game, x, y, 'duplicate' );
 };
@@ -7,9 +11,10 @@ doodleBreakout.Duplicate = function ( game, x, y ) {
 doodleBreakout.Duplicate.prototype = Object.create(doodleBreakout.Gimmick.prototype);
 doodleBreakout.Duplicate.prototype.constructor = doodleBreakout.Duplicate;
 
+/** @inheritdoc */
 doodleBreakout.Duplicate.prototype.collected = function( player ){
     //earn Bonus Points for each collected Duplicate
-    this._earnPoints(player, 20);
+    this.earnPoints(player, 20);
     var currentBall = player.balls.getFirstAlive();
 
     var x = currentBall.body.velocity.x;
@@ -30,5 +35,5 @@ doodleBreakout.Duplicate.prototype.collected = function( player ){
     ball.body.velocity.y = Math.sin(angle - Math.PI / 4) * velocity;
     ball.body.velocity.x = Math.cos(angle - Math.PI / 4) * velocity;
 
-    this.kill();
+    this.destroy();
 };
