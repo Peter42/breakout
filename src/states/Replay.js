@@ -98,6 +98,11 @@ doodleBreakout.Replay.prototype.back = function(){
  * @private
  */
 doodleBreakout.Replay.prototype._updateObject = function (data, id) {
+    if( data && data.fps !== undefined ){
+        var fps = data.fps ? data.fps : 30;
+        this.game.time.desiredFps = fps;
+
+    }
     if(this._objects[id]){
         if(!data) {
             this._objects[id].visible = false;

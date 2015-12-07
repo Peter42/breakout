@@ -54,8 +54,10 @@ doodleBreakout.Recorder.prototype.capture = function (state) {
     });
 
     data = JSON.parse(data);
+    data.fps = this.game.time.fps;
 
     data = this.normalize([data], []);
+
 
     if( this.last > 0) {
         this.times.push(this.game.time.time - this.last);

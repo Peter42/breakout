@@ -80,7 +80,10 @@ doodleBreakout.Game.prototype.create = function () {
  */
 doodleBreakout.Game.prototype.render = function() {
     if(this._recorder && !this.doodlebreakoutIsPaused) {
+        this.game.time.advancedTiming = true;
         this._recorder.capture(this);
+    } else {
+        this.game.time.advancedTiming = false;
     }
 };
 
