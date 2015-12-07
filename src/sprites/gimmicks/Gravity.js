@@ -38,7 +38,6 @@ doodleBreakout.Gravity.prototype.collected = function( player ){
     if( ! doodleBreakout.Gravity.active ){
         doodleBreakout.Gravity.active = true;
         this.game.physics.arcade.gravity.y += 100;
-        console.log( "GravityACTIVATE" );
     }
 };
 
