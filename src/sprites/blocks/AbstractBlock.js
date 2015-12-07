@@ -1,6 +1,10 @@
 var doodleBreakout = doodleBreakout || {};
 
-doodleBreakout.AbstactBlock = function ( game, x, y, key ) {
+/**
+ * Generic Block
+ * @constructor
+ */
+doodleBreakout.AbstractBlock = function ( game, x, y, key ) {
 
     //  We call the Phaser.Sprite passing in the game reference
     Phaser.Sprite.call(this, game, x, y, key);
@@ -12,22 +16,43 @@ doodleBreakout.AbstactBlock = function ( game, x, y, key ) {
     this.body.immovable = true;
 };
 
-doodleBreakout.AbstactBlock.prototype = Object.create(Phaser.Sprite.prototype);
-doodleBreakout.AbstactBlock.prototype.constructor = doodleBreakout.AbstactBlock;
+doodleBreakout.AbstractBlock.prototype = Object.create(Phaser.Sprite.prototype);
+doodleBreakout.AbstractBlock.prototype.constructor = doodleBreakout.AbstractBlock;
 
-doodleBreakout.AbstactBlock.prototype.destructionNeeded = true;
+doodleBreakout.AbstractBlock.prototype.destructionNeeded = true;
 
-doodleBreakout.AbstactBlock.prototype._getMaxHealth = function() {
+/**
+ * Get the start helth of the block
+ * @returns {number}
+ * @private
+ */
+doodleBreakout.AbstractBlock.prototype._getMaxHealth = function() {
     return this.game.cache.getFrameCount(this.key);
 };
 
-doodleBreakout.AbstactBlock.prototype.points = 10;
+/**
+ * Amount of points for the block
+ * @protected
+ * @type {number}
+ */
+doodleBreakout.AbstractBlock.prototype.points = 10;
 
-doodleBreakout.AbstactBlock.prototype.getPoints = function () {
+/**
+ * Get the points
+ * @public
+ * @returns {number}
+ */
+doodleBreakout.AbstractBlock.prototype.getPoints = function () {
     return this.points;
 };
 
-doodleBreakout.AbstactBlock.prototype.hit = function( ball ) {
+/**
+ * Call method if the block was hit
+ * @param ball
+ * @returns {boolean}
+ * @public
+ */
+doodleBreakout.AbstractBlock.prototype.hit = function( ball ) {
     if( ball.isThunderball ){
         ball.parent.parent.earnPoints( this.getPoints(), this.x + this.width/2, this.y );
         this.remove( ball );
@@ -46,7 +71,12 @@ doodleBreakout.AbstactBlock.prototype.hit = function( ball ) {
     }
 };
 
-doodleBreakout.AbstactBlock.prototype.remove = function( ball ){
+/**
+ * Remove the block
+ * @param ball
+ * @protected
+ */
+doodleBreakout.AbstractBlock.prototype.remove = function( ball ){
     this.playKillSound();
 
     if( this.gimmik != null && ball != null ){
@@ -56,21 +86,34 @@ doodleBreakout.AbstactBlock.prototype.remove = function( ball ){
     this.destroy();
 };
 
-doodleBreakout.AbstactBlock.prototype.playHitSound = function(){
+/**
+ * Play a sound if the block is hit
+ * @protected
+ */
+doodleBreakout.AbstractBlock.prototype.playHitSound = function(){
     doodleBreakout.SoundManager.playSfx('klack');
 };
 
-doodleBreakout.AbstactBlock.prototype.playKillSound = function(){
+/**
+ * Play a sound if the block is destroyed
+ * @protected
+ */
+doodleBreakout.AbstractBlock.prototype.playKillSound = function(){
     doodleBreakout.SoundManager.playSfx('blubb');
 };
 
-doodleBreakout.AbstactBlock.prototype.setGimmik = function(gimmik){
-    if(! gimmik) {
+/**
+ * Set a gimmick for the block
+ * @param gimmick
+ * @public
+ */
+doodleBreakout.AbstractBlock.prototype.setGimmik = function(gimmick){
+    if(! gimmick) {
         return;
     }
     if(this.gimmik){
         throw "Gimmik has already been set";
     }
 
-    this.gimmik = gimmik;
+    this.gimmik = gimmick;
 };

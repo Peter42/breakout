@@ -3,6 +3,7 @@ var doodleBreakout = doodleBreakout || {};
 /**
  * @constructor
  * @classdec Represents the Single Player
+ * @augments doodleBreakout.Player
  */
 doodleBreakout.SinglePlayer = function( game, plattform, lives ) {
     doodleBreakout.Player.call( this, game, plattform );

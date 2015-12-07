@@ -3,6 +3,7 @@ var doodleBreakout = doodleBreakout || {};
 /**
  * @constructor
  * @classdec Represents the Computer Player
+ * @augments doodleBreakout.Player
  */
 doodleBreakout.ComputerPlayer = function( game, plattform, lives ) {
     doodleBreakout.SinglePlayer.call( this, game, plattform, lives );
