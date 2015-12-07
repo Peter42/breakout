@@ -142,17 +142,18 @@ doodleBreakout.GameMultiplayer.prototype.initializePlayers = function( bricks, g
     this.player2.addBall( 700, 100 );
     this.player2.setBallsOnPlattform();
 
-    this.player1.collideWith( this.player2.balls );
-    this.player2.collideWith( this.player1.balls );
-
     this.player1.balls.collideWith( bricks, this.collideBallVsBrick, this.overlapBallVsBrick );
     this.player2.balls.collideWith( bricks, this.collideBallVsBrick, this.overlapBallVsBrick );
 
     this.player1.balls.collideWith( this.blockerRight );
     this.player2.balls.collideWith( this.blockerLeft );
+    this.player1.balls.collideWith( this.player2.balls );
+    this.player2.balls.collideWith( this.player1.balls );
 
     this.player1.plattform.collideWith( gimmicks, this.collectGimmick );
     this.player2.plattform.collideWith( gimmicks, this.collectGimmick );
+    this.player1.plattform.collideWith( this.player2.balls, this.player1.collidePlatformVsBall );
+    this.player2.plattform.collideWith( this.player1.balls, this.player1.collidePlatformVsBall );
 
     this.player1.onBallLost( this.lostBall, this.player1 );
     this.player2.onBallLost( this.lostBall, this.player2 );

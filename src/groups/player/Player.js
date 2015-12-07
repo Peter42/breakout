@@ -62,35 +62,37 @@ doodleBreakout.Player.prototype.interact = function( scope ){
         this.game.physics.arcade.collide( this.customCollisions[ i ].object1, this.customCollisions[ i ].object2, this.customCollisions[ i ].collideCallback, this.customCollisions[ i ].processCallback, callbackContext );
     }
 
-    this.game.physics.arcade.collide( this.plattform, this.balls, function ( plattform, ball ) {
+    this.game.physics.arcade.collide( this.plattform, this.balls, this.collidePlatformVsBall, null, this);
+};
 
-        var y = plattform.y;
-        var x = plattform.x;
+doodleBreakout.Player.prototype.collidePlatformVsBall = function ( platform, ball ) {
 
-        switch ( plattform.fieldPosition ){
-            case "up":
-                y -= plattform.height / 2;
-                break;
-            case "down":
-                y += plattform.height / 2;
-                break;
-            case "left":
-                x -= plattform.height / 2;
-                break;
-            case "right":
-                x += plattform.height / 2;
-                break;
-        }
+    var y = platform.y;
+    var x = platform.x;
 
-        var angle = this.game.physics.arcade.angleToXY(ball, x, y) - Math.PI / 2;
+    switch ( platform.fieldPosition ){
+        case "up":
+            y -= platform.height / 2;
+            break;
+        case "down":
+            y += platform.height / 2;
+            break;
+        case "left":
+            x -= platform.height / 2;
+            break;
+        case "right":
+            x += platform.height / 2;
+            break;
+    }
 
-        var velocity = Math.sqrt(Math.pow(ball.body.velocity.x, 2) + Math.pow(ball.body.velocity.y, 2));
-        velocity = Math.min(velocity, 800);
+    var angle = this.game.physics.arcade.angleToXY(ball, x, y) - Math.PI / 2;
 
-        doodleBreakout.SoundManager.playSfx('paddle');
+    var velocity = Math.sqrt(Math.pow(ball.body.velocity.x, 2) + Math.pow(ball.body.velocity.y, 2));
+    velocity = Math.min(velocity, 800);
 
-        ball.body.velocity.set(velocity * Math.sin(angle), -velocity * Math.cos(angle));
-    }, null, this);
+    doodleBreakout.SoundManager.playSfx('paddle');
+
+    ball.body.velocity.set(velocity * Math.sin(angle), -velocity * Math.cos(angle));
 };
 
 /**
