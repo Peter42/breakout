@@ -1,0 +1,38 @@
+{
+  "lang": "de",
+  "name": "Doodle Breakout",
+  "short_name": "Doodle Breakout",
+  "icons": [{
+    "src": "assets/icons/icon_mdpi.png",
+    "type": "image/png",
+    "sizes": "48x48",
+    "density": 1
+  }, {
+      "src": "assets/icons/app_icon/icon_hdpi.png",
+      "type": "image/png",
+      "sizes": "72x72",
+      "density": 1.5
+    }, {
+      "src": "assets/icons/app_icon/icon_xhdpi.png",
+      "type": "image/png",
+      "sizes": "96x96",
+      "density": 2
+    }, {
+      "src": "assets/icons/app_icon/icon_xxhdpi.png",
+      "type": "image/png",
+      "sizes": "144x144",
+      "density": 3
+    }, {
+      "src": "assets/icons/app_icon/icon_xxxhdpi.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "density": 4
+    }
+  ],
+  "splash_screens": [],
+  "start_url": "index.html",
+  "display": "fullscreen",
+  "orientation": "landscape",
+  "theme_color": "lightblue",
+  "background_color": "lightblue"
+}
