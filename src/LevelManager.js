@@ -322,6 +322,8 @@ doodleBreakout.LevelManager = {
         var structure = [];
         var multiplayer = 0;
 
+        levelData = JSON.parse( JSON.stringify( levelData ) );
+
         if( ! levelData || typeof levelData !== 'object' ){
             throw "Corrupt level data";
         }
