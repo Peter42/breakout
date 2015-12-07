@@ -29,6 +29,11 @@ window.onload = function(){
 };
 
 function calculateSize() {
+
+    if(document.activeElement === fakeInput){
+        return;
+    }
+
     var width = 800;
     var height = 600;
 
