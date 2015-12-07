@@ -22,7 +22,16 @@ doodleBreakout.Boot.prototype = {
         this.stage.disableVisibilityChange = true;
 
         //  This tells the game to resize the renderer to match the game dimensions (i.e. 100% browser width / height)
-        this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+        this.scale.scaleMode = Phaser.ScaleManager.EXACT_FIT;
+
+        this.scale.getParentBounds = function(target) {
+            var bounds = target || new Phaser.Rectangle();
+            var parentNode = this.boundingParent;
+
+            bounds.setTo(0,0,parseInt(parentNode.style.width), parseInt(parentNode.style.height));
+
+            return bounds;
+        };
 
     },
 
