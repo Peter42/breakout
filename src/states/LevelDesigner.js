@@ -408,7 +408,8 @@ doodleBreakout.LevelDesigner.prototype._showPopup = function( titleText ){
     }, this );
 
     var overlay = this.game.add.sprite( 0, 0, 'pause' );
-    overlay.alpha = 0.9;
+    overlay.width = this.game.width;
+    overlay.height = this.game.height;
 
     var back = this.game.add.bitmapText( 20, 10, 'larafont', '<', 48 );
     back.anchor.setTo(0, 0);
