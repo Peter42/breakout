@@ -69,7 +69,6 @@ doodleBreakout.Game.prototype.initializePlayers = function( bricks, gimmicks ){
 
     var plattform = new doodleBreakout.Plattform( this.game, 550, 550, 'plattform01', "down", 800, keyLeft, keyRight, keySpacebar );
 
-
     var playerPoints = 0;
     var playerLives = 3;
 
@@ -442,6 +441,11 @@ doodleBreakout.Game.prototype._removeGimmickLifetime = function ( sprite, tween,
         var pos = 0;
         if( this._activeDisplayedGimmick[ i - 1 ] ){
             pos = this._activeDisplayedGimmick[ i - 1 ].nextX;
+        }
+
+        if( ! this._activeDisplayedGimmick[ i ] ){
+            console.log( "Undefined Error" );
+            continue;
         }
 
         var textPos = Math.floor((pos) + this._activeDisplayedGimmick[ i ].children[ 0 ].width / 2);
