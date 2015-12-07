@@ -1,5 +1,8 @@
 var doodleBreakout = doodleBreakout || {};
 
+/**
+ * @constructor
+ */
 doodleBreakout.Preloader = function( game ){
     this._levels = 0;
 };

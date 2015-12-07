@@ -1,5 +1,8 @@
 var doodleBreakout = doodleBreakout || {};
 
+/**
+ * @class
+ */
 doodleBreakout.SoundManager = {
 
     _sfxEnabled: true,

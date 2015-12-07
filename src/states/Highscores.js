@@ -1,5 +1,8 @@
 var doodleBreakout = doodleBreakout || {};
 
+/**
+ * @constructor
+ */
 doodleBreakout.Highscores = function( game ){
 
 };

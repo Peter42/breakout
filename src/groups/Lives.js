@@ -1,5 +1,8 @@
 var doodleBreakout = doodleBreakout || {};
 
+/**
+ * @constructor
+ */
 doodleBreakout.Lives = function ( game, x, y, amount ) {
     //  We call the Phaser.Sprite passing in the game reference
     Phaser.Group.call( this, game );

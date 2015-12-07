@@ -1,5 +1,8 @@
 var doodleBreakout = doodleBreakout || {};
 
+/**
+ * @constructor
+ */
 doodleBreakout.AbstractSoundSettings = function( game ){};
 
 doodleBreakout.AbstractSoundSettings.prototype = Object.create(doodleBreakout.AbstractMenu.prototype);

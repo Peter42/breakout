@@ -1,9 +1,14 @@
 var doodleBreakout = doodleBreakout || {};
 
+/**
+ * @constructor
+ */
 doodleBreakout.AbstractMenu = function( game ){};
 
 doodleBreakout.AbstractMenu.prototype = {
-
+    /**
+     * create a back navigation
+     */
     createBackHome: function () {
 
         var goHomeText = this.game.add.bitmapText(20, 10, 'larafont', '<',48);
@@ -16,14 +21,23 @@ doodleBreakout.AbstractMenu.prototype = {
 
     },
 
+    /**
+     * go back
+     */
     goBackHome: function () {
         this.state.start("MainMenu");
     },
 
+    /**
+     * @param text
+     */
     over: function(text){
         text.scale.setTo(1.1);
     },
 
+    /**
+     * @param text
+     */
     out: function(text){
         text.scale.setTo(1);
     }

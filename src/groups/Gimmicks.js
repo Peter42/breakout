@@ -1,5 +1,8 @@
 var doodleBreakout = doodleBreakout || {};
 
+/**
+ * @constructor
+ */
 doodleBreakout.Gimmicks = function ( game, gimmicks ) {
 
     //  We call the Phaser.Sprite passing in the game reference

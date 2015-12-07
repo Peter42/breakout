@@ -1,5 +1,9 @@
 var doodleBreakout = doodleBreakout || {};
 
+/**
+ * @constructor
+ * @augments doodleBreakout.Game
+ */
 doodleBreakout.GameMultiplayer = function (game) {
 
 };

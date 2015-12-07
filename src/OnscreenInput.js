@@ -1,5 +1,8 @@
 var doodleBreakout = doodleBreakout || {};
 
+/**
+ * @class
+ */
 doodleBreakout.OnscreenInput = {};
 
 doodleBreakout.OnscreenInput.enabled = false;

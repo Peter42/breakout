@@ -1,5 +1,8 @@
 var doodleBreakout = doodleBreakout || {};
 
+/**
+ * @constructor
+ */
 doodleBreakout.LevelDesigner = function( game ){
     // size parameters
     this.blockWidth = 50;
