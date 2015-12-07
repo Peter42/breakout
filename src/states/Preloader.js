@@ -6,11 +6,13 @@ doodleBreakout.Preloader = function( game ){
 
 doodleBreakout.Preloader.prototype = {
     preload: function(){
-        this.background = this.add.sprite( 0, 0, 'preloaderBackground');
+        this.background = this.add.sprite( 0, 0, 'hintergrund');
         this.background.scale.setTo( this.game.width/this.background.width, this.game.height/this.background.height );
 
-        this.preloadBar = this.add.sprite( this.game.width/2, this.game.height/2, 'preloaderBar');
-        this.preloadBar.anchor.setTo(0.5,1);
+        this.preloadBar = this.add.sprite( this.world.centerX, this.world.centerY, 'plattform01');
+        this.preloadBar.scale.setTo(4,2);
+        this.preloadBar.anchor.setTo(0, 0.5);
+        this.preloadBar.x -= this.preloadBar.width / 2;
 
         //Load sprite images
         this.game.load.spritesheet('ball', 'assets/images/ball.png', 16, 16);
@@ -25,7 +27,6 @@ doodleBreakout.Preloader.prototype = {
         this.game.load.image('coin', 'assets/images/coin.png');
         this.game.load.image('rotator', 'assets/images/rotator.png');
 
-        this.game.load.image('plattform01', 'assets/images/plattform01.png');
         this.game.load.image('plattform_player1', 'assets/images/plattform_player1.png');
         this.game.load.image('plattform_player2', 'assets/images/plattform_player2.png');
         this.game.load.spritesheet('block01', 'assets/images/block01.png', 50, 16);
@@ -33,7 +34,6 @@ doodleBreakout.Preloader.prototype = {
         this.game.load.spritesheet('block03', 'assets/images/block03.png', 50, 16);
         this.game.load.spritesheet('block04', 'assets/images/block04.png', 50, 16);
         this.game.load.spritesheet('block05', 'assets/images/blockfest.png', 50, 16);
-        this.game.load.image('hintergrund', 'assets/images/hintergrund.png');
         this.game.load.image('tile', 'assets/images/kachel.png');
         this.game.load.image('easteregg', 'assets/images/easteregg.png');
 
