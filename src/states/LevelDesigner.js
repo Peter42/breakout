@@ -550,7 +550,7 @@ doodleBreakout.LevelDesigner.prototype._drawPalette = function() {
     var iPaletteCols = parseInt( ( this.game.width - this.paletteOffsetX ) / this.blockWidth );
     var iPaletteRows = parseInt( this.paletteOffsetY - this.offsetY / this.blockWidth );
 
-    var iBrickType = 1;
+    var iBrickType = 0;
     try {
         for( var iRow = 0; iRow < iPaletteRows; iRow++ ){
             for( var iCol = 0; iCol < iPaletteCols; iCol++ ){
@@ -579,13 +579,9 @@ doodleBreakout.LevelDesigner.prototype._drawPalette = function() {
  * @param {number} color - The Brick type
  */
 doodleBreakout.LevelDesigner.prototype._setColor = function( color ){
-    if( color == 0 ){
-        throw "Color 0 is not allowed!";
-    }
-
     this._color = color;
 
-    var oBrick = this._paletteBricks[ color-1 ];
+    var oBrick = this._paletteBricks[ color ];
 
     this.paletteArrow.x = oBrick.x + (oBrick.width/2) - (this.paletteArrow.width/2);
     this.paletteArrow.y = oBrick.y + (oBrick.height/2) - (this.paletteArrow.height/2);
@@ -599,7 +595,18 @@ doodleBreakout.LevelDesigner.prototype._setColor = function( color ){
  * @param {number} yPos - The y position of the Brick
  */
 doodleBreakout.LevelDesigner.prototype._drawBrick= function( type, xPos, yPos ){
-    var brick = doodleBreakout.BlockFactory.get( type, this.game, xPos, yPos );
+    var brick;
+    if( type === 0 ){
+        brick = this.game.add.sprite( xPos, yPos, "pause" );
+        brick.width = this.blockWidth;
+        brick.height = this.blockHeight;
+
+        var text = this.game.add.bitmapText( xPos + ( this.blockWidth/2 ), yPos + ( this.blockHeight/2 ), 'larafont', "DEL", 18 );
+        text.anchor.setTo( 0.5, 0.5 );
+
+        return brick;
+    }
+    brick = doodleBreakout.BlockFactory.get( type, this.game, xPos, yPos );
     if( type == 4 ){
         brick.frame = 1;
     }
@@ -636,7 +643,7 @@ doodleBreakout.LevelDesigner.prototype._paint = function( oPointer ) {
         return;
     }
 
-    if( oPointer.rightButton.isDown ){
+    if( oPointer.rightButton.isDown || this._color === 0 ){
         this.savedLevel = false;
         this.data[iCoordY][iCoordX] = 0;
         if( this._dataBricks[iCoordY][iCoordX] !==  null ){
