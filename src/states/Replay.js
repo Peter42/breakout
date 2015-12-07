@@ -7,7 +7,6 @@ doodleBreakout.Replay = function( game ){
 doodleBreakout.Replay.prototype = Object.create(Phaser.State.prototype);
 doodleBreakout.Replay.prototype.constructor = doodleBreakout.Replay;
 
-doodleBreakout.Replay.prototype._nextFrame = 0;
 
 doodleBreakout.Replay.prototype.init = function(args){
     this._recorder = args.recorder;
@@ -24,6 +23,7 @@ doodleBreakout.Replay.prototype.init = function(args){
 
 doodleBreakout.Replay.prototype.create = function(){
     this._objects = {};
+    this._nextFrame = 0;
 
     this.menuGroup = new Phaser.Group( this.game, parent, "menu", true, false, undefined);
 
@@ -115,22 +115,11 @@ doodleBreakout.Replay.prototype._updateObject = function (data, id) {
             this._objects[id] = this.game.add.sprite(data.x, data.y, data.key);
             this._objects[id].visible = data.visible;
             this._objects[id].frame = data.frame;
-
-            switch (data.key) {
-                case "ball":
-                case "ball1":
-                    this._objects[id].anchor.setTo(0.5, 1);
-                    break;
-                case "plattform01":
-                case "plattform_player1":
-                case "plattform_player2":
-                    this._objects[id].anchor.setTo(0.5, 0.5);
-                    break;
-            }
+            this._objects[id].anchor.setTo(data.ax, data.ay);
         }
         else if(data.text) {
             this._objects[id] = this.game.add.bitmapText(data.x, data.y, 'larafont', data.text, data.fontSize);
-            this._objects[id].anchor.setTo(data.text === "0" ? 1 : 0.5, 0);
+            this._objects[id].anchor.setTo(data.ax, data.ay);
             this._objects[id].visible = data.visible;
         }
     }

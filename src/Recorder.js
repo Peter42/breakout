@@ -26,7 +26,7 @@ doodleBreakout.Recorder.prototype.capture = function (state) {
 
     var data = JSON.stringify(state.stage, function(key, value) {
 
-        if (["","children", "key", "position", "animations", "frame", "_width", "_height", "x", "y", "visible", "_fontSize", "_text", "__obj_id"].indexOf(key) < 0 && !key.match(/^[0-9]+$/)) {
+        if (["","children", "key", "position", "anchor", "animations", "frame", "_width", "_height", "x", "y", "visible", "_fontSize", "_text", "__obj_id"].indexOf(key) < 0 && !key.match(/^[0-9]+$/)) {
             return;
         }
         if("animations" == key){
@@ -59,6 +59,12 @@ doodleBreakout.Recorder.prototype.normalize = function(data, target) {
 
         data[i].x = data[i].position.x;
         data[i].y = data[i].position.y;
+
+        if(data[i].anchor){
+            data[i].ax = data[i].anchor.x;
+            data[i].ay = data[i].anchor.y;
+        }
+
         if (data[i].animations) {
             data[i].frame = data[i].animations;
         } else {
@@ -80,6 +86,7 @@ doodleBreakout.Recorder.prototype.normalize = function(data, target) {
         delete data[i].position;
         delete data[i].children;
         delete data[i].animations;
+        delete data[i].anchor;
     }
 
     return target;
@@ -149,7 +156,7 @@ doodleBreakout.Recorder.prototype.save = function (){
     index = index.replace("\"{{font}}\"", JSON.stringify(this.font));
 
     var blob = new Blob([index], {type: "text/html;charset=utf-8"});
-    saveAs(blob, "test.html");
+    saveAs(blob, "recording.html");
 };
 
 
