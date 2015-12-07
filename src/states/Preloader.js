@@ -65,7 +65,7 @@ doodleBreakout.Preloader.prototype = {
         this.game.load.audio('sfx', ['assets/sounds/sfx.ogg', 'assets/sounds/sfx.mp3', 'assets/sounds/sfx.wav']);
 
         //Overlay for Pause Menu
-        this.game.create.texture('pause', ['2'], 800, 600);
+        this.game.load.image('pause', 'assets/images/pause_background.png');
 
         this.game.load.text('replaystate', './states/Replay.js');
         this.game.load.text('replayphaser', './lib/phaser.min.js');

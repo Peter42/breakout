@@ -228,7 +228,8 @@ doodleBreakout.Game.prototype.pauseGame = function () {
         this.game.time.gamePaused();
 
         this.pauseOverlay = this.game.add.sprite(0, 0, 'pause');
-        this.pauseOverlay.alpha = 0.6;
+        this.pauseOverlay.width = this.game.width;
+        this.pauseOverlay.height = this.game.height;
 
         this.pauseIcon.bringToTop();
         this.pauseIcon.frame = 1;
