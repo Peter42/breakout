@@ -1,5 +1,10 @@
 var doodleBreakout = doodleBreakout || {};
 
+/**
+ * @constructor
+ * @param {Phaser.Game} game - The current game.
+ * @classdesc Saves the game state
+ */
 doodleBreakout.Recorder = function( game ){
     this.game = game;
     this._isShutdown = false;
@@ -12,11 +17,20 @@ doodleBreakout.Recorder = function( game ){
 
 doodleBreakout.Recorder.constructor = doodleBreakout.Recorder;
 
-
+/**
+ * If the recorder is shutdown, no further frames can be captured.
+ * @returns {boolean} whether the recorder is shutdown or not
+ */
 doodleBreakout.Recorder.prototype.isShutdown = function() {
     return this._isShutdown === true;
 };
 
+
+/**
+ * Captures (adds a new frame to the recording) a state.
+ * @param state {Phaser.State} the state to capture
+ * @throws If the recorder is already shut down
+ */
 doodleBreakout.Recorder.prototype.capture = function (state) {
     if(this._isShutdown) {
         throw "Recorder was already shut down";
@@ -51,6 +65,12 @@ doodleBreakout.Recorder.prototype.capture = function (state) {
 };
 
 
+/**
+ * Compress the data, this function recursive
+ * @param data
+ * @param target
+ * @returns {*}
+ */
 doodleBreakout.Recorder.prototype.normalize = function(data, target) {
 
     for(var i = 0; i < data.length; ++i) {
@@ -92,6 +112,10 @@ doodleBreakout.Recorder.prototype.normalize = function(data, target) {
     return target;
 };
 
+/**
+ * Finalizes the recording (data compression etc.)
+ * @see {@link isShutdown}
+ */
 doodleBreakout.Recorder.prototype.shutdown = function() {
 
     if(this._isShutdown) {
@@ -143,6 +167,9 @@ doodleBreakout.Recorder.prototype.shutdown = function() {
 };
 
 
+/**
+ * Start a download of the recording
+ */
 doodleBreakout.Recorder.prototype.save = function (){
     var state = this.game.cache.getText('replaystate');
     var index = this.game.cache.getText('replayindex');
@@ -171,6 +198,9 @@ doodleBreakout.Recorder.objectId  = function (obj) {
     return obj.__obj_id;
 };
 
+/**
+ * Turn automatic recording on / off
+ */
 doodleBreakout.Recorder.setRecordingActive = function(value){
     this._active = (value === true);
     if(window.localStorage) {
@@ -178,6 +208,9 @@ doodleBreakout.Recorder.setRecordingActive = function(value){
     }
 };
 
+/**
+ * @returns the current state of the automatic recording setting.
+ */
 doodleBreakout.Recorder.isRecordingActive = function () {
     if(window.localStorage) {
         return window.localStorage.getItem("Recorder.active") === "true";
