@@ -38,11 +38,14 @@ doodleBreakout.Gravity.prototype.collected = function( player ){
     if( ! doodleBreakout.Gravity.active ){
         doodleBreakout.Gravity.active = true;
         this.game.physics.arcade.gravity.y += 100;
+        console.log( "GravityACTIVATE" );
     }
 };
 
 /** @inheritdoc */
-doodleBreakout.Gravity.prototype.onTimerTimeout = function() {
-    doodleBreakout.Gravity.active = false;
-    this.game.physics.arcade.gravity.y -= 100;
+doodleBreakout.Gravity.prototype.onTimerTimeout = function(){
+    if( doodleBreakout.Gravity.active ) {
+        doodleBreakout.Gravity.active = false;
+        this.game.physics.arcade.gravity.y -= 100;
+    }
 };

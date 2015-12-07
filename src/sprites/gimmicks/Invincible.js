@@ -47,6 +47,8 @@ doodleBreakout.Invincible.prototype.collected = function( player ){
 
 /** @inheritdoc */
 doodleBreakout.Invincible.prototype.onTimerTimeout = function(){
-    this.game.physics.arcade.checkCollision = JSON.parse( JSON.stringify( doodleBreakout.Invincible.saveCollision ) );
-    doodleBreakout.Invincible.saveCollision = null;
+    if( doodleBreakout.Invincible.saveCollision != null ){
+        this.game.physics.arcade.checkCollision = JSON.parse( JSON.stringify( doodleBreakout.Invincible.saveCollision ) );
+        doodleBreakout.Invincible.saveCollision = null;
+    }
 };
