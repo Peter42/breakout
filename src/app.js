@@ -4,6 +4,11 @@
 window.doodleBreakout = {};
 
 window.onload = function(){
+
+    window.addEventListener("resize", calculateSize);
+    calculateSize();
+
+
     var game = new Phaser.Game( 800, 600, Phaser.AUTO, 'game' );
 
     game.state.add( 'Preloader'      , doodleBreakout.Preloader );
@@ -22,6 +27,19 @@ window.onload = function(){
 
     doodleBreakout.OnscreenInput.init();
 };
+
+function calculateSize() {
+    var width = 800;
+    var height = 600;
+
+    var faktor = Math.min(window.innerHeight / height, window.innerWidth / width);
+    width *= faktor;
+    height *= faktor;
+
+    var gameDiv = document.getElementById("game");
+    gameDiv.style.width = width + "px";
+    gameDiv.style.height = height + "px";
+}
 
 
 // Polyfills

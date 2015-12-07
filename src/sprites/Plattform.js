@@ -159,7 +159,16 @@ doodleBreakout.Plattform.prototype.handleOrientationEvent = function(event) {
     this.action.move1 = false;
     this.action.move2 = false;
 
-    var gamma = event.accelerationIncludingGravity.x;
+    var gamma = 0;
+
+    if(window.orientation < 0) {
+        gamma = event.accelerationIncludingGravity.y;
+    } else if(window.orientation > 0) {
+        gamma = event.accelerationIncludingGravity.y * -1;
+    } else {
+        gamma = event.accelerationIncludingGravity.x;
+    }
+
     if(Math.abs(gamma) < 1) {
         gamma = 0;
     }
