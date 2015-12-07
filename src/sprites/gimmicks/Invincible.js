@@ -19,6 +19,13 @@ doodleBreakout.Invincible.prototype.constructor = doodleBreakout.Thunderball;
  */
 doodleBreakout.Invincible.saveCollision = null;
 
+/**
+ *
+ */
+doodleBreakout.Invincible.reset = function(){
+    doodleBreakout.Invincible.saveCollision = null;
+};
+
 /** @inheritdoc */
 doodleBreakout.Invincible.prototype.collected = function( player ){
     //earn Bonus Points for each collected Gravity

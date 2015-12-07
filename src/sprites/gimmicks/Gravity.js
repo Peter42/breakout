@@ -21,6 +21,13 @@ doodleBreakout.Gravity.prototype.constructor = doodleBreakout.Thunderball;
  */
 doodleBreakout.Gravity.active = false;
 
+/**
+ *
+ */
+doodleBreakout.Gravity.reset = function(){
+    doodleBreakout.Gravity.active = false;
+};
+
 /** @inheritdoc */
 doodleBreakout.Gravity.prototype.collected = function( player ){
     //earn Bonus Points for each collected Gravity

@@ -38,3 +38,10 @@ doodleBreakout.Rotator.prototype._rotate = function( deg ) {
     // game represents the game div
     game.style.transform = 'rotate('  + deg + 'deg)';
 };
+
+/**
+ *
+ */
+doodleBreakout.Rotator.reset = function(){
+    game.style.transform = 'rotate(0deg)';
+};

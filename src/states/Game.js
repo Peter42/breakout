@@ -444,7 +444,10 @@ doodleBreakout.Game.prototype.removeInputKeys = function () {
  * @inheritdoc
  */
 doodleBreakout.Game.prototype.shutdown = function () {
-    this._setGameRotation(0);
+    this.clearGimmickLifetimes();
+    doodleBreakout.Rotator.reset();
+    doodleBreakout.Invincible.reset();
+    doodleBreakout.Gravity.reset();
     this.removeInputKeys();
 };
 
@@ -561,6 +564,10 @@ doodleBreakout.Game.prototype.clearGimmickLifetimes = function( keepStayAlive ){
             this._removeGimmickLifetime( null, null, this._activeDisplayedGimmick[ i ] );
         }
     }
+
+    if( ! keepStayAlive ){
+        this._activeDisplayedGimmick = [];
+    }
 };
 
 /**
@@ -581,11 +588,6 @@ doodleBreakout.Game.prototype._removeGimmickLifetime = function ( sprite, tween,
         var pos = 0;
         if( this._activeDisplayedGimmick[ i - 1 ] ){
             pos = this._activeDisplayedGimmick[ i - 1 ].nextX;
-        }
-
-        if( ! this._activeDisplayedGimmick[ i ] ){
-            console.log( "Undefined Error" );
-            continue;
         }
 
         var textPos = Math.floor((pos) + this._activeDisplayedGimmick[ i ].children[ 0 ].width / 2);
