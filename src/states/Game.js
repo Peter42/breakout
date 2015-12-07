@@ -50,7 +50,7 @@ doodleBreakout.Game.prototype.create = function () {
 
     game.physics.startSystem(Phaser.Physics.ARCADE);
 
-    this.timer = this.addTimeCounter( this.world.centerX, 10, 0.5, 0 );
+    this._timer = this.addTimeCounter( this.world.centerX, 10, 0.5, 0 );
 
     this.addPause( game.width, game.height, 1, 1 );
 
@@ -171,10 +171,11 @@ doodleBreakout.Game.prototype.collideBallVsBrick = function( ball, brick ){
 
     if ( !this.bricks.children.find(function(brick){ return brick.destructionNeeded && brick.alive; } ) ) {
 
+        console.log(this.state.current == "Game", this.state.current, this._level, Math.floor(this._timer.seconds));
         if(this.state.current == "Game"){
-            doodleBreakout.ScoresManager.addBesttime( this._level, Math.floor(this.timer.seconds));
+            doodleBreakout.ScoresManager.addBesttime( this._level, Math.floor(this._timer.seconds));
         }
-        this.timer.stop();
+        this._timer.stop();
 
         var nextLevel = doodleBreakout.LevelManager.getNextLevelId(this._level);
 
