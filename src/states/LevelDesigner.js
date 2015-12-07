@@ -508,15 +508,6 @@ doodleBreakout.LevelDesigner.prototype._drawPalette = function() {
     }
     catch ( e ){}
 
-
-    var arrowTexture = this.game.create.texture('arrow', [
-        '  00  ',
-        ' 0000 ',
-        '000000',
-        ' 0000 ',
-        '  00  '
-    ], 2);
-
     this.paletteArrow = this.game.add.sprite( 0, 0, 'arrow');
 };
 

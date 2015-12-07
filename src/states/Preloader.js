@@ -67,6 +67,9 @@ doodleBreakout.Preloader.prototype = {
         //Overlay for Pause Menu
         this.game.load.image('pause', 'assets/images/pause_background.png');
 
+        // Pointer for Block Palette in the Level Designer
+        this.game.load.image( 'arrow', 'assets/images/blockpalette_pointer.png' );
+
         this.game.load.text('replaystate', './states/Replay.js');
         this.game.load.text('replayphaser', './lib/phaser.min.js');
         this.game.load.text('replayindex', './recordingindex.html');
