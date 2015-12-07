@@ -12,14 +12,24 @@ doodleBreakout.Level = function ( game, structure, id, probability ) {
     this._probability = probability;
 };
 
-/**
- * Returns the structure of the level
- */
 doodleBreakout.Level.prototype.constructor = doodleBreakout.Level;
 
+/**
+ *
+ * @type {number}
+ */
 doodleBreakout.Level.offsetY = 100;
+/**
+ * 
+ * @type {number}
+ */
 doodleBreakout.Level.offsetX = 0;
 
+/**
+ *
+ * @param gimmicks
+ * @returns {Phaser.Group}
+ */
 doodleBreakout.Level.prototype.generateBricks = function( gimmicks ){
         gimmicks.setCustomProbability( this._probability );
 

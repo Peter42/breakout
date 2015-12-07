@@ -2,6 +2,7 @@ var doodleBreakout = doodleBreakout || {};
 
 /**
  * @constructor
+ * @augments doodleBreakout.AbstractMenu
  */
 doodleBreakout.LevelDesigner = function( game ){
     // size parameters
@@ -44,6 +45,9 @@ doodleBreakout.LevelDesigner = function( game ){
 doodleBreakout.LevelDesigner.prototype = Object.create(doodleBreakout.AbstractMenu.prototype);
 doodleBreakout.LevelDesigner.prototype.constructor = doodleBreakout.LevelDesigner;
 
+/**
+ *
+ */
 doodleBreakout.LevelDesigner.prototype.goBackHome = function (){
     if( ! this.savedLevel ){
         var group = this._showPopup( "Save changes" );
@@ -77,6 +81,9 @@ doodleBreakout.LevelDesigner.prototype.goBackHome = function (){
     }
 };
 
+/**
+ * @inheritdoc
+ */
 doodleBreakout.LevelDesigner.prototype.create = function() {
     this.createBackHome();
 
@@ -107,12 +114,19 @@ doodleBreakout.LevelDesigner.prototype.create = function() {
     this._refresh();
 };
 
+/**
+ * @inheritdoc
+ */
 doodleBreakout.LevelDesigner.prototype.shutdown = function(){
     this._reset();
     this._refresh();
 };
 
 
+/**
+ *
+ * @private
+ */
 doodleBreakout.LevelDesigner.prototype._createUI = function() {
     var xPos = 75;
     var yPos = 15;
@@ -164,6 +178,11 @@ doodleBreakout.LevelDesigner.prototype._createUI = function() {
 };
 
 
+/**
+ *
+ * @param drawMode
+ * @returns {string}
+ */
 doodleBreakout.LevelDesigner.prototype.getLevelDescriptorText = function ( drawMode ) {
     var result = "";
     switch ( drawMode ){
@@ -182,6 +201,10 @@ doodleBreakout.LevelDesigner.prototype.getLevelDescriptorText = function ( drawM
     return result;
 };
 
+/**
+ *
+ * @param mode
+ */
 doodleBreakout.LevelDesigner.prototype.setDrawMode = function ( mode ) {
     if( mode > 2 || ! mode ){
         mode = 0;
@@ -191,6 +214,11 @@ doodleBreakout.LevelDesigner.prototype.setDrawMode = function ( mode ) {
 };
 
 
+/**
+ *
+ * @returns {boolean}
+ * @private
+ */
 doodleBreakout.LevelDesigner.prototype._saveLevel = function(){
     if( !doodleBreakout.LevelManager.validateStructure( this.data ) ){
         this._showPopup( "Can not save empty level" );
@@ -234,6 +262,10 @@ doodleBreakout.LevelDesigner.prototype._saveLevel = function(){
 };
 
 
+/**
+ *
+ * @private
+ */
 doodleBreakout.LevelDesigner.prototype._newLevel = function(){
     if( ! this.savedLevel ){
         var group = this._showPopup( "Save changes" );
@@ -273,6 +305,11 @@ doodleBreakout.LevelDesigner.prototype._newLevel = function(){
 };
 
 
+/**
+ *
+ * @returns {boolean}
+ * @private
+ */
 doodleBreakout.LevelDesigner.prototype._deleteLevel = function(){
     if( ! this.levelId ){
         return false;
@@ -297,6 +334,10 @@ doodleBreakout.LevelDesigner.prototype._deleteLevel = function(){
 };
 
 
+/**
+ *
+ * @private
+ */
 doodleBreakout.LevelDesigner.prototype._openLevel = function(){
     var group = this._showPopup( "Select level" );
 
@@ -338,11 +379,21 @@ doodleBreakout.LevelDesigner.prototype._openLevel = function(){
 };
 
 
+/**
+ *
+ * @private
+ */
 doodleBreakout.LevelDesigner.prototype._updateButtons = function(){
     this.buttonDelete.visible = !!this.levelId;
 };
 
 
+/**
+ *
+ * @param titleText
+ * @returns {*|Phaser.Group}
+ * @private
+ */
 doodleBreakout.LevelDesigner.prototype._showPopup = function( titleText ){
     this.groupPopup.removeAll( true );
 
@@ -390,6 +441,10 @@ doodleBreakout.LevelDesigner.prototype._closePopup = function(){
 };
 
 
+/**
+ *
+ * @private
+ */
 doodleBreakout.LevelDesigner.prototype._addMouseListener = function(){
     this.game.input.mouse.capture = true;
     this.game.input.onDown.add(this._paint, this);
@@ -397,6 +452,10 @@ doodleBreakout.LevelDesigner.prototype._addMouseListener = function(){
 };
 
 
+/**
+ *
+ * @private
+ */
 doodleBreakout.LevelDesigner.prototype._randomLevel = function(){
     var saveId = this.levelId;
     this._reset();

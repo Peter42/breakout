@@ -2,6 +2,7 @@ var doodleBreakout = doodleBreakout || {};
 
 /**
  * @constructor
+ * @augments doodleBreakout.AbstractSoundSettings
  */
 doodleBreakout.Settings = function (game) {
 };
@@ -9,6 +10,9 @@ doodleBreakout.Settings = function (game) {
 doodleBreakout.Settings.prototype = Object.create(doodleBreakout.AbstractSoundSettings.prototype);
 doodleBreakout.Settings.prototype.constructor = doodleBreakout.Settings;
 
+/**
+ * @inheritdoc
+ */
 doodleBreakout.Settings.prototype.create = function () {
 
     this.createBackHome();
@@ -41,6 +45,10 @@ doodleBreakout.Settings.prototype.create = function () {
 
 };
 
+/**
+ *
+ * @param text
+ */
 doodleBreakout.Settings.prototype.resetScores = function (text) {
     //implement functionality to reset all points and progress
     doodleBreakout.ScoresManager.reset();
@@ -52,6 +60,10 @@ doodleBreakout.Settings.prototype.resetScores = function (text) {
 };
 
 
+/**
+ *
+ * @param text
+ */
 doodleBreakout.Settings.prototype.toggleRecording = function (text) {
     if( doodleBreakout.Recorder.isRecordingActive()){
         doodleBreakout.Recorder.setRecordingActive(false);

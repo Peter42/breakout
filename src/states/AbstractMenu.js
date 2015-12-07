@@ -2,6 +2,7 @@ var doodleBreakout = doodleBreakout || {};
 
 /**
  * @constructor
+ * @augments Phaser.State
  */
 doodleBreakout.AbstractMenu = function( game ){};
 

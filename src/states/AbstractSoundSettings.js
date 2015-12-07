@@ -2,6 +2,7 @@ var doodleBreakout = doodleBreakout || {};
 
 /**
  * @constructor
+ * @augments doodleBreakout.AbstractMenu
  */
 doodleBreakout.AbstractSoundSettings = function( game ){};
 
@@ -9,6 +10,9 @@ doodleBreakout.AbstractSoundSettings.prototype = Object.create(doodleBreakout.Ab
 
 doodleBreakout.AbstractSoundSettings.prototype.constructor = doodleBreakout.AbstractSoundSettings;
 
+/**
+ *
+ */
 doodleBreakout.AbstractSoundSettings.prototype.createSoundSettings = function() {
 
     this.soundText = this.game.add.bitmapText(this.game.width / 2, 150, 'larafont', 'Toggle Sound',48);
@@ -40,6 +44,9 @@ doodleBreakout.AbstractSoundSettings.prototype.createSoundSettings = function() 
 
 };
 
+/**
+ *
+ */
 doodleBreakout.AbstractSoundSettings.prototype.destroySoundSettings = function() {
     this.soundText.kill();
     this.soundSymbol.kill();
@@ -47,7 +54,10 @@ doodleBreakout.AbstractSoundSettings.prototype.destroySoundSettings = function()
 };
 
 
-
+/**
+ *
+ * @param symbol
+ */
 doodleBreakout.AbstractSoundSettings.prototype.toggleSound = function(symbol){
     //Sound toggle functionality
 

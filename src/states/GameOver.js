@@ -2,6 +2,7 @@ var doodleBreakout = doodleBreakout || {};
 
 /**
  * @constructor
+ * @augments doodleBreakout.AbstractMenu
  */
 doodleBreakout.GameOver = function( game ){
 
@@ -10,6 +11,10 @@ doodleBreakout.GameOver = function( game ){
 doodleBreakout.GameOver.prototype = Object.create(doodleBreakout.AbstractMenu.prototype);
 doodleBreakout.GameOver.prototype.constructor = doodleBreakout.GameOver;
 
+/**
+ * @inheritdoc
+ * @param args
+ */
 doodleBreakout.GameOver.prototype.init = function(args){
 
     this._score = args.score;
@@ -30,6 +35,9 @@ doodleBreakout.GameOver.prototype.init = function(args){
     }
 };
 
+/**
+ * @inheritdoc
+ */
 doodleBreakout.GameOver.prototype.create = function(){
 
     this.createBackHome();
@@ -116,6 +124,10 @@ doodleBreakout.GameOver.prototype.create = function(){
 
 };
 
+/**
+ *
+ * @param key
+ */
 doodleBreakout.GameOver.prototype.keyPressed = function(key) {
     // TODO: Add ÄÖÜ äöüto font
     if(! key.match(/[A-z0-9ß\u0020\-]/) ) {
@@ -129,6 +141,9 @@ doodleBreakout.GameOver.prototype.keyPressed = function(key) {
         this.name.setText( this.name.text + key );
     }
 };
+/**
+ *
+ */
 doodleBreakout.GameOver.prototype.backspacePressed = function() {
     var text = this.name.text;
 
@@ -141,6 +156,9 @@ doodleBreakout.GameOver.prototype.backspacePressed = function() {
     }
 };
 
+/**
+ * @inheritdoc
+ */
 doodleBreakout.GameOver.prototype.shutdown = function() {
     doodleBreakout.OnscreenInput.closeKeyboard();
 
@@ -161,6 +179,9 @@ doodleBreakout.GameOver.prototype.shutdown = function() {
 
 };
 
+/**
+ * @inheritdoc
+ */
 doodleBreakout.GameOver.prototype.update = function() {
     if (this.game.input.activePointer.isDown && this.game.input.activePointer.position.y < this.world.centerY) {
         if(!this._afterReplay) {
@@ -169,6 +190,17 @@ doodleBreakout.GameOver.prototype.update = function() {
     }
 };
 
+/**
+ *
+ * @param text
+ * @param targetState
+ * @param args
+ * @param onclick
+ * @param x
+ * @param y
+ * @returns {*|Phaser.BitmapText}
+ * @private
+ */
 doodleBreakout.GameOver.prototype._generateMenuItem = function (text, targetState, args, onclick, x, y) {
     var item = this.game.add.bitmapText(x, y, 'larafont', text, 40);
     item.anchor.setTo(0.5);
@@ -182,6 +214,10 @@ doodleBreakout.GameOver.prototype._generateMenuItem = function (text, targetStat
     return item;
 };
 
+/**
+ *
+ * @param text
+ */
 doodleBreakout.GameOver.prototype.click = function(text){
     if(text.doodleBreakout.onclick){
         text.doodleBreakout.onclick.apply(this, arguments);

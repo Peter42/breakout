@@ -2,6 +2,7 @@ var doodleBreakout = doodleBreakout || {};
 
 /**
  * @constructor
+ * @augments Phaser.State
  */
 doodleBreakout.Replay = function( game ){
 
@@ -11,6 +12,10 @@ doodleBreakout.Replay.prototype = Object.create(Phaser.State.prototype);
 doodleBreakout.Replay.prototype.constructor = doodleBreakout.Replay;
 
 
+/**
+ * @inheritdoc
+ * @param args
+ */
 doodleBreakout.Replay.prototype.init = function(args){
     this._recorder = args.recorder;
     this._data = this._recorder.dataReduced;
@@ -24,6 +29,9 @@ doodleBreakout.Replay.prototype.init = function(args){
 
 };
 
+/**
+ * @inheritdoc
+ */
 doodleBreakout.Replay.prototype.create = function(){
     this._objects = {};
     this._nextFrame = 0;
@@ -62,18 +70,33 @@ doodleBreakout.Replay.prototype.create = function(){
 
 };
 
+/**
+ *
+ */
 doodleBreakout.Replay.prototype.togglePause = function(){
     this.icons.pause.frame = this.icons.pause.frame == 1 ? 0 : 1;
 };
 
+/**
+ *
+ */
 doodleBreakout.Replay.prototype.startDownload = function(){
     this._recorder.save();
 };
 
+/**
+ *
+ */
 doodleBreakout.Replay.prototype.back = function(){
     this.game.state.start("GameOver", true, false, this._callbackArgs);
 };
 
+/**
+ *
+ * @param data
+ * @param id
+ * @private
+ */
 doodleBreakout.Replay.prototype._updateObject = function (data, id) {
     if(this._objects[id]){
         if(!data) {
@@ -128,10 +151,16 @@ doodleBreakout.Replay.prototype._updateObject = function (data, id) {
     }
 };
 
+/**
+ * @inheritdoc
+ */
 doodleBreakout.Replay.prototype.shutdown = function() {
     this.game.stage.removeChild(this.menuGroup);
 };
 
+/**
+ * @inheritdoc
+ */
 doodleBreakout.Replay.prototype.update = function(){
     if(this._nextFrame < this._recorder.times.length && this.icons.pause.frame != 1){
 

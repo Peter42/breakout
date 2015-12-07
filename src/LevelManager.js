@@ -17,11 +17,20 @@ doodleBreakout.LevelManager = {
     },
 
 
+    /**
+     *
+     * @param game
+     */
     init: function ( game ) {
         this._game = game;
         this._loadLevels();
     },
 
+    /**
+     *
+     * @param multiplayer
+     * @returns {Array}
+     */
     getLevelIds: function( multiplayer ){
         var levels = this._levels.static.concat( this._levels.alterable );
         var levelsAmount = levels.length;
@@ -36,6 +45,12 @@ doodleBreakout.LevelManager = {
         return levelIds;
     },
 
+    /**
+     *
+     * @param actualId
+     * @param multiplayer
+     * @returns {*}
+     */
     getNextLevelId: function( actualId, multiplayer ){
         var levels = this._levels.static.concat( this._levels.alterable );
         var levelsAmount = levels.length;
@@ -61,6 +76,10 @@ doodleBreakout.LevelManager = {
         return nextLevel.id;
     },
 
+    /**
+     *
+     * @returns {Array}
+     */
     getStaticLevelIds: function () {
         var levelsAmount = this._levels.static.length;
         var levelIds = [];
@@ -72,6 +91,10 @@ doodleBreakout.LevelManager = {
         return levelIds;
     },
 
+    /**
+     *
+     * @returns {Array}
+     */
     getAlterableLevelIds: function() {
         var levelsAmount = this._levels.alterable.length;
         var levelIds = [];
@@ -83,6 +106,11 @@ doodleBreakout.LevelManager = {
         return levelIds;
     },
 
+    /**
+     *
+     * @param id
+     * @returns {doodleBreakout.Level}
+     */
     getLevel: function( id ){
         var levelData = this.getLevelData( id );
 
@@ -93,6 +121,11 @@ doodleBreakout.LevelManager = {
         return new doodleBreakout.Level( this._game, levelData.structure, levelData.id, levelData.probability );
     },
 
+    /**
+     *
+     * @param id
+     * @returns {doodleBreakout.LevelMultiplayer}
+     */
     getMultiplayerLevel: function( id ){
         var levelData = this.getLevelData( id );
 
@@ -103,6 +136,10 @@ doodleBreakout.LevelManager = {
         return new doodleBreakout.LevelMultiplayer( this._game, levelData.structure, levelData.id, levelData.probability );
     },
 
+    /**
+     *
+     * @param id
+     */
     getLevelData: function( id ){
         var levels = this._levels.static.concat( this._levels.alterable );
         var levelIndex = this._getLevelIndex( id, levels );
@@ -117,6 +154,12 @@ doodleBreakout.LevelManager = {
         return JSON.parse( JSON.stringify( levelData) );
     },
 
+    /**
+     *
+     * @param levelData
+     * @param editable
+     * @returns {*}
+     */
     addLevel: function( levelData, editable ){
         var levelSection;
         var newLevel;
@@ -140,6 +183,12 @@ doodleBreakout.LevelManager = {
         return newLevel.id;
     },
 
+    /**
+     *
+     * @param id
+     * @param levelData
+     * @returns {boolean}
+     */
     editLevel: function( id, levelData ){
         var levelIndex = this._getLevelIndex( id, this._levels.alterable );
 
@@ -149,6 +198,11 @@ doodleBreakout.LevelManager = {
         return true;
     },
 
+    /**
+     *
+     * @param id
+     * @returns {boolean}
+     */
     removeLevel: function( id ){
         var levelIndex = this._getLevelIndex( id, this._levels.alterable );
 
@@ -158,11 +212,21 @@ doodleBreakout.LevelManager = {
         return true;
     },
 
+    /**
+     *
+     * @returns {boolean}
+     * @private
+     */
     _saveLevels: function(){
         this._storage.setItem( this.localStorageKeys.LEVELS, JSON.stringify( this._levels.alterable ) );
         return true;
     },
 
+    /**
+     *
+     * @returns {boolean}
+     * @private
+     */
     _loadLevels: function(){
         var levels = this._storage.getItem( this.localStorageKeys.LEVELS );
         if ( levels ) {
@@ -176,6 +240,11 @@ doodleBreakout.LevelManager = {
         return false;
     },
 
+    /**
+     *
+     * @returns {string}
+     * @private
+     */
     _generateGUID: function() {
         object = {};
         var r = function(){
@@ -185,6 +254,12 @@ doodleBreakout.LevelManager = {
         return (r() + r() + "-" + r() + "-4" + r().substr(0, 3) + "-" + r() + "-" + r() + r() + r()).toLowerCase();
     },
 
+    /**
+     *
+     * @param id
+     * @returns {string}
+     * @private
+     */
     _generateStaticGUID: function( id ) {
         if( ! id ){
             throw "Undefined level id";
@@ -192,6 +267,12 @@ doodleBreakout.LevelManager = {
         return id.toLowerCase();
     },
 
+    /**
+     *
+     * @param id
+     * @param haystack
+     * @private
+     */
     _getLevelIndex: function( id, haystack ){
         if( ! id ){
             throw "Level id not set";
@@ -206,6 +287,11 @@ doodleBreakout.LevelManager = {
         return levelIndex;
     },
 
+    /**
+     *
+     * @param structure
+     * @returns {boolean}
+     */
     validateStructure: function( structure ){
         var length = structure.length;
 
@@ -224,6 +310,13 @@ doodleBreakout.LevelManager = {
         return false;
     },
 
+    /**
+     *
+     * @param id
+     * @param levelData
+     * @returns {{id: *, structure: Array, probability: {}, multiplayer: number}}
+     * @private
+     */
     _processLevelData: function( id, levelData ){
         var probability = {};
         var structure = [];

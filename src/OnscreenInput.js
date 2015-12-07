@@ -7,6 +7,9 @@ doodleBreakout.OnscreenInput = {};
 
 doodleBreakout.OnscreenInput.enabled = false;
 
+/**
+ *
+ */
 doodleBreakout.OnscreenInput.init = function() {
 
     this._startX = 0;
@@ -60,24 +63,42 @@ doodleBreakout.OnscreenInput.init = function() {
     }
 };
 
+/**
+ *
+ */
 doodleBreakout.OnscreenInput.openKeyboard = function() {
     fakeInput.value = "";
     fakeInput.focus();
 };
 
+/**
+ *
+ */
 doodleBreakout.OnscreenInput.closeKeyboard = function() {
     fakeInput.blur();
 };
 
 
+/**
+ *
+ * @private
+ */
 doodleBreakout.OnscreenInput._updateView = function(){
     dpad.style.left = this._left + "px";
 };
 
+/**
+ *
+ * @returns {boolean}
+ */
 doodleBreakout.OnscreenInput.isLeft = function() {
     return this._left < 250;
 };
 
+/**
+ *
+ * @returns {boolean}
+ */
 doodleBreakout.OnscreenInput.isRight = function() {
     return this._left > 350;
 };

@@ -2,6 +2,7 @@ var doodleBreakout = doodleBreakout || {};
 
 /**
  * @constructor
+ * @augments doodleBreakout.AbstractMenu
  */
 doodleBreakout.MainMenu = function (game) {
 
@@ -10,6 +11,9 @@ doodleBreakout.MainMenu = function (game) {
 doodleBreakout.MainMenu.prototype = Object.create(doodleBreakout.AbstractMenu.prototype);
 doodleBreakout.MainMenu.prototype.constructor = doodleBreakout.MainMenu;
 
+/**
+ * @inheritdoc
+ */
 doodleBreakout.MainMenu.prototype.create = function () {
     var title = this.game.add.bitmapText(this.game.width / 2, 10, 'larafont', 'Main Menu', 64);
     title.anchor.setTo(0.5, 0);
@@ -27,18 +31,43 @@ doodleBreakout.MainMenu.prototype.create = function () {
     this._generateMenuItem('Credits', 520, 'Credits');
 };
 
+/**
+ *
+ * @param text
+ * @param y
+ * @param targetState
+ * @returns {*|Phaser.BitmapText}
+ * @private
+ */
 doodleBreakout.MainMenu.prototype._generateMenuItem = function (text, y, targetState) {
     var item = this.game.add.bitmapText(this.game.world.centerX, y, 'larafont', text, 48);
     this._enableInput(item, targetState);
     return item;
 };
 
+/**
+ *
+ * @param spriteName
+ * @param x
+ * @param y
+ * @param targetState
+ * @param options
+ * @returns {*}
+ * @private
+ */
 doodleBreakout.MainMenu.prototype._generateMenuIcon = function (spriteName, x, y, targetState, options) {
     var icon = this.game.add.sprite(x, y, spriteName);
     this._enableInput(icon, targetState, options);
     return icon;
 };
 
+/**
+ *
+ * @param gameObject
+ * @param targetState
+ * @param options
+ * @private
+ */
 doodleBreakout.MainMenu.prototype._enableInput = function (gameObject, targetState, options) {
     gameObject.anchor.setTo(0.5, 0);
     gameObject.inputEnabled = true;
@@ -52,6 +81,10 @@ doodleBreakout.MainMenu.prototype._enableInput = function (gameObject, targetSta
     gameObject.events.onInputOut.add(this.out, this);
 };
 
+/**
+ *
+ * @param text
+ */
 doodleBreakout.MainMenu.prototype.click = function (text) {
     this.game.state.start(text.doodleBreakout.targetState, true, false, text.doodleBreakout.options);
 };

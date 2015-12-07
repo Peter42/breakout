@@ -12,10 +12,12 @@ doodleBreakout.GameComputer.prototype = Object.create(doodleBreakout.Game.protot
 
 doodleBreakout.GameComputer.prototype.constructor = doodleBreakout.GameComputer;
 
+/** @inheritdoc */
 doodleBreakout.GameComputer.prototype.update = function () {
     this.player.interact( this, this.gimmicks );
 };
 
+/** @inheritdoc */
 doodleBreakout.GameComputer.prototype.initializePlayers = function( bricks, gimmicks ){
     var plattform = new doodleBreakout.Plattform( this.game, 550, 550, 'plattform01', "down", 800, false, false, {onDown:{add:function(){}}}, false );
 
@@ -40,6 +42,7 @@ doodleBreakout.GameComputer.prototype.initializePlayers = function( bricks, gimm
     this.addScoreText( this.game.width - 10, 10, 1, 0, this.player );
 };
 
+/** @inheritdoc */
 doodleBreakout.GameComputer.prototype.lostGame = function () {
 
     var oParameters = {

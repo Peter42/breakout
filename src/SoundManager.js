@@ -14,6 +14,9 @@ doodleBreakout.SoundManager = {
         SFX_ENABLED: "SoundManager._sfxEnabled"
     },
 
+    /**
+     * @param name
+     */
     playSfx: function(name) {
         if(! this._initialized ) {
             throw "Initialise SoundManager first";
@@ -25,6 +28,10 @@ doodleBreakout.SoundManager = {
 
     },
 
+    /**
+     *
+     * @returns {boolean}
+     */
     isMusicEnabled: function(){
         if(! this._initialized ) {
             throw "Initialise SoundManager first";
@@ -32,6 +39,10 @@ doodleBreakout.SoundManager = {
         return this._musicEnabled;
     },
 
+    /**
+     *
+     * @returns {boolean}
+     */
     isSfxEnabled: function(){
         if(! this._initialized ) {
             throw "Initialise SoundManager first";
@@ -39,6 +50,10 @@ doodleBreakout.SoundManager = {
         return this._sfxEnabled;
     },
 
+    /**
+     *
+     * @param enabled
+     */
     setMusicEnabled: function (enabled) {
         if(! this._initialized ) {
             throw "Initialise SoundManager first";
@@ -53,6 +68,10 @@ doodleBreakout.SoundManager = {
         this._updateMusic();
     },
 
+    /**
+     *
+     * @private
+     */
     _updateMusic: function () {
         if(this._musicEnabled) {
             this._music.play();
@@ -61,6 +80,10 @@ doodleBreakout.SoundManager = {
         }
     },
 
+    /**
+     *
+     * @param enabled
+     */
     setSfxEnabled: function (enabled) {
         if(! this._initialized ) {
             throw "Initialise SoundManager first";
@@ -73,6 +96,10 @@ doodleBreakout.SoundManager = {
         }
     },
 
+    /**
+     *
+     * @param game
+     */
     init: function (game) {
         this._game = game;
 

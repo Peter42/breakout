@@ -2,6 +2,7 @@ var doodleBreakout = doodleBreakout || {};
 
 /**
  * @constructor
+ * @augments Phaser.State
  */
 doodleBreakout.Boot = function( game ){
 
@@ -9,6 +10,9 @@ doodleBreakout.Boot = function( game ){
 
 doodleBreakout.Boot.prototype = {
 
+    /**
+     *
+     */
     init: function () {
 
         //  Unless you specifically know your game needs to support multi-touch I would recommend setting this to 1
@@ -22,6 +26,9 @@ doodleBreakout.Boot.prototype = {
 
     },
 
+    /**
+     *
+     */
     preload: function () {
 
         //  Here we load the assets required for our preloader (in this case a background and a loading bar)
@@ -30,6 +37,9 @@ doodleBreakout.Boot.prototype = {
         this.game.load.json( 'levelIndex', 'levels/index.json');
     },
 
+    /**
+     *
+     */
     create: function () {
         this.state.start('Preloader');
     }

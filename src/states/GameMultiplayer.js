@@ -12,6 +12,7 @@ doodleBreakout.GameMultiplayer.prototype = Object.create(doodleBreakout.Game.pro
 
 doodleBreakout.GameMultiplayer.prototype.constructor = doodleBreakout.GameMultiplayer;
 
+/** @inheritdoc */
 doodleBreakout.GameMultiplayer.prototype.init = function (args) {
     if (args && args.level) {
         this._level = args.level;
@@ -21,6 +22,7 @@ doodleBreakout.GameMultiplayer.prototype.init = function (args) {
     }
 };
 
+/** @inheritdoc */
 doodleBreakout.GameMultiplayer.prototype.create = function ( game ) {
     game.physics.startSystem( Phaser.Physics.ARCADE );
     game.physics.arcade.bounds.height = 550;
@@ -96,6 +98,7 @@ doodleBreakout.GameMultiplayer.prototype.create = function ( game ) {
     this.initializePlayers( this.bricks, this.gimmicks );
 };
 
+/** @inheritdoc */
 doodleBreakout.GameMultiplayer.prototype.update = function () {
     if(this._isComputerPlayerActive){
         this.player1.interact( this, this.gimmicks );
@@ -106,6 +109,7 @@ doodleBreakout.GameMultiplayer.prototype.update = function () {
     }
 };
 
+/** @inheritdoc */
 doodleBreakout.GameMultiplayer.prototype.initializePlayers = function( bricks, gimmicks ){
     var keyW = this.addInputKey( Phaser.Keyboard.W );
     var keyS = this.addInputKey( Phaser.Keyboard.S );
@@ -163,11 +167,21 @@ doodleBreakout.GameMultiplayer.prototype.initializePlayers = function( bricks, g
     this.addScoreText( this.game.width - 10, 5, 1, 0, this.player2 );
 };
 
+/**
+ *
+ * @param plattform
+ * @param gimmick
+ */
 doodleBreakout.GameMultiplayer.prototype.collectGimmick = function( plattform, gimmick ){
     gimmick.gathered( plattform.parent );
     this.updateScoreText();
 };
 
+/**
+ *
+ * @param ball
+ * @param brick
+ */
 doodleBreakout.GameMultiplayer.prototype.collideBallVsBrick = function( ball, brick ){
     player = ball.parent.parent;
 
@@ -178,10 +192,16 @@ doodleBreakout.GameMultiplayer.prototype.collideBallVsBrick = function( ball, br
     }
 };
 
+/**
+ *
+ */
 doodleBreakout.GameMultiplayer.prototype.lostBall = function(){
     this.earnPoints( -100 );
 };
 
+/**
+ *
+ */
 doodleBreakout.GameMultiplayer.prototype.endGame = function () {
     // TODO: create new game over screen
     var winner = "Player BLUE";

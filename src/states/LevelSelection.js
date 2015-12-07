@@ -2,6 +2,7 @@ var doodleBreakout = doodleBreakout || {};
 
 /**
  * @constructor
+ * @augments doodleBreakout.AbstractMenu
  */
 doodleBreakout.LevelSelection = function( game ){
 
@@ -19,6 +20,10 @@ doodleBreakout.LevelSelection.prototype._items = [];
 doodleBreakout.LevelSelection.prototype._isComputerPlayerActive = false;
 
 
+/**
+ * @inheritdoc
+ * @param gameMode
+ */
 doodleBreakout.LevelSelection.prototype.init = function(gameMode){
     switch(gameMode){
         case 'singlePlayer':
@@ -40,6 +45,9 @@ doodleBreakout.LevelSelection.prototype.init = function(gameMode){
 };
 
 
+/**
+ * @inheritdoc
+ */
 doodleBreakout.LevelSelection.prototype.create = function(){
     this.createBackHome();
 
@@ -127,11 +135,20 @@ doodleBreakout.LevelSelection.prototype.create = function(){
     this._setPage(0);
 };
 
+/**
+ *
+ * @param target
+ */
 doodleBreakout.LevelSelection.prototype.startLevel = function( target ){
     this.state.start( this._targetState, true, false, {level: target.doodleBreakout.targetLevel,
                                                         computerPlayer: this._isComputerPlayerActive} );
 };
 
+/**
+ *
+ * @param page
+ * @private
+ */
 doodleBreakout.LevelSelection.prototype._setPage = function(page){
     this._currentPage = page;
 
@@ -150,12 +167,18 @@ doodleBreakout.LevelSelection.prototype._setPage = function(page){
     this._goRight.visible = (this._currentPage + 1 < this._pages);
 };
 
+/**
+ *
+ */
 doodleBreakout.LevelSelection.prototype.previousPage = function(){
     if(this._currentPage > 0){
         this._setPage(this._currentPage - 1);
     }
 };
 
+/**
+ *
+ */
 doodleBreakout.LevelSelection.prototype.nextPage = function(){
     if(this._currentPage + 1 < this._pages){
         this._setPage(this._currentPage + 1);

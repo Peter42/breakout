@@ -2,6 +2,7 @@ var doodleBreakout = doodleBreakout || {};
 
 /**
  * @constructor
+ * @augments doodleBreakout.AbstractSoundSettings
  */
 doodleBreakout.Game = function (game) {
 
@@ -11,16 +12,37 @@ doodleBreakout.Game.prototype = Object.create(doodleBreakout.AbstractSoundSettin
 
 doodleBreakout.Game.prototype.constructor = doodleBreakout.Game;
 
+/**
+ *
+ * @type {number}
+ * @protected
+ */
 doodleBreakout.Game.prototype._level = 1;
+/**
+ *
+ * @type {boolean}
+ * @protected
+ */
 doodleBreakout.Game.prototype._rotationActive = false;
+/**
+ *
+ * @type {boolean}
+ */
 doodleBreakout.Game.prototype.doodlebreakoutIsPaused = false;
 
+/**
+ * @inheritdoc
+ * @param args
+ */
 doodleBreakout.Game.prototype.init = function (args) {
     if (args && args.level) {
         this._level = args.level;
     }
 };
 
+/**
+ * @inheritdoc
+ */
 doodleBreakout.Game.prototype.create = function () {
     var game = this.game;
 
@@ -53,18 +75,29 @@ doodleBreakout.Game.prototype.create = function () {
     }
 };
 
+/**
+ *
+ */
 doodleBreakout.Game.prototype.render = function() {
     if(this._recorder && !this.doodlebreakoutIsPaused) {
         this._recorder.capture(this);
     }
 };
 
+/**
+ * @inheritdoc
+ */
 doodleBreakout.Game.prototype.update = function () {
     if(this.player){
         this.player.interact( this );
     }
 };
 
+/**
+ *
+ * @param bricks
+ * @param gimmicks
+ */
 doodleBreakout.Game.prototype.initializePlayers = function( bricks, gimmicks ){
     var keySpacebar = this.addInputKey( Phaser.Keyboard.SPACEBAR );
     var keyLeft = this.addInputKey( Phaser.Keyboard.LEFT );
@@ -93,12 +126,21 @@ doodleBreakout.Game.prototype.initializePlayers = function( bricks, gimmicks ){
     this.addScoreText( this.game.width - 10, 10, 1, 0, this.player );
 };
 
+/**
+ *
+ * @param points
+ * @param x
+ * @param y
+ */
 doodleBreakout.Game.prototype.showPointText = function ( points, x, y ) {
     if( points && x && y ){
         this.displayText( x, y, points, Phaser.Timer.SECOND );
     }
 };
 
+/**
+ *
+ */
 doodleBreakout.Game.prototype.checkLives = function(){
     this.clearGimmickLifetimes( true );
     if ( this.player.lives.countLiving() <= 0 ) {
@@ -117,6 +159,11 @@ doodleBreakout.Game.prototype.collectGimmick = function( plattform, gimmick ){
     this.updateScoreText();
 };
 
+/**
+ *
+ * @param ball
+ * @param brick
+ */
 doodleBreakout.Game.prototype.collideBallVsBrick = function( ball, brick ){
     if ( brick.hit( ball ) ) {
         this.updateScoreText();
@@ -141,6 +188,12 @@ doodleBreakout.Game.prototype.collideBallVsBrick = function( ball, brick ){
     }
 };
 
+/**
+ *
+ * @param ball
+ * @param brick
+ * @returns {boolean}
+ */
 doodleBreakout.Game.prototype.overlapBallVsBrick = function (ball, brick) {
     if (ball.isThunderball) {
         this.collideBallVsBrick(ball, brick);
@@ -150,6 +203,14 @@ doodleBreakout.Game.prototype.overlapBallVsBrick = function (ball, brick) {
     return true;
 };
 
+/**
+ *
+ * @param x
+ * @param y
+ * @param xAnchor
+ * @param yAnchor
+ * @returns {false}
+ */
 doodleBreakout.Game.prototype.addTimeCounter = function ( x, y, xAnchor, yAnchor ) {
     var timerText = this.game.add.bitmapText( x, y, 'larafont', "0:00", 48);
     timerText.anchor.setTo( xAnchor, yAnchor );
@@ -173,6 +234,14 @@ doodleBreakout.Game.prototype.addTimeCounter = function ( x, y, xAnchor, yAnchor
     return timer;
 };
 
+/**
+ *
+ * @param x
+ * @param y
+ * @param xAnchor
+ * @param yAnchor
+ * @param player
+ */
 doodleBreakout.Game.prototype.addScoreText = function( x, y, xAnchor, yAnchor, player ){
     if( ! this._scoreTexts ){
         this._scoreTexts = [];
@@ -182,12 +251,18 @@ doodleBreakout.Game.prototype.addScoreText = function( x, y, xAnchor, yAnchor, p
     this._scoreTexts.push( { player: player, text: scoreText } );
 };
 
+/**
+ *
+ */
 doodleBreakout.Game.prototype.updateScoreText = function () {
     for( var i = 0; i < this._scoreTexts.length; ++i ){
         this._scoreTexts[ i ].text.setText( this._scoreTexts[ i ].player.points );
     }
 };
 
+/**
+ *
+ */
 doodleBreakout.Game.prototype.lostGame = function () {
 
     var oParameters = {
@@ -205,6 +280,10 @@ doodleBreakout.Game.prototype.lostGame = function () {
     this.state.start('GameOver', true, false, oParameters);
 };
 
+/**
+ *
+ * @param gimmicks
+ */
 doodleBreakout.Game.prototype.activateGimmickEasteregg = function( gimmicks ){
     var easteregg = this.addInputKey( Phaser.Keyboard.E );
     easteregg.onDown.add( function( key, gimmicks ){
@@ -216,6 +295,13 @@ doodleBreakout.Game.prototype.activateGimmickEasteregg = function( gimmicks ){
     }, this, null, gimmicks );
 };
 
+/**
+ *
+ * @param x
+ * @param y
+ * @param xAnchor
+ * @param yAnchor
+ */
 doodleBreakout.Game.prototype.addPause = function( x, y, xAnchor, yAnchor ){
     this.pauseIcon = this.game.add.button( x, y, 'icon_pause', this.pauseGame, this );
     this.pauseIcon.anchor.setTo( xAnchor, yAnchor );
@@ -227,6 +313,9 @@ doodleBreakout.Game.prototype.addPause = function( x, y, xAnchor, yAnchor ){
     this.pause.onDown.add( this.pauseGame, this );
 };
 
+/**
+ *
+ */
 doodleBreakout.Game.prototype.pauseGame = function () {
 
     if(!this.doodlebreakoutIsPaused){
@@ -302,11 +391,21 @@ doodleBreakout.Game.prototype.pauseGame = function () {
     }
 };
 
+/**
+ *
+ * @param deg
+ * @protected
+ */
 doodleBreakout.Game.prototype._setGameRotation = function( deg ) {
     // game represents the game div
     game.style.transform = 'rotate(' + deg + 'deg)';
 };
 
+/**
+ *
+ * @returns {*}
+ * @protected
+ */
 doodleBreakout.Game.prototype._getGameRotation = function() {
     // game represents the game div
     var rotation = game.style.transform.match( /rotate\((.*)\)/ );
@@ -317,6 +416,11 @@ doodleBreakout.Game.prototype._getGameRotation = function() {
     return parseInt( rotation[ 1 ] );
 };
 
+/**
+ *
+ * @param key
+ * @returns {*|Phaser.Key}
+ */
 doodleBreakout.Game.prototype.addInputKey = function( key ){
     if( ! this.inputKeys ){
         this.inputKeys = [];
@@ -326,6 +430,9 @@ doodleBreakout.Game.prototype.addInputKey = function( key ){
     return this.game.input.keyboard.addKey( key );
 };
 
+/**
+ *
+ */
 doodleBreakout.Game.prototype.removeInputKeys = function () {
     for( var i = 0; i < this.inputKeys.length; ++i ){
         this.game.input.keyboard.removeKey( this.inputKeys[ i ] );
@@ -333,11 +440,21 @@ doodleBreakout.Game.prototype.removeInputKeys = function () {
     this.inputKeys = [];
 };
 
+/**
+ * @inheritdoc
+ */
 doodleBreakout.Game.prototype.shutdown = function () {
     this._setGameRotation(0);
     this.removeInputKeys();
 };
 
+/**
+ *
+ * @param x
+ * @param y
+ * @param text
+ * @param timeout
+ */
 doodleBreakout.Game.prototype.displayText = function(x,y,text,timeout){
 
     var textPopup = this.game.add.bitmapText(x, y, 'larafont', String(text), 36);
@@ -355,6 +472,10 @@ doodleBreakout.Game.prototype.displayText = function(x,y,text,timeout){
 
 };
 
+/**
+ *
+ * @param gimmick
+ */
 doodleBreakout.Game.prototype.showGimmickLifetime = function ( gimmick ) {
     if( gimmick.getDuration() <= 0 ){
         return;
@@ -426,6 +547,10 @@ doodleBreakout.Game.prototype.showGimmickLifetime = function ( gimmick ) {
     activeGimmickDisplay.destructionTimer.start();
 };
 
+/**
+ *
+ * @param keepStayAlive
+ */
 doodleBreakout.Game.prototype.clearGimmickLifetimes = function( keepStayAlive ){
     if( ! this._activeDisplayedGimmick ){
         return;
@@ -438,6 +563,13 @@ doodleBreakout.Game.prototype.clearGimmickLifetimes = function( keepStayAlive ){
     }
 };
 
+/**
+ *
+ * @param sprite
+ * @param tween
+ * @param activeGimmick
+ * @protected
+ */
 doodleBreakout.Game.prototype._removeGimmickLifetime = function ( sprite, tween, activeGimmick ) {
     activeGimmick.destructionTimer.destroy();
 

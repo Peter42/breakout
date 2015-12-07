@@ -2,12 +2,16 @@ var doodleBreakout = doodleBreakout || {};
 
 /**
  * @constructor
+ * @augments Phaser.State
  */
 doodleBreakout.Preloader = function( game ){
     this._levels = 0;
 };
 
 doodleBreakout.Preloader.prototype = {
+    /**
+     * @inheritdoc
+     */
     preload: function(){
         this.background = this.add.sprite( 0, 0, 'hintergrund');
         this.background.scale.setTo( this.game.width/this.background.width, this.game.height/this.background.height );
@@ -96,7 +100,9 @@ doodleBreakout.Preloader.prototype = {
     },
 
 
-
+    /**
+     * @inheritdoc
+     */
     create: function(){
         doodleBreakout.SoundManager.init(this.game);
         doodleBreakout.ScoresManager.init(this.game);
