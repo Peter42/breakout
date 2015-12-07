@@ -1,5 +1,9 @@
 var doodleBreakout = doodleBreakout || {};
 
+/**
+ * @constructor
+ * @classdec Represents the Single Player
+ */
 doodleBreakout.SinglePlayer = function( game, plattform, lives ) {
     doodleBreakout.Player.call( this, game, plattform );
 
@@ -12,15 +16,17 @@ doodleBreakout.SinglePlayer = function( game, plattform, lives ) {
 doodleBreakout.SinglePlayer.prototype = Object.create( doodleBreakout.Player.prototype );
 doodleBreakout.SinglePlayer.prototype.constructor = doodleBreakout.SinglePlayer;
 
-doodleBreakout.SinglePlayer.prototype.interact = function ( scope ) {
-    doodleBreakout.Player.prototype.interact.call( this, scope );
-};
-
+/**
+ * Add one live
+ */
 doodleBreakout.SinglePlayer.prototype.addLive = function () {
     this.lives.addNew();
     this.livesAmount++;
 };
 
+/**
+ * Lose one live
+ */
 doodleBreakout.SinglePlayer.prototype.loseLive = function () {
     this.lives.lose();
     this.livesAmount--;

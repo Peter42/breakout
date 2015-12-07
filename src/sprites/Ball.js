@@ -78,7 +78,6 @@ doodleBreakout.Ball.prototype.stop = function() {
 
 /**
  * Sets the ball to a Thunderball
- * @param {number} duration - The duration of the activity.
  */
 doodleBreakout.Ball.prototype.activateThunderpower = function(){
     this.frame = 1;

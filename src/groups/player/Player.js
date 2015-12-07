@@ -1,5 +1,9 @@
 var doodleBreakout = doodleBreakout || {};
 
+/**
+ * @constructor
+ * @classdec Represents the Player
+ */
 doodleBreakout.Player = function( game, plattform ) {
 
     Phaser.Group.call( this, game );
@@ -45,7 +49,10 @@ doodleBreakout.Player = function( game, plattform ) {
 doodleBreakout.Player.prototype = Object.create(Phaser.Group.prototype);
 doodleBreakout.Player.prototype.constructor = doodleBreakout.Player;
 
-
+/**
+ * Call this method in the update method of the state where the player should interact
+ * @param {object} scope - In which scope the player interacts.
+ */
 doodleBreakout.Player.prototype.interact = function( scope ){
     for( var i = 0; i < this.customCollisions.length; ++i ){
         var callbackContext = this.customCollisions[ i ].callbackContext;
@@ -86,6 +93,13 @@ doodleBreakout.Player.prototype.interact = function( scope ){
     }, null, this);
 };
 
+/**
+ * Add objects with which the player must collide.
+ * @param {object} object2 - The second object or array of objects to check.
+ * @param {function} collideCallback - An optional callback function that is called if the objects collide. The two objects will be passed to this function in the same order in which you specified them, unless you are colliding Group vs. Sprite, in which case Sprite will always be the first parameter.
+ * @param {function} processCallback - A callback function that lets you perform additional checks against the two objects if they overlap. If this is set then collision will only happen if processCallback returns true. The two objects will be passed to this function in the same order in which you specified them.
+ * @param {object} callbackContext - The context in which to run the callbacks.
+ */
 doodleBreakout.Player.prototype.collideWith = function ( object2, collideCallback, processCallback, callbackContext ){
     var collision = {
         object1: this,
@@ -97,12 +111,16 @@ doodleBreakout.Player.prototype.collideWith = function ( object2, collideCallbac
     this.customCollisions.push( collision );
 };
 
-
+/**
+ * Set all Balls of the player on his platform
+ */
 doodleBreakout.Player.prototype.setBallsOnPlattform = function(){
     this.plattform.holdBalls( this.balls );
 };
 
-
+/**
+ * Add a ball to the player
+ */
 doodleBreakout.Player.prototype.addBall = function( x, y ){
     if( ! x ){
         x = 0;
@@ -113,7 +131,7 @@ doodleBreakout.Player.prototype.addBall = function( x, y ){
     }
 
     var ball = new doodleBreakout.Ball( this.game, x, y, this.balls.imageKey );
-    ball.events.onOutOfBounds.add(this.lostBall, this);
+    ball.events.onOutOfBounds.add(this._lostBall, this);
 
     this.balls.add(ball);
     ball.start();
@@ -125,7 +143,12 @@ doodleBreakout.Player.prototype.addBall = function( x, y ){
     return ball;
 };
 
-
+/**
+ * Let the player earn points
+ * @param {number} points - Add the number of points to the player
+ * @param {number} x - x position to work with
+ * @param {number} y - y position to work with
+ */
 doodleBreakout.Player.prototype.earnPoints = function( points, x, y ){
     this.points += points;
     for( var i = 0; i < this.earnPoint.length; ++i ){
@@ -133,15 +156,24 @@ doodleBreakout.Player.prototype.earnPoints = function( points, x, y ){
     }
 };
 
+/**
+ * Add a method which should be called on ball lost
+ */
 doodleBreakout.Player.prototype.onBallLost = function( fn, scope ){
     this.ballLost.push( [fn,scope] );
 };
 
+/**
+ * Add a method which should be called when the player earn points
+ */
 doodleBreakout.Player.prototype.onEarnPoint = function( fn, scope ){
     this.earnPoint.push( [fn,scope] );
 };
 
-doodleBreakout.Player.prototype.lostBall = function (ball) {
+/**
+ * Is called if the player lost a ball
+ */
+doodleBreakout.Player.prototype._lostBall = function (ball) {
     if ( this.balls.total <= 1 ){
 
         for( var i = 0; i < this.ballLost.length; ++i ){

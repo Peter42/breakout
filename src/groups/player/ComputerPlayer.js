@@ -1,5 +1,9 @@
 var doodleBreakout = doodleBreakout || {};
 
+/**
+ * @constructor
+ * @classdec Represents the Computer Player
+ */
 doodleBreakout.ComputerPlayer = function( game, plattform, lives ) {
     doodleBreakout.SinglePlayer.call( this, game, plattform, lives );
 };
@@ -7,6 +11,11 @@ doodleBreakout.ComputerPlayer = function( game, plattform, lives ) {
 doodleBreakout.ComputerPlayer.prototype = Object.create( doodleBreakout.SinglePlayer.prototype );
 doodleBreakout.ComputerPlayer.prototype.constructor = doodleBreakout.ComputerPlayer;
 
+/**
+ * Call this method in the update method of the state where the player should interact
+ * @param {object} scope - In which scope the player interacts.
+ * @param {object} gimmicks - The gimmicks which can be collected
+ */
 doodleBreakout.ComputerPlayer.prototype.interact = function( scope, gimmicks ){
     doodleBreakout.SinglePlayer.prototype.interact.call( this, scope );
 
@@ -118,7 +127,6 @@ doodleBreakout.ComputerPlayer.prototype.interact = function( scope, gimmicks ){
         }
 
     }
-
 
     if(targetX > this.plattform[x] + width) {
         this.plattform.action.move2 = true;
