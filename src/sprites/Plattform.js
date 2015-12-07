@@ -1,5 +1,8 @@
 var doodleBreakout = doodleBreakout || {};
 
+/**
+ * @constructor
+ */
 doodleBreakout.Plattform = function (game, x, y, key, fieldPosition, velocity, moveKey1, moveKey2, releaseKey, activePointer ) {
 
     Phaser.Sprite.call(this, game, x, y, key);
@@ -110,6 +113,9 @@ doodleBreakout.Plattform = function (game, x, y, key, fieldPosition, velocity, m
 doodleBreakout.Plattform.prototype = Object.create(Phaser.Sprite.prototype);
 doodleBreakout.Plattform.prototype.constructor = doodleBreakout.Plattform;
 
+/**
+ * Update function called by phaser
+ */
 doodleBreakout.Plattform.prototype.update = function() {
     if( this._balls != null ){
         this._balls.forEach( function( ball ){
@@ -142,15 +148,26 @@ doodleBreakout.Plattform.prototype.update = function() {
 
 };
 
+/**
+ * Ball stay at x Position of platform
+ * @param ball
+ */
 doodleBreakout.Plattform.prototype.stayX = function ( ball ) {
     ball.x = this.x;
 };
 
+/**
+ * Ball stay at y Position of platform
+ * @param ball
+ */
 doodleBreakout.Plattform.prototype.stayY = function ( ball ) {
     ball.y = this.y;
 };
 
-
+/**
+ * Handle smartphone and tablet
+ * @param event
+ */
 doodleBreakout.Plattform.prototype.handleOrientationEvent = function(event) {
     if( ! this.body ){
         return;
@@ -181,7 +198,10 @@ doodleBreakout.Plattform.prototype.handleOrientationEvent = function(event) {
     }
 };
 
-
+/**
+ * Hold balls on platform
+ * @param balls
+ */
 doodleBreakout.Plattform.prototype.holdBalls = function( balls ){
     this.hold = true;
     this._balls = balls;
@@ -200,7 +220,9 @@ doodleBreakout.Plattform.prototype.holdBalls = function( balls ){
     timer.start();
 };
 
-
+/**
+ * Show TILT if release kex is pressed 3 times within 2 seconds
+ */
 doodleBreakout.Plattform.prototype.releasePressed = function () {
     if( ! this._releaseTimestamps ){
         this._releaseTimestamps = [];
@@ -229,6 +251,9 @@ doodleBreakout.Plattform.prototype.releasePressed = function () {
     }
 };
 
+/**
+ * Release all balls
+ */
 doodleBreakout.Plattform.prototype.releaseBalls = function(){
     if( this.hold && this._balls && !this.game.state.callbackContext.doodlebreakoutIsPaused ) {
         this.hold = false;
@@ -243,13 +268,19 @@ doodleBreakout.Plattform.prototype.releaseBalls = function(){
     }
 };
 
-
+/**
+ * Reset the platform
+ */
 doodleBreakout.Plattform.prototype.resetPlattform = function(){
     this.height = this.sizeValues.height;
     this.width = this.sizeValues.width;
     this.freeze = false;
 };
 
+/**
+ * Let the platform grow 10%
+ * @returns {boolean}
+ */
 doodleBreakout.Plattform.prototype.grow = function(){
     if( this.width >= this.sizeValues.width * 2 ){
         return false;
@@ -260,6 +291,10 @@ doodleBreakout.Plattform.prototype.grow = function(){
     return true;
 };
 
+/**
+ * Let the platform shrink 10%
+ * @returns {boolean}
+ */
 doodleBreakout.Plattform.prototype.shrink = function(){
     if( this.width < ( this.sizeValues.width/3 ) ){
         return false;
@@ -269,4 +304,3 @@ doodleBreakout.Plattform.prototype.shrink = function(){
 
     return true;
 };
-
