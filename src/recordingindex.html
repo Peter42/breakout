@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta id="viewport" name="viewport" content="width=800, user-scalable=0"/>
+
+    <title>Doodle Breakout</title>
+
+    <script>
+        window.doodleBreakout = {};
+
+        window.onload = function(){
+
+            window.addEventListener("resize", calculateSize);
+            calculateSize();
+
+            var game = new Phaser.Game( 800, 600, Phaser.AUTO, 'game');
+
+            doodleBreakout.Replay.prototype.preload = function() {
+                this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+
+                var images = "{{images}}";
+                for(var i = 0; i < images.length; ++i) {
+                    var image = images[i];
+                    this.game.load.spritesheet(image.key, image.data, image.width, image.height);
+                }
+
+                var font = "{{font}}";
+                this.game.load.bitmapFont("larafont", font.image, font.xml);
+            };
+
+            game.state.add( 'Replay', doodleBreakout.Replay );
+
+            game.state.start( 'Replay', true, false, { recorder: {
+                dataReduced: "{{dataReduced}}",
+                times: "{{times}}"
+            }} );
+        };
+
+        function calculateSize() {
+            var width = 800;
+            var height = 600;
+
+            var faktor = Math.min(window.innerHeight / height, window.innerWidth / width);
+            width *= faktor;
+            height *= faktor;
+
+            var gameDiv = document.getElementById("game");
+            gameDiv.style.width = width + "px";
+            gameDiv.style.height = height + "px";
+        }
+    </script>
+
+    <script>
+        "{{phaser}}"
+    </script>
+
+    <script>
+        "{{state}}"
+    </script>
+
+</head>
+<body>
+
+    <center>
+        <div id="game">
+        </div>
+    </center>
+
+</body>
+</html>

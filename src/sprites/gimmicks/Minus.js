@@ -1,16 +1,20 @@
 var doodleBreakout = doodleBreakout || {};
 
-doodleBreakout.Minus = function ( game, x, y, plattform ) {
-    Phaser.Sprite.call(this, game, x, y, 'minus');
-    this.plattform = plattform;
+/**
+ * @constructor
+ * @augments doodleBreakout.Gimmick
+ */
+doodleBreakout.Minus = function ( game, x, y ) {
+    doodleBreakout.Gimmick.call( this, game, x, y, 'minus' );
 };
 
 doodleBreakout.Minus.prototype = Object.create(doodleBreakout.Gimmick.prototype);
 doodleBreakout.Minus.prototype.constructor = doodleBreakout.Minus;
 
-doodleBreakout.Minus.prototype.collected = function(){
+/** @inheritdoc */
+doodleBreakout.Minus.prototype.collected = function( player ){
     //earn Bonus Points for each collected Minus
-    this.game.state.states.Game.earnPoints(70);
-    this.plattform.shrink();
-    this.kill();
+    this.earnPoints(player, 50);
+    player.plattform.shrink();
+    this.destroy();
 };

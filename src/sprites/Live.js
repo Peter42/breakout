@@ -1,10 +1,12 @@
 var doodleBreakout = doodleBreakout || {};
 
-doodleBreakout.Live = function (game, x, y) {
-
+/**
+ * @constructor
+ */
+doodleBreakout.LiveSymbol = function (game, x, y) {
     // We call the Phaser.Sprite passing in the game reference
     Phaser.Sprite.call(this, game, x, y, 'live');
 };
 
-doodleBreakout.Live.prototype = Object.create(Phaser.Sprite.prototype);
-doodleBreakout.Live.prototype.constructor = doodleBreakout.Live;
+doodleBreakout.LiveSymbol.prototype = Object.create(Phaser.Sprite.prototype);
+doodleBreakout.LiveSymbol.prototype.constructor = doodleBreakout.LiveSymbol;

@@ -1,5 +1,9 @@
 var doodleBreakout = doodleBreakout || {};
 
+/**
+ * @constructor
+ * @augments doodleBreakout.AbstractMenu
+ */
 doodleBreakout.Highscores = function( game ){
 
 };
@@ -8,6 +12,9 @@ doodleBreakout.Highscores.prototype = Object.create(doodleBreakout.AbstractMenu.
 doodleBreakout.Highscores.prototype.constructor = doodleBreakout.Highscores;
 
 
+/**
+ * @inheritdoc
+ */
 doodleBreakout.Highscores.prototype.create = function(){
 
     this.createBackHome();
@@ -17,12 +24,18 @@ doodleBreakout.Highscores.prototype.create = function(){
 
     var scores = doodleBreakout.ScoresManager.getHighscores();
 
-    for(var i in scores){
+    for(var i = 0; i < scores.length; ++i){
         this._addScore(scores[i], 45 * i + 120);
     }
 
 };
 
+/**
+ *
+ * @param score
+ * @param y
+ * @private
+ */
 doodleBreakout.Highscores.prototype._addScore = function(score, y) {
     var text = this.game.add.bitmapText(this.world.centerX - 10, y, 'larafont', score.name,32);
     text.anchor.set(1,0);

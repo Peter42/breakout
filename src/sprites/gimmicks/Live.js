@@ -1,14 +1,20 @@
 var doodleBreakout = doodleBreakout || {};
 
-doodleBreakout.Live = function ( game, x, y, lives ) {
-    Phaser.Sprite.call(this, game, x, y, 'live');
-    this._lives = lives;
+/**
+ * @constructor
+ * @augments doodleBreakout.Gimmick
+ */
+doodleBreakout.Live = function ( game, x, y ) {
+    doodleBreakout.Gimmick.call( this, game, x, y, 'live' );
 };
 
 doodleBreakout.Live.prototype = Object.create(doodleBreakout.Gimmick.prototype);
 doodleBreakout.Live.prototype.constructor = doodleBreakout.Live;
 
-doodleBreakout.Live.prototype.collected = function(){
-    this.kill();
-    this._lives.addNew();
+/** @inheritdoc */
+doodleBreakout.Live.prototype.collected = function( player ){
+    this.destroy();
+    if( player.lives ){
+        player.addLive();
+    }
 };

@@ -4,10 +4,14 @@ var doodleBreakout = doodleBreakout || {};
  * @constructor
  * @classdec Represents the Ball
  */
-doodleBreakout.Ball = function (game, x, y) {
+doodleBreakout.Ball = function ( game, x, y, key ) {
 
     //  We call the Phaser.Sprite passing in the game reference
-    Phaser.Sprite.call(this, game, x, y, 'ball');
+    if( ! key ){
+       key = 'ball';
+    }
+
+    Phaser.Sprite.call(this, game, x, y, key );
 
 
     this.anchor.setTo(0.5, 1);
@@ -22,6 +26,8 @@ doodleBreakout.Ball = function (game, x, y) {
     // speed up the ball a little bit
     this.body.bounce.set(1.005);
     this.body.immovable = false;
+
+    this.body.maxVelocity.setTo( 600, 600 );
 
     this.events.onOutOfBounds.add(this.lost, this);
 
@@ -72,16 +78,10 @@ doodleBreakout.Ball.prototype.stop = function() {
 
 /**
  * Sets the ball to a Thunderball
- * @param {number} duration - The duration of the activity.
  */
-doodleBreakout.Ball.prototype.activateThunderpower = function( duration ){
+doodleBreakout.Ball.prototype.activateThunderpower = function(){
     this.frame = 1;
     this.isThunderball = true;
-
-    this.powerTimer.destroy();
-    this.powerTimer.stop();
-    this.powerTimer.add( duration, this.removeThunderpower, this);
-    this.powerTimer.start();
 };
 
 /**
@@ -89,9 +89,18 @@ doodleBreakout.Ball.prototype.activateThunderpower = function( duration ){
  */
 doodleBreakout.Ball.prototype.removeThunderpower = function(){
     if( this.isThunderball ){
-        this.powerTimer.destroy();
-        this.powerTimer.stop();
         this.frame = 0;
         this.isThunderball = false;
     }
+};
+
+/**
+ * Activates/Deactivates the collision
+ */
+doodleBreakout.Ball.prototype.setCollision = function ( value ) {
+    value = !!value;
+    this.body.checkCollision.up = value;
+    this.body.checkCollision.down = value;
+    this.body.checkCollision.left = value;
+    this.body.checkCollision.right = value;
 };

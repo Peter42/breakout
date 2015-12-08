@@ -4,16 +4,21 @@
     <meta charset="UTF-8">
     <meta id="viewport" name="viewport" content="width=800, user-scalable=0"/>
 
+    <link rel="manifest" href="./manifest.webmanifest">
+
     <title>Doodle Breakout</title>
 
     <!-- load libraries -->
     <script src="./lib/phaser.js"></script>
+    <script src="./lib/FileSaver.min.js"></script>
 
     <!-- load the application -->
     <script src="./app.js"></script>
     <script src="./SoundManager.js"></script>
     <script src="./ScoresManager.js"></script>
+    <script src="./LevelManager.js"></script>
     <script src="./OnscreenInput.js"></script>
+    <script src="./Recorder.js"></script>
 
     <!-- load States-->
     <script src="states/AbstractMenu.js"></script>
@@ -21,16 +26,16 @@
     <script src="./states/Boot.js"></script>
     <script src="./states/Credits.js"></script>
     <script src="./states/Game.js"></script>
+    <script src="./states/GameComputer.js"></script>
+    <script src="./states/GameMultiplayer.js"></script>
     <script src="./states/Highscores.js"></script>
     <script src="./states/LevelSelection.js"></script>
     <script src="./states/MainMenu.js"></script>
     <script src="./states/Preloader.js"></script>
     <script src="./states/Settings.js"></script>
     <script src="./states/GameOver.js"></script>
-
-    <!-- load Groups -->
-    <script src="./groups/Lives.js"></script>
-    <script src="./groups/Gimmicks.js"></script>
+    <script src="./states/LevelDesigner.js"></script>
+    <script src="./states/Replay.js"></script>
 
     <!-- load Sprites -->
     <script src="./sprites/Live.js"></script>
@@ -53,10 +58,19 @@
     <script src="./sprites/gimmicks/Plus.js"></script>
     <script src="./sprites/gimmicks/Coin.js"></script>
     <script src="./sprites/gimmicks/Rotator.js"></script>
+    <script src="./sprites/gimmicks/Gravity.js"></script>
+    <script src="./sprites/gimmicks/Invincible.js"></script>
+
+    <!-- load Groups -->
+    <script src="groups/player/Player.js"></script>
+    <script src="groups/player/SinglePlayer.js"></script>
+    <script src="groups/player/ComputerPlayer.js"></script>
+    <script src="./groups/Lives.js"></script>
+    <script src="./groups/Gimmicks.js"></script>
 
     <!-- load Objects -->
-    <script src="./LevelFactory.js"></script>
     <script src="./Level.js"></script>
+    <script src="LevelMultiplayer.js"></script>
 
     <link rel="stylesheet" type="text/css" href="OnscreenInput.css">
 </head>
@@ -69,7 +83,7 @@
         <div id="game">
         </div>
 
-        <div id="onscreencontroll">
+        <div id="onscreencontroll" style="display: none">
             <div id="pad"></div>
             <div class="circle" id="dpadshadow"></div>
             <div class="circle" id="dpad"></div>

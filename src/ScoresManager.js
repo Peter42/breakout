@@ -17,6 +17,11 @@ doodleBreakout.ScoresManager = {
 
     MAX_HIGHSCORE_SIZE: 10,
 
+    /**
+     *
+     * @param levelId
+     * @param secondsUsed
+     */
     addBesttime: function (levelId, secondsUsed){
         if(! this._initialized ) {
             throw "Initialise SoundManager first";
@@ -43,6 +48,11 @@ doodleBreakout.ScoresManager = {
         }
     },
 
+    /**
+     *
+     * @param score
+     * @param name
+     */
     addHighscore: function (score, name) {
         if(! this._initialized ) {
             throw "Initialise SoundManager first";
@@ -74,6 +84,10 @@ doodleBreakout.ScoresManager = {
         }
     },
 
+    /**
+     *
+     * @returns {Array}
+     */
     getHighscores: function() {
         if(! this._initialized ) {
             throw "Initialise SoundManager first";
@@ -82,6 +96,10 @@ doodleBreakout.ScoresManager = {
         return this._scores;
     },
 
+    /**
+     *
+     * @returns {doodleBreakout.ScoresManager._times|{}}
+     */
     getBesttimes: function() {
         if(! this._initialized ) {
             throw "Initialise SoundManager first";
@@ -90,6 +108,9 @@ doodleBreakout.ScoresManager = {
         return this._times;
     },
 
+    /**
+     *
+     */
     reset: function () {
         if(! this._initialized ) {
             throw "Initialise SoundManager first";
@@ -104,6 +125,10 @@ doodleBreakout.ScoresManager = {
         }
     },
 
+    /**
+     *
+     * @param game
+     */
     init: function (game) {
         this._game = game;
 

@@ -1,22 +1,28 @@
 var doodleBreakout = doodleBreakout || {};
 
+/**
+ * @constructor
+ * @augments doodleBreakout.Gimmick
+ */
 doodleBreakout.Coin = function ( game, x, y ) {
-    Phaser.Sprite.call(this, game, x, y, 'coin');
+    doodleBreakout.Gimmick.call( this, game, x, y, 'coin');
 };
 
 doodleBreakout.Coin.prototype = Object.create(doodleBreakout.Gimmick.prototype);
 doodleBreakout.Coin.prototype.constructor = doodleBreakout.Coin;
 
-doodleBreakout.Coin.prototype.collected = function(){
+/** @inheritdoc */
+doodleBreakout.Coin.prototype.collected = function( player ){
     //earn Bonus Points for each collected Duplicate
     var iMax = 20;
     var iMin = 200;
 
-    this.game.state.states.Game.earnPoints( Math.floor(Math.random() * (iMax - iMin + 1)) + iMin );
+    this.earnPoints( player,  Math.floor(Math.random() * (iMax - iMin + 1)) + iMin );
 
-    this.kill();
+    this.destroy();
 };
 
+/** @inheritdoc */
 doodleBreakout.Coin.prototype.playCollectSound = function(){
     doodleBreakout.SoundManager.playSfx('collect_coin');
 };

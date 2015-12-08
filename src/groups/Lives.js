@@ -1,7 +1,9 @@
 var doodleBreakout = doodleBreakout || {};
 
+/**
+ * @constructor
+ */
 doodleBreakout.Lives = function ( game, x, y, amount ) {
-
     //  We call the Phaser.Sprite passing in the game reference
     Phaser.Group.call( this, game );
 
@@ -23,8 +25,7 @@ doodleBreakout.Lives.prototype.lose = function(){
     }
 };
 
-
 doodleBreakout.Lives.prototype.addNew = function(){
-    var live = new doodleBreakout.Live( this.game, this.x + this.total * 40, this.y );
+    var live = new doodleBreakout.LiveSymbol( this.game, this.x + this.total * 40, this.y );
     this.addAt(live, 0);
 };

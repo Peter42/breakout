@@ -1,21 +1,35 @@
 var doodleBreakout = doodleBreakout || {};
 
-doodleBreakout.Thunderball = function ( game, x, y, ball ) {
-    Phaser.Sprite.call(this, game, x, y, 'thunder');
-    this._ball = ball;
-    this.game = game;
+/**
+ * @constructor
+ * @augments doodleBreakout.Gimmick
+ */
+doodleBreakout.Thunderball = function (game, x, y) {
+    doodleBreakout.Gimmick.call(this, game, x, y, 'thunder');
+    this.setDuration( 7 );
+    this._thunderballs = null;
 };
 
 doodleBreakout.Thunderball.prototype = Object.create(doodleBreakout.Gimmick.prototype);
 doodleBreakout.Thunderball.prototype.constructor = doodleBreakout.Thunderball;
 
-doodleBreakout.Thunderball.prototype.collected = function(){
+/** @inheritdoc */
+doodleBreakout.Thunderball.prototype.collected = function(player){
     //earn Bonus Points for each collected Duplicate
-    this.game.state.states.Game.earnPoints(80);
+    this.earnPoints(player, 20);
 
     this.kill();
 
-    this._ball.forEachAlive( function( ball ){
-        ball.activateThunderpower( 6500 );
-    }, this._ball );
+    this._thunderballs = player.balls;
+
+    player.balls.forEachAlive( function (ball) {
+        ball.activateThunderpower();
+    } );
+};
+
+/** @inheritdoc */
+doodleBreakout.Thunderball.prototype.onTimerTimeout = function(){
+    this._thunderballs.forEachAlive( function (ball) {
+        ball.removeThunderpower();
+    } );
 };

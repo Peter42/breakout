@@ -1,5 +1,8 @@
 var doodleBreakout = doodleBreakout || {};
 
+/**
+ * @class
+ */
 doodleBreakout.SoundManager = {
 
     _sfxEnabled: true,
@@ -11,6 +14,9 @@ doodleBreakout.SoundManager = {
         SFX_ENABLED: "SoundManager._sfxEnabled"
     },
 
+    /**
+     * @param name
+     */
     playSfx: function(name) {
         if(! this._initialized ) {
             throw "Initialise SoundManager first";
@@ -22,6 +28,10 @@ doodleBreakout.SoundManager = {
 
     },
 
+    /**
+     *
+     * @returns {boolean}
+     */
     isMusicEnabled: function(){
         if(! this._initialized ) {
             throw "Initialise SoundManager first";
@@ -29,6 +39,10 @@ doodleBreakout.SoundManager = {
         return this._musicEnabled;
     },
 
+    /**
+     *
+     * @returns {boolean}
+     */
     isSfxEnabled: function(){
         if(! this._initialized ) {
             throw "Initialise SoundManager first";
@@ -36,6 +50,10 @@ doodleBreakout.SoundManager = {
         return this._sfxEnabled;
     },
 
+    /**
+     *
+     * @param enabled
+     */
     setMusicEnabled: function (enabled) {
         if(! this._initialized ) {
             throw "Initialise SoundManager first";
@@ -43,13 +61,17 @@ doodleBreakout.SoundManager = {
 
         this._musicEnabled = enabled === true;
 
-        if(window.localStorage) {
-            window.localStorage.setItem(this.LOCAL_STORAGE_KEYS.MUSIC_ENABLED, this._musicEnabled);
+        if(this.storage) {
+            this.storage.setItem(this.LOCAL_STORAGE_KEYS.MUSIC_ENABLED, this._musicEnabled);
         }
 
         this._updateMusic();
     },
 
+    /**
+     *
+     * @private
+     */
     _updateMusic: function () {
         if(this._musicEnabled) {
             this._music.play();
@@ -58,6 +80,10 @@ doodleBreakout.SoundManager = {
         }
     },
 
+    /**
+     *
+     * @param enabled
+     */
     setSfxEnabled: function (enabled) {
         if(! this._initialized ) {
             throw "Initialise SoundManager first";
@@ -65,13 +91,21 @@ doodleBreakout.SoundManager = {
 
         this._sfxEnabled = enabled === true;
 
-        if(window.localStorage) {
-            window.localStorage.setItem(this.LOCAL_STORAGE_KEYS.SFX_ENABLED, this._sfxEnabled);
+        if(this.storage) {
+            this.storage.setItem(this.LOCAL_STORAGE_KEYS.SFX_ENABLED, this._sfxEnabled);
         }
     },
 
+    /**
+     *
+     * @param game
+     */
     init: function (game) {
         this._game = game;
+
+        if(this.storage === undefined) {
+            this.storage = window.localStorage;
+        }
 
         this._music = game.add.audio('music', 0.7, true);
         this._music.play();
@@ -90,9 +124,9 @@ doodleBreakout.SoundManager = {
         this._sfx.addMarker('collect_coin', 3, 0.3);
         this._sfx.addMarker('break', 1, 0.6);
 
-        if(window.localStorage){
-            this._sfxEnabled = window.localStorage.getItem(this.LOCAL_STORAGE_KEYS.SFX_ENABLED) !== "false";
-            this._musicEnabled = window.localStorage.getItem(this.LOCAL_STORAGE_KEYS.MUSIC_ENABLED) !== "false";
+        if(this.storage){
+            this._sfxEnabled = this.storage.getItem(this.LOCAL_STORAGE_KEYS.SFX_ENABLED) !== "false";
+            this._musicEnabled = this.storage.getItem(this.LOCAL_STORAGE_KEYS.MUSIC_ENABLED) !== "false";
         }
 
         this._updateMusic();

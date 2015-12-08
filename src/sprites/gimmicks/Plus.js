@@ -1,16 +1,20 @@
 var doodleBreakout = doodleBreakout || {};
 
-doodleBreakout.Plus = function ( game, x, y, plattform ) {
-    Phaser.Sprite.call(this, game, x, y, 'plus');
-    this.plattform = plattform;
+/**
+ * @constructor
+ * @augments doodleBreakout.Gimmick
+ */
+doodleBreakout.Plus = function ( game, x, y ) {
+    doodleBreakout.Gimmick.call( this, game, x, y, 'plus' );
 };
 
 doodleBreakout.Plus.prototype = Object.create(doodleBreakout.Gimmick.prototype);
 doodleBreakout.Plus.prototype.constructor = doodleBreakout.Plus;
 
-doodleBreakout.Plus.prototype.collected = function(){
+/** @inheritdoc */
+doodleBreakout.Plus.prototype.collected = function( player ){
     //earn Bonus Points for each collected Plus
-    this.game.state.states.Game.earnPoints(50);
-    this.plattform.grow();
-    this.kill();
+    this.earnPoints(player, 25);
+    player.plattform.grow();
+    this.destroy();
 };

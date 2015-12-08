@@ -1,5 +1,9 @@
 var doodleBreakout = doodleBreakout || {};
 
+/**
+ * @constructor
+ * @augments doodleBreakout.AbstractMenu
+ */
 doodleBreakout.Credits = function (game) {
 
 };
@@ -8,6 +12,9 @@ doodleBreakout.Credits.prototype = Object.create(doodleBreakout.AbstractMenu.pro
 doodleBreakout.Credits.prototype.constructor = doodleBreakout.Credits;
 
 
+/**
+ * @inheritdoc
+ */
 doodleBreakout.Credits.prototype.create = function () {
 
     this.creditStrings = [
@@ -18,6 +25,7 @@ doodleBreakout.Credits.prototype.create = function () {
         "-",
         "Libraries:",
         "Phaser.js",
+        "FileSaver.js",
         "-",
         "Tools:",
         "WebStorm",
@@ -27,12 +35,12 @@ doodleBreakout.Credits.prototype.create = function () {
         "Stats:",
         "The development of this game",
         "cost our team:",
-        "4 Cups of Coffee",
-        "6 Cups of Tea",
-        "12 Bread Rolls",
+        "13 Cups of Coffee",
+        "26 Cups of Tea",
+        "32 Bread Rolls",
         "2 Bottles of Beer",
-        "4 Glasses of Wine",
-        "5 Bottles of Coke",
+        "8 Glasses of Wine",
+        "18 Liters of Coke",
         "",
         "",
         ""
@@ -58,6 +66,9 @@ doodleBreakout.Credits.prototype.create = function () {
     this.next();
 };
 
+/**
+ *
+ */
 doodleBreakout.Credits.prototype.next = function () {
 
     if (this.creditStrings.length > 0) {
@@ -88,6 +99,9 @@ doodleBreakout.Credits.prototype.next = function () {
 };
 
 
+/**
+ * @inheritdoc
+ */
 doodleBreakout.Credits.prototype.update = function () {
     this.game.physics.arcade.overlap(this.elements, this.elements, function (a, b) {
         a.doodleBreakout.velocity = 0.5;
@@ -106,6 +120,11 @@ doodleBreakout.Credits.prototype.update = function () {
     }
 };
 
+/**
+ *
+ * @param text
+ * @returns {*|Phaser.BitmapText}
+ */
 doodleBreakout.Credits.prototype.slideText = function (text) {
     var credit = this.game.add.bitmapText(this.game.width / 2, this.game.height, 'larafont', text, 46);
     credit.anchor.setTo(0.5, 0);

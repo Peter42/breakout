@@ -1,6 +1,6 @@
 var doodleBreakout = doodleBreakout || {};
 /**
- * @class BlockFactory
+ * @class doodleBreakout.BlockFactory
  */
 
 doodleBreakout.BlockFactory = {};
