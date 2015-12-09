@@ -69,6 +69,22 @@ doodleBreakout.ScoresManager = {
             throw 'Parameter "name" must be a string';
         }
 
+        /* if using the js (not nativ) google play games api
+        var request = gapi.client.games.scores.submit(
+            {
+                leaderboardId: "CgkIuIu32t4bEAIQAg",
+                score: score
+            }
+        );
+        request.execute(function(response) {
+            console.log("submit scores", response);
+        });*/
+        var data = {
+            score: score,
+            leaderboardId: "CgkIuIu32t4bEAIQAg"
+        };
+        window.plugins.playGamesServices.submitScore(data);
+
 
         this._scores.push({name:name, score: score});
         this._scores.sort(function(a,b){

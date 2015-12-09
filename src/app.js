@@ -28,6 +28,19 @@ window.onload = function(){
     doodleBreakout.OnscreenInput.init();
 };
 
+document.addEventListener("deviceready", onDeviceReady, false);
+function onDeviceReady(){
+    console.log("ready");
+    window.plugins.playGamesServices.auth(function (result) {
+
+    });
+
+    window.plugins.playGamesServices.isSignedIn(function (result) {
+
+        console.log(result.isSignedIn, result);
+    });
+}
+
 function calculateSize() {
 
     if(document.activeElement === fakeInput){
@@ -45,6 +58,25 @@ function calculateSize() {
     gameDiv.style.width = width + "px";
     gameDiv.style.height = height + "px";
 }
+
+/* if using the js (not nativ) google play games api
+function signinCallback(auth) {
+    console.log("signinCallback", arguments);
+    if (auth && auth.error == null) {
+        // Hooray! The user is logged int!
+        // If we got here from a sign-in button, we should probably hide it
+        //hideMyGamesSignInButton();
+        //loadLeaderboardsAndAchievements();
+
+    } else {
+        // Common reasons are immediate_failed and user_signed_out
+        if (auth && typeof auth.hasOwnProperty == "function" && auth.hasOwnProperty('error')) {
+            console.log('Sign in failed because: ', auth.error);
+        }
+        gapi.auth.signIn();
+    }
+
+}*/
 
 
 // Polyfills

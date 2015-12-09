@@ -25,7 +25,14 @@ doodleBreakout.MainMenu.prototype.create = function () {
     // Computer Player Icon
     this._generateMenuIcon('icon_computer', this.game.world.centerX + 120, 90, 'LevelSelection', 'computer');
 
-    this._generateMenuItem('Highscores', 220, 'Highscores');
+    var item = this._generateMenuItem('Highscores', 220, 'Highscores');
+    item.events.onInputDown.removeAll();
+    item.events.onInputDown.add(
+        function (){
+            window.plugins.playGamesServices.showLeaderboard({"leaderboardId":"CgkIuIu32t4bEAIQAg"});
+        }
+    );
+
     this._generateMenuItem('Settings', 320, 'Settings');
     this._generateMenuItem('Create Level', 420, 'LevelDesigner');
     this._generateMenuItem('Credits', 520, 'Credits');
