@@ -31,14 +31,16 @@ window.onload = function(){
 document.addEventListener("deviceready", onDeviceReady, false);
 function onDeviceReady(){
     console.log("ready");
-    window.plugins.playGamesServices.auth(function (result) {
+    window.plugins.playGamesServices.auth(function () {
+
+        window.plugins.playGamesServices.isSignedIn(function (result) {
+            doodleBreakout.GPGManager.status.loggedin = result.isSignedIn;
+            console.log(result.isSignedIn, result);
+        });
 
     });
 
-    window.plugins.playGamesServices.isSignedIn(function (result) {
 
-        console.log(result.isSignedIn, result);
-    });
 }
 
 function calculateSize() {

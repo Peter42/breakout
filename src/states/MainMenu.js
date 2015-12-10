@@ -33,9 +33,31 @@ doodleBreakout.MainMenu.prototype.create = function () {
         }
     );
 
+    var icon = this._generateMenuIcon("icon_gpg_controller", this.game.width - 64, this.game.height - 64);
+    icon.anchor.setTo(0.5);
+
+    this.observer = function(){
+        icon.frame = doodleBreakout.GPGManager.status.loggedin ? 0 : 1;
+    };
+    Object.observe(doodleBreakout.GPGManager.status, this.observer);
+    this.observer();
+
+    icon.events.onInputDown.removeAll();
+    icon.events.onInputDown.add(
+        function (){
+            doodleBreakout.GPGManager.toggleLogin();
+        }
+    );
+
+
     this._generateMenuItem('Settings', 320, 'Settings');
     this._generateMenuItem('Create Level', 420, 'LevelDesigner');
     this._generateMenuItem('Credits', 520, 'Credits');
+};
+
+
+doodleBreakout.MainMenu.prototype.shutdown = function () {
+    Object.unobserve(doodleBreakout.GPGManager.status, this.observer);
 };
 
 /**

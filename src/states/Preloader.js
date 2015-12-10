@@ -59,6 +59,8 @@ doodleBreakout.Preloader.prototype = {
         this.game.load.image('icon_multiplayer', 'assets/icons/multiplayer.png');
         this.game.load.image('icon_computer', 'assets/icons/computer.png');
 
+        this.game.load.spritesheet('icon_gpg_controller', 'assets/icons/games_controller.png', 64, 64);
+
 
         //Load font files
         this.game.load.bitmapFont('larafont', 'assets/fonts/larafont.png', 'assets/fonts/larafont.xml');
