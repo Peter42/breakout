@@ -53,6 +53,8 @@ doodleBreakout.LevelMultiplayer.prototype.generateBricks = function( gimmicks ){
                     brickLeft.anchor.setTo( 0.5, 0.5 );
                     brickLeft.body.height = 50;
                     brickLeft.body.width = 16;
+                    brickLeft.body.offset.x = 16;
+                    brickLeft.body.offset.y = -16;
 
                     var brickRight = doodleBreakout.BlockFactory.get( this._structure[i][j], this.game, x, y );
                     brickRight.setGimmik( gimmickRight );
@@ -60,6 +62,8 @@ doodleBreakout.LevelMultiplayer.prototype.generateBricks = function( gimmicks ){
                     brickRight.anchor.setTo( 0.5, 0.5 );
                     brickRight.body.height = 50;
                     brickRight.body.width = 16;
+                    brickRight.body.offset.x = 16;
+                    brickRight.body.offset.y = -16;
 
                     bricks.add( brickRight );
                     bricks.add( brickLeft );

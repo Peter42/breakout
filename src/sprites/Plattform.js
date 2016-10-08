@@ -68,9 +68,9 @@ doodleBreakout.Plattform = function (game, x, y, key, fieldPosition, velocity, m
         case "right":
             this.sizeValues.velocity.x = 0;
             this.sizeValues.velocity.y = velocity;
-            this.body.height = this.width;
-            this.body.width = this.height;
-            this.holdPosition.x = this.x - this.body.width/2 - 8;
+            this.body.offset.x = (this.width - this.height) / 2;
+            this.body.offset.y = (this.height - this.width) / 2;
+            this.holdPosition.x = this.x - this.body.height/2 - 8;
             this.holdPosition.y = this.y;
             this.stay = this.stayY;
             this.holdBallVelocity.x = 270;
@@ -81,9 +81,9 @@ doodleBreakout.Plattform = function (game, x, y, key, fieldPosition, velocity, m
         case "left":
             this.sizeValues.velocity.x = 0;
             this.sizeValues.velocity.y = velocity;
-            this.body.height = this.width;
-            this.body.width = this.height;
-            this.holdPosition.x = this.x + this.body.width/2 + 8;
+            this.body.offset.x = (this.width - this.height) / 2;
+            this.body.offset.y = (this.height - this.width) / 2;
+            this.holdPosition.x = this.x + this.body.height/2 + 8;
             this.holdPosition.y = this.y;
             this.stay = this.stayY;
             this.holdBallVelocity.x = -270;
@@ -95,7 +95,8 @@ doodleBreakout.Plattform = function (game, x, y, key, fieldPosition, velocity, m
     }
 
     this.anchor.setTo(0.5, 0.5);
-    this.rotation = rotation * (Math.PI/180);
+    this.angle = rotation;
+    this.body.syncBounds = true;
 
     var that = this;
     window.addEventListener("devicemotion", function(event) {
@@ -126,11 +127,6 @@ doodleBreakout.Plattform.prototype.update = function() {
     if( this.freeze ){
         this.body.velocity.set( 0, 0 );
         return;
-    }
-
-    if( this.fieldPosition == "left" || this.fieldPosition == "right" ){
-        this.body.height = this.width;
-        this.body.width = this.height;
     }
 
     if ( this.isPointerActive && this.game.input.activePointer.isDown ) {
