@@ -38,14 +38,14 @@ doodleBreakout.Replay.prototype.create = function(){
 
     this.menuGroup = new Phaser.Group( this.game, parent, "menu", true, false, undefined);
 
-    var line = new Phaser.Sprite( this.game, 0, this.game.stage.height - 50, "block05", 0 );
+    var line = new Phaser.Sprite( this.game, 0, this.game.height - 50, "block05", 0 );
     line.alpha = 0.5;
     line.width = 800;
     line.height = 50;
 
     this.menuGroup.add(line);
 
-    var y = this.game.stage.height - 45;
+    var y = this.game.height - 45;
     this.icons = {};
 
     this.icons.pause = this.game.add.sprite( 15, y, "icon_pause", 0, this.menuGroup);
